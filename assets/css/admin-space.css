@@ -1,0 +1,21 @@
+/* 空间与设备管理；作用域提示（.as-scope）、错误文字与弱化文字见 base.css。 */
+.as-page { max-width: 1480px; }
+.as-scope { font-weight: 600; }
+.as-node + .as-node { margin-top: var(--flc-s5); }
+.as-node table { min-width: 1120px; font-size: .9rem; }
+.as-node small { display: block; color: var(--flc-muted); }
+.as-node h3 small { display: inline; }
+.as-device td { background: var(--flc-surface-2); padding: .5rem 1rem; }
+.as-device ul { margin: .25rem 0; padding-left: 1.25rem; }
+.as-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .4rem var(--flc-s5); }
+.as-field { display: flex; flex-direction: column; min-width: 0; }
+.as-field label { font-weight: 600; margin-bottom: .3rem; }
+.as-field input, .as-field select { width: 100%; }
+.as-error { min-height: 1.5em; margin: .25rem 0; }
+.as-check { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem; flex-wrap: wrap; }
+#save-status { font-weight: 600; color: var(--flc-success); }
+@media (max-width: 640px) {
+  .as-fields { grid-template-columns: 1fr; }
+  .as-node { padding: .75rem; }
+  .as-check { display: flex; }
+}

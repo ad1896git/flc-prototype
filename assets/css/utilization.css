@@ -1,0 +1,13 @@
+/* 利用率报表；作用域提示（.ur-scope）见 base.css。 */
+.ur-page { max-width: 1480px; }
+.ur-scope { font-weight: 600; }
+.ur-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--flc-s4); }
+.ur-fields { display: flex; flex-wrap: wrap; gap: var(--flc-s3); }
+.ur-fields label { display: flex; flex-direction: column; gap: .35rem; font-weight: 600; font-size: .875rem; color: var(--flc-muted); }
+.ur-page td small { display: block; }
+#report-table table { min-width: 1250px; font-size: .9rem; }
+#report-chart svg { display: block; width: 100%; height: auto; min-width: 560px; }
+#report-chart { overflow-x: auto; }
+.ur-heat table { min-width: 700px; }
+.ur-heat .ur-low { background: var(--flc-warning-bg); color: var(--flc-warning); font-weight: 600; }
+#export-status { font-weight: 600; color: var(--flc-success); }

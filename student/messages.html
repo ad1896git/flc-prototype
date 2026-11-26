@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/messages.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>消息｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/student-misc.css">
+</head>
+<body>
+  <main>
+    <h1>消息</h1>
+    <p class="misc-notice">企业微信、短信、邮件通道为示意。下列内容是虚构站内信样例。</p>
+    <section id="message-list-view" aria-labelledby="inbox-title">
+      <h2 id="inbox-title">站内信列表</h2>
+      <ul id="message-list" class="misc-list"></ul>
+    </section>
+    <section id="message-detail-view" aria-label="通知详情" hidden>
+      <p><a href="messages.html">返回消息列表</a></p>
+      <article id="message-detail" class="misc-card"></article>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/data/student-misc.js"></script>
+  <script src="../assets/js/pages/messages.js"></script>
+</body>
+</html>

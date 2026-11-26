@@ -1,0 +1,47 @@
+/* 学生任务列表、任务详情、提交与 AI 声明。 */
+.task-submit { max-width: 850px; }
+[data-app="student"] .task-submit { max-width: 760px; }
+.task-submit form { margin-top: var(--flc-s5); }
+.task-submit legend { padding: 0 .3rem; }
+.task-field { margin: var(--flc-s4) 0; min-width: 0; }
+.task-field > label { display: block; font-weight: 600; margin-bottom: .35rem; }
+.task-field input, .task-field select, .task-field textarea { width: 100%; }
+.task-submit textarea { resize: vertical; min-height: 7rem; }
+.task-choice { display: flex; align-items: flex-start; gap: .65rem; min-height: 44px; padding: .55rem .75rem; margin: .35rem 0;
+  border: 1px solid var(--flc-border); border-radius: var(--flc-radius-sm); cursor: pointer; background: var(--flc-surface); }
+.task-choice:has(input:checked) { border-color: var(--flc-primary); background: var(--flc-soft); }
+.task-choice input { flex: none; margin-top: .3rem; }
+.task-error { margin: .3rem 0; }
+.task-error:empty { display: none; }
+.task-note { font-size: .875rem; }
+#submit-status:empty { display: none; }
+.task-tool { background: var(--flc-surface-2); }
+.task-tool-grid { display: grid; gap: 0 var(--flc-s4); }
+@media (min-width: 640px) {
+  .task-tool-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.task-list, .task-detail { min-width: 0; }
+.task-grid { display: grid; gap: var(--flc-s3); }
+.task-card, .task-description, .task-problems { min-width: 0; overflow-wrap: anywhere; }
+.task-card + .task-card { margin-top: var(--flc-s3); }
+.task-card h2 { margin: 0 0 .35rem; font-size: 1.05rem; }
+.task-meta { margin: .15rem 0; color: var(--flc-muted); font-size: .875rem; }
+.task-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .5rem; margin-top: var(--flc-s3); padding-top: var(--flc-s3); border-top: 1px solid var(--flc-border); }
+.task-card-foot .flc-boundary__panel { order: 3; flex-basis: 100%; margin: 0; }
+.task-chip-done { background: var(--flc-success-bg); color: var(--flc-success); }
+.task-detail > #task-detail > section { margin: var(--flc-s4) 0; }
+.task-description h3 { margin-top: var(--flc-s4); font-size: .9rem; color: var(--flc-muted); }
+.task-description ul { margin: .25rem 0; padding-left: 1.2rem; }
+.task-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+.task-problem-picker { display: flex; flex-wrap: wrap; gap: .5rem; margin: var(--flc-s3) 0; }
+.task-submit-link { margin: var(--flc-s5) 0; }
+.task-submit-link .flc-button { width: 100%; }
+.task-detail .companion--embedded .companion-problem h2,
+.task-detail .companion--embedded .companion-problem h2 + p,
+.task-detail .companion--embedded .companion-problem h2 + p + p { display: none; }
+@media (min-width: 800px) {
+  .task-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .task-submit-link .flc-button { width: auto; }
+}
+[data-app="student"] .task-submit form > button[type="submit"] { width: 100%; }

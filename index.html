@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN" data-page="index.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录｜未来学习中心原型</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/login.css">
+  <link rel="stylesheet" href="assets/css/demo-routes.css">
+</head>
+<body>
+  <main id="main-content">
+    <!-- 视图一：登录页（默认）。视图二：评审工具（index.html#review）。两者用 hash 切换，不新增 HTML 文件 -->
+    <div id="login-view" class="flc-login">
+      <div class="flc-login-bar">
+        <span class="flc-login-bar-brand"><span class="flc-brand-mark" aria-hidden="true">未</span>未来学习中心</span>
+        <a class="flc-login-tools" href="#review">评审工具</a>
+      </div>
+
+      <section class="flc-login-brand" aria-labelledby="login-brand-title">
+        <svg class="flc-login-art" viewBox="0 0 600 600" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="470" cy="140" r="120"/>
+            <circle cx="470" cy="140" r="70"/>
+            <path d="M0 420 C 150 360, 300 480, 600 380"/>
+            <path d="M0 470 C 160 410, 320 530, 600 430"/>
+            <path d="M0 520 C 170 460, 340 580, 600 480"/>
+          </g>
+        </svg>
+        <div class="flc-login-brand-inner">
+          <p class="flc-login-school"><span class="flc-login-mark" aria-hidden="true">未</span>西南交通大学 · 未来学习中心</p>
+          <h1 id="login-brand-title">未来学习中心</h1>
+          <p class="flc-login-tagline">空间、学伴与学习证据，在同一个门户里。</p>
+          <ul class="flc-login-highlights">
+            <li><strong>学习空间</strong><span>研讨间、创客工位在线预约与签到</span></li>
+            <li><strong>AI 学伴</strong><span>按作业边界给出提示，不替你写答案</span></li>
+            <li><strong>学习证据</strong><span>任务、过程与认证记录可追溯</span></li>
+          </ul>
+          <p class="flc-login-foot">可点击原型 · 页面数据均为演示虚构</p>
+        </div>
+      </section>
+
+      <section class="flc-login-card" aria-labelledby="login-title">
+        <p id="account-alert" class="flc-alert" role="alert" hidden>请先登录（选择一个演示账号）</p>
+        <h2 id="login-title">账号登录</h2>
+        <p id="login-current" class="flc-login-current" hidden></p>
+        <div class="flc-login-tabs" role="tablist" aria-label="身份分组" id="login-tabs"></div>
+        <form id="login-form" class="flc-login-form" novalidate>
+          <div id="login-accounts" class="flc-login-panel" role="tabpanel"></div>
+          <div class="flc-login-field">
+            <label for="login-id">账号</label>
+            <input id="login-id" name="account" type="text" autocomplete="username" spellcheck="false" placeholder="选择上方演示账号，或输入账号 ID">
+          </div>
+          <div class="flc-login-field">
+            <label for="login-password">密码 <span class="flc-login-hint">示意，不校验</span></label>
+            <input id="login-password" name="password" type="password" autocomplete="off" placeholder="••••••••">
+          </div>
+          <p id="login-error" class="flc-error" role="alert" hidden></p>
+          <button type="submit" class="flc-login-submit">登录</button>
+          <button type="button" id="login-sso" class="flc-secondary flc-login-sso">统一身份认证登录（示意）</button>
+        </form>
+      </section>
+    </div>
+
+    <div id="review-view" class="flc-review-view" hidden>
+      <p><a class="flc-review-back" href="#login">← 返回登录页</a></p>
+      <div class="flc-hero">
+        <p class="flc-eyebrow">西南交通大学 · 未来学习中心 · 可点击原型</p>
+        <h1 id="review-title" tabindex="-1">评审工具</h1>
+        <p>供评审使用：重置演示数据、导出或清空意见、按演示路线一键切换账号并打开页面。正式系统中没有这一页。</p>
+      </div>
+      <div class="flc-entry-tools">
+        <section class="flc-card" aria-labelledby="reset-title">
+          <h2 id="reset-title">演示数据</h2>
+          <p class="flc-muted">重置后，各集合会在下次读取时重新初始化；意见和当前账号会保留。</p>
+          <button type="button" id="reset-demo" class="flc-secondary">重置演示数据</button>
+          <span id="reset-status" role="status" aria-live="polite"></span>
+        </section>
+        <section id="feedback-admin" class="flc-card" aria-labelledby="feedback-admin-title">
+          <h2 id="feedback-admin-title">意见收集</h2>
+          <p id="feedback-count" role="status" aria-live="polite">共 0 条意见</p>
+          <div class="flc-actions">
+            <button type="button" id="feedback-export">导出全部意见</button>
+            <button type="button" id="feedback-clear" class="flc-secondary">清空意见</button>
+          </div>
+          <p class="flc-muted">Chrome 可能询问是否允许下载多个文件</p>
+          <p id="feedback-admin-status" role="status" aria-live="polite"></p>
+          <div id="feedback-preview" aria-label="最近 20 条意见"></div>
+        </section>
+      </div>
+      <section id="demo-routes"></section>
+      <section aria-labelledby="pages-title">
+        <h2 id="pages-title">全部页面清单</h2>
+        <p class="flc-muted">无权限页面仍可点击，门禁将引导至无权限说明页。未登录时会回到登录页。</p>
+        <div id="page-list" class="flc-page-grid"></div>
+      </section>
+    </div>
+  </main>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/pages-data.js"></script>
+  <script src="assets/js/accounts.js"></script>
+  <script src="assets/js/guard.js"></script>
+  <script src="assets/js/feedback.js"></script>
+  <script src="assets/js/demo-routes.js"></script>
+  <script src="assets/js/pages/index.js"></script>
+</body>
+</html>

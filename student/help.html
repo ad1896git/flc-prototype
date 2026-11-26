@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/help.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>求助｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/help.css">
+</head>
+<body>
+  <main class="help-page">
+    <h1>求助</h1>
+    <p>你可以直接联系下方资源，也可以留下问题，让老师与你联系。</p>
+    <section aria-labelledby="resources-title" class="help-resources flc-card">
+      <h2 id="resources-title">可以联系的求助资源</h2>
+      <p>需要立即帮助时，请直接拨打电话，不必等待工单响应。</p>
+      <p class="help-note">学校心理中心号码、地址与开放时间为占位信息【待确认-X14】，不能作为真实联系方式。</p>
+      <div id="help-resources" class="help-resource-grid"></div>
+    </section>
+    <section aria-labelledby="request-title" class="flc-card">
+      <h2 id="request-title">我要找人</h2>
+      <p>选择你希望获得的支持。这里只是演示原型，请填写虚构描述。</p>
+      <form id="help-form" novalidate>
+        <fieldset>
+          <legend>求助类型</legend>
+          <label class="help-choice"><input type="radio" name="kind" value="academic" checked>
+            <span>学业 <code>academic_help</code> · 任课教师或助教</span></label>
+          <label class="help-choice"><input type="radio" name="kind" value="personal">
+            <span>个人 <code>distress</code> · 辅导员</span></label>
+        </fieldset>
+        <p id="help-route" class="help-note"></p>
+        <div id="offering-field" class="help-field">
+          <label for="help-offering">求助的教学班（必选）</label>
+          <select id="help-offering" name="offering_id" aria-describedby="offering-note offering-error"></select>
+          <p id="offering-note" class="help-note"></p>
+          <p id="offering-error" class="help-error" hidden></p>
+        </div>
+        <div class="help-field">
+          <label for="help-description">想请老师帮你解决什么？（必填）</label>
+          <textarea id="help-description" name="description" rows="5" required
+            aria-describedby="description-note description-error"></textarea>
+          <p id="description-note" class="help-note">请简要描述你希望获得的帮助，描述会作为工单正文保存。</p>
+          <p id="description-error" class="help-error" hidden></p>
+        </div>
+        <p class="help-note">响应期限为建议值；原型按自然日计算，不使用学校工作日日历。</p>
+        <button type="submit">提交求助</button>
+        <p id="help-submit-error" class="help-error" role="alert"></p>
+      </form>
+      <div id="help-receipt" class="help-receipt" role="status" aria-live="polite" aria-atomic="true"></div>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/data/crisis-demo.js"></script>
+  <script src="../assets/js/pages/help.js"></script>
+</body>
+</html>

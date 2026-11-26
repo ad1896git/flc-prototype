@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN" data-page="admin/audit.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>审计查询｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin-audit-config.css">
+</head>
+<body>
+  <main class="ac-page"><h1>审计查询</h1>
+    <p class="flc-alert">审计员只读，不能修改或删除（三权分立）</p>
+    <section id="audit-list" aria-labelledby="list-title">
+      <h2 id="list-title">审计日志</h2>
+      <form id="audit-filter" class="ac-filters" novalidate>
+        <label>开始时间<input id="audit-from" type="datetime-local" aria-describedby="time-help filter-error"></label>
+        <label>结束时间<input id="audit-to" type="datetime-local" aria-describedby="time-help filter-error"></label>
+        <label>操作者角色<select id="audit-role"><option value="">全部角色</option></select></label>
+        <label>操作类型<select id="audit-action"><option value="">全部操作</option></select></label>
+        <button type="submit">查询 / 刷新</button><button type="reset" class="flc-secondary">清空筛选</button>
+      </form>
+      <p id="time-help" class="ac-muted"></p><p id="filter-error" class="ac-error" role="alert"></p>
+      <p id="audit-count" role="status"></p>
+      <div class="flc-table-wrap"><table><caption>种子记录与其他页面产生的审计记录</caption>
+        <thead><tr><th scope="col">时间</th><th scope="col">操作者角色 / id</th><th scope="col">操作 action</th><th scope="col">对象</th><th scope="col">结果</th><th scope="col">哈希链校验状态</th><th scope="col">详情</th></tr></thead>
+        <tbody id="audit-rows"></tbody></table></div>
+    </section>
+    <section id="op" class="flc-card" aria-labelledby="op-title" hidden>
+      <a href="audit.html">返回列表</a>
+      <h2 id="op-title" tabindex="-1">审计记录详情</h2>
+      <div id="op-content"></div>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/data/audit-config.js"></script>
+  <script src="../assets/js/admin-audit-config.js"></script>
+  <script src="../assets/js/pages/audit.js"></script>
+</body>
+</html>

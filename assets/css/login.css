@@ -1,0 +1,116 @@
+/* 入口页：登录视图（默认）与评审工具视图（#review）
+   宽屏左品牌区、右登录卡；窄屏登录卡在前、品牌区在后 */
+html[data-page="index.html"] main { max-width: none; padding: 0; }
+html[data-view="review"][data-page="index.html"] main { max-width: 1160px; padding: var(--flc-s5) var(--flc-s4) 7rem; }
+
+.flc-login {
+  position: relative; display: grid; min-height: 100vh;
+  grid-template-columns: minmax(0, 1.1fr) minmax(400px, .9fr);
+  grid-template-areas: "brand card";
+}
+.flc-login[hidden], .flc-review-view[hidden] { display: none; }
+
+/* 顶部条：窄屏显示品牌名；宽屏只在右上角放“评审工具”链接 */
+.flc-login-bar { position: absolute; top: 0; right: 0; z-index: 1; display: flex; align-items: center; justify-content: flex-end; gap: var(--flc-s3); padding: var(--flc-s4) var(--flc-s5); }
+.flc-login-bar-brand { display: none; align-items: center; gap: .5rem; font-weight: 700; color: var(--flc-primary-strong); margin-right: auto; }
+.flc-login-tools {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; border-radius: 999px;
+  color: var(--flc-anno); border: 1px dashed var(--flc-anno-border); background: var(--flc-anno-bg);
+  font-size: .875rem; font-weight: 600; text-decoration: none;
+}
+.flc-login-tools:hover { background: #ebe4ff; text-decoration: none; }
+
+/* 品牌区 */
+.flc-login-brand {
+  grid-area: brand; position: relative; overflow: hidden; display: flex; align-items: center;
+  padding: clamp(2rem, 6vw, 5rem); color: #fff;
+  background: linear-gradient(150deg, #0c3f68 0%, #1663a0 58%, #2a7fbf 100%);
+}
+.flc-login-art { position: absolute; inset: auto -10% -6% auto; width: min(90%, 640px); color: rgb(255 255 255 / 16%); pointer-events: none; }
+.flc-login-brand-inner { position: relative; max-width: 34rem; }
+.flc-login-school { display: flex; align-items: center; gap: .65rem; margin: 0 0 var(--flc-s6); font-weight: 600; color: var(--flc-on-primary-muted); letter-spacing: .02em; }
+.flc-login-mark {
+  display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 10px;
+  background: #fff; color: var(--flc-primary-strong); font-weight: 800; font-size: 1.15rem;
+}
+.flc-login-brand h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 3.4vw, 2.75rem); line-height: 1.2; letter-spacing: .04em; color: #fff; }
+.flc-login-tagline { margin: 0 0 var(--flc-s6); font-size: 1.125rem; color: #e8f2fb; }
+.flc-login-highlights { list-style: none; padding: 0; margin: 0 0 var(--flc-s6); display: grid; gap: var(--flc-s3); }
+.flc-login-highlights li {
+  display: grid; gap: 2px; padding: .75rem 1rem .75rem 1.1rem; border-left: 3px solid rgb(255 255 255 / 55%);
+  background: rgb(255 255 255 / 8%); border-radius: 0 var(--flc-radius-sm) var(--flc-radius-sm) 0;
+}
+.flc-login-highlights strong { font-size: 1rem; }
+.flc-login-highlights span { font-size: .9rem; color: #dcebf8; }
+.flc-login-foot { margin: 0; font-size: .85rem; color: var(--flc-on-primary-muted); }
+
+/* 登录卡 */
+.flc-login-card {
+  grid-area: card; align-self: center; justify-self: center; width: min(100% - 2rem, 440px);
+  margin: 4.5rem 0 5.5rem; padding: var(--flc-s6) var(--flc-s6) var(--flc-s5);
+  background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius-lg); box-shadow: var(--flc-shadow-lg);
+}
+.flc-login-card .flc-alert { margin: 0 0 var(--flc-s4); }
+.flc-login-card h2 { margin: 0 0 var(--flc-s4); font-size: 1.5rem; }
+.flc-login-current {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .5rem; margin: 0 0 var(--flc-s4);
+  padding: .5rem .75rem; border-radius: var(--flc-radius-sm); background: var(--flc-soft); font-size: .9rem;
+}
+.flc-login-current .flc-text-button { margin-left: auto; min-height: 36px; padding-inline: .5rem; font-size: .875rem; }
+
+/* 分组 tab：分段控件 */
+.flc-login-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; margin-bottom: var(--flc-s4); background: var(--flc-neutral-bg); border-radius: var(--flc-radius); }
+.flc-login-tabs [role="tab"] {
+  min-height: 44px; border-radius: 8px; background: transparent; border-color: transparent; color: var(--flc-muted); font-weight: 600;
+}
+.flc-login-tabs [role="tab"]:hover { background: rgb(255 255 255 / 70%); color: var(--flc-primary); }
+.flc-login-tabs [role="tab"][aria-selected="true"] { background: var(--flc-surface); color: var(--flc-primary-strong); box-shadow: var(--flc-shadow); }
+
+/* 演示账号单选列表 */
+.flc-login-panel fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.flc-login-panel legend { padding: 0; margin-bottom: .4rem; font-size: .9rem; font-weight: 600; }
+.flc-login-note { font-weight: 400; color: var(--flc-muted); font-size: .8rem; }
+.flc-login-options {
+  list-style: none; margin: 0 0 var(--flc-s4); padding: 4px; display: grid; gap: 2px;
+  max-height: 13.25rem; overflow-y: auto; border: 1px solid var(--flc-border); border-radius: var(--flc-radius);
+}
+.flc-login-option {
+  display: flex; align-items: center; gap: .65rem; min-height: 52px; padding: .4rem .6rem; border-radius: 8px;
+  border: 1px solid transparent; cursor: pointer; font-size: .95rem;
+}
+.flc-login-option:hover { background: var(--flc-surface-2); }
+.flc-login-option:has(input:checked) { background: var(--flc-soft); border-color: var(--flc-soft-2); }
+.flc-login-option input { width: 18px; height: 18px; min-height: 0; margin: 0; flex: none; accent-color: var(--flc-primary); }
+.flc-login-option .flc-avatar { flex: none; width: 34px; height: 34px; font-size: .9rem; }
+.flc-login-option-text { display: grid; min-width: 0; flex: 1; line-height: 1.35; }
+.flc-login-option-name { font-weight: 600; }
+.flc-login-option-title { font-weight: 400; color: var(--flc-muted); }
+.flc-login-option .flc-code { border: 0; background: none; padding: 0; color: var(--flc-muted); font-size: .75rem; justify-self: start; }
+.flc-login-option .flc-current { flex: none; }
+
+/* 账号、密码与登录按钮 */
+.flc-login-field { display: grid; gap: .3rem; margin-bottom: var(--flc-s3); }
+.flc-login-field label { font-weight: 600; font-size: .9rem; }
+.flc-login-field input { width: 100%; }
+.flc-login-hint { margin-left: .25rem; font-weight: 400; font-size: .8rem; color: var(--flc-muted); }
+.flc-login-form .flc-error { margin: 0 0 var(--flc-s3); }
+.flc-login-submit { width: 100%; min-height: 48px; margin-top: var(--flc-s2); font-size: 1.05rem; letter-spacing: .3em; }
+.flc-login-sso { width: 100%; margin-top: var(--flc-s2); }
+
+/* 评审工具视图 */
+.flc-review-back { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+@media (max-width: 899px) {
+  .flc-login { grid-template-columns: 1fr; grid-template-areas: "bar" "card" "brand"; min-height: 0; }
+  .flc-login-bar { grid-area: bar; position: static; padding: var(--flc-s3) var(--flc-s4); }
+  .flc-login-bar-brand { display: inline-flex; }
+  .flc-login-card { align-self: start; width: auto; margin: 0 var(--flc-s4) var(--flc-s5); padding: var(--flc-s5) var(--flc-s4); box-shadow: var(--flc-shadow); justify-self: stretch; }
+  .flc-login-options { max-height: none; }
+  .flc-login-brand { padding: var(--flc-s6) var(--flc-s4) 7rem; }
+  .flc-login-school { margin-bottom: var(--flc-s4); }
+  .flc-login-brand h1 { font-size: 1.75rem; }
+  .flc-login-tagline { margin-bottom: var(--flc-s4); font-size: 1rem; }
+}
+
+/* 窄屏入口页：评审工具条同学生端收成圆形按钮，但没有底部 tab，贴底放置 */
+html[data-page="index.html"] .flc-review--compact { bottom: calc(16px + env(safe-area-inset-bottom)); }

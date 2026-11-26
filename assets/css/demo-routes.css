@@ -1,0 +1,16 @@
+/* 入口页“演示路线”卡片 */
+#demo-routes > section + section { margin-top: var(--flc-s5); }
+#demo-routes h3 { font-size: .95rem; color: var(--flc-muted); margin: var(--flc-s4) 0 var(--flc-s3); }
+.demo-route-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); gap: var(--flc-s3); }
+.demo-route { min-width: 0; overflow-wrap: anywhere; font-size: .925rem; }
+.demo-route h4 { display: flex; align-items: center; gap: .5rem; margin: 0 0 .5rem; font-size: 1.05rem; }
+.demo-route h5 { margin: var(--flc-s4) 0 .35rem; font-size: .85rem; color: var(--flc-muted); }
+.demo-route h5 + p { padding: .6rem .8rem; margin: 0; background: var(--flc-success-bg); color: var(--flc-success); border-radius: var(--flc-radius-sm); }
+.demo-route ol { padding-left: 1.4rem; margin: .5rem 0; }
+.demo-route li + li { margin-top: .5rem; }
+.demo-route button { max-width: 100%; white-space: normal; text-align: left; }
+.demo-route > button { width: 100%; }
+.demo-route-start { font-size: .85rem; color: var(--flc-muted); }
+.demo-route-action { margin-top: .4rem; }
+.demo-route-action button { min-height: 40px; font-size: .85rem; background: var(--flc-surface); color: var(--flc-primary); border-color: var(--flc-border-strong); }
+.demo-route-action button:hover { background: var(--flc-soft); color: var(--flc-primary-hover); }

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN" data-page="admin/config.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>配置中心｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin-audit-config.css">
+</head>
+<body>
+  <main class="ac-page"><h1>配置中心</h1>
+    <p>配置修改须填写变更原因，并记录审计。标有【建议值】的参数为演示初始配置。</p>
+    <section id="config-list" aria-labelledby="list-title">
+      <h2 id="list-title">配置项列表</h2>
+      <div id="config-groups"></div>
+    </section>
+    <section id="op" class="flc-card" aria-labelledby="op-title" hidden>
+      <a href="config.html">返回列表</a>
+      <h2 id="op-title" tabindex="-1">修改配置</h2>
+      <div id="op-content"></div>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/data/audit-config.js"></script>
+  <script src="../assets/js/admin-audit-config.js"></script>
+  <script src="../assets/js/pages/config.js"></script>
+</body>
+</html>

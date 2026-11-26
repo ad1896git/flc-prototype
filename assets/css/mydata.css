@@ -1,0 +1,22 @@
+/* 我的数据：同意管理、导出、更正与删除申请；提示框与错误文字见 base.css。 */
+.mydata { max-width: 1050px; }
+[data-app="student"] .mydata { max-width: 760px; }
+.mydata-stack, .mydata-grid { display: grid; gap: var(--flc-s3); }
+.mydata-stack { margin-top: var(--flc-s3); }
+.mydata-error:empty, #page-status:empty { display: none; }
+.mydata-subtitle { margin-top: var(--flc-s5); }
+.mydata label { display: block; font-weight: 600; margin-bottom: .4rem; }
+.mydata textarea { display: block; width: 100%; resize: vertical; }
+.mydata input:not([type="checkbox"]):not([type="radio"]) { display: block; width: 16rem; max-width: 100%; }
+.mydata details { margin: var(--flc-s3) 0; }
+.mydata summary { display: flex; align-items: center; min-height: 44px; color: var(--flc-primary); font-weight: 600; }
+.mydata-notice { white-space: pre-wrap; }
+.mydata .flc-actions { margin: var(--flc-s3) 0 0; }
+.mydata-receipts { padding-left: 1.25rem; margin-bottom: 0; }
+.mydata-receipts li + li { margin-top: var(--flc-s3); }
+.mydata-receipts p { margin: .3rem 0; }
+.mydata dialog { width: min(38rem, calc(100% - 2rem)); }
+@media (min-width: 720px) {
+  .mydata-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+[data-app="student"] .mydata-grid { grid-template-columns: minmax(0, 1fr); }

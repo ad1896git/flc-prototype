@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN" data-page="external/door-qr.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>门口屏幕二维码（示意）｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/booking.css">
+</head>
+<body>
+  <main>
+    <h1>门口屏幕二维码（示意）</h1>
+    <p class="booking-notice">门禁与门口屏幕为外部系统，本页为示意</p>
+    <section class="booking-card" aria-labelledby="qr-heading">
+      <h2 id="qr-heading">扫码签到</h2>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" width="200" height="200" role="img" aria-labelledby="qr-title qr-desc" shape-rendering="crispEdges">
+        <title id="qr-title">门口二维码外观示意</title>
+        <desc id="qr-desc">此图不含真实签到凭据，请使用下方四个模拟扫码链接。</desc>
+        <rect width="29" height="29" fill="#fff"/>
+        <path fill="#172b40" fill-rule="evenodd" d="M4 4h7v7H4z M5 5v5h5V5z M18 4h7v7h-7z M19 5v5h5V5z M4 18h7v7H4z M5 19v5h5v-5z"/>
+        <path fill="#172b40" d="M6 6h3v3H6z M20 6h3v3h-3z M6 20h3v3H6z M13 4h2v3h-2z M15 8h2v4h-2z M12 12h3v2h-3z M4 13h3v2H4z M8 12h2v5H8z M12 16h2v5h-2z M15 14h3v3h-3z M19 12h2v3h-2z M22 14h3v3h-3z M16 19h3v2h-3z M20 18h2v4h-2z M23 20h2v5h-2z M13 23h5v2h-5z M18 22h2v3h-2z"/>
+      </svg>
+      <p>图案仅为外观示意。点击下方链接将进入预约详情并自动尝试签到。</p>
+      <p id="scan-account" role="status"></p>
+    </section>
+    <section aria-labelledby="scenarios-heading">
+      <h2 id="scenarios-heading">四种模拟扫码情形</h2>
+      <p>四种情形均使用 <code>stu-01</code>。请先在<a href="../index.html">入口页切换账号</a>，再返回选择情形。</p>
+      <div class="booking-grid">
+        <article class="booking-card">
+          <h3>本人窗口内</h3><p>使用账号：<code>stu-01</code>。预期签到成功。</p>
+          <a class="flc-button" href="../student/booking-detail.html?id=bk-stu01-open&amp;scan=1">模拟扫码：窗口内</a>
+        </article>
+        <article class="booking-card">
+          <h3>本人未到时间</h3><p>使用账号：<code>stu-01</code>。预期提示“还没到签到时间”。</p>
+          <a class="flc-button" href="../student/booking-detail.html?id=bk-stu01-early&amp;scan=1">模拟扫码：未到时间</a>
+        </article>
+        <article class="booking-card">
+          <h3>本人已过期</h3><p>使用账号：<code>stu-01</code>。预期提示“已过期”。</p>
+          <a class="flc-button" href="../student/booking-detail.html?id=bk-stu01-expired&amp;scan=1">模拟扫码：已过期</a>
+        </article>
+        <article class="booking-card">
+          <h3>他人预约</h3><p>使用账号：<code>stu-01</code>。此预约属于 <code>stu-02</code>，当前账号既非预约人也非参与者，详情页提示“预约不存在”。</p>
+          <a class="flc-button" href="../student/booking-detail.html?id=bk-stu02-other&amp;scan=1">模拟扫码：他人预约</a>
+        </article>
+      </div>
+      <p class="booking-meta">种子时间相对首次读取时刻生成。若窗口已过或已完成签到，可在入口页“重置演示数据”后重新进入；重置会清除全部演示业务数据。</p>
+      <p><a href="../student/my-bookings.html">返回我的预约</a></p>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/booking.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/pages/door-qr.js"></script>
+</body>
+</html>

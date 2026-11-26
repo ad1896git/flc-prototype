@@ -1,0 +1,29 @@
+/* 求助页：求助资源卡与危机卡同一暖色系，醒目但不惊吓。 */
+.help-page { max-width: 960px; }
+[data-app="student"] .help-page { max-width: 760px; }
+.help-page h2 { margin-top: 0; }
+.help-page > section + section { margin-top: var(--flc-s4); }
+.help-resources { background: var(--flc-care-bg); border-color: var(--flc-care-border); color: var(--flc-care); }
+.help-resources h2 { color: var(--flc-care); }
+.help-resource-grid { display: grid; gap: var(--flc-s2); }
+.help-resource { min-width: 0; padding: .7rem .85rem; background: rgb(255 255 255 / 75%); border: 1px solid var(--flc-care-line); border-radius: var(--flc-radius-sm); }
+.help-resource p { margin: .2rem 0; }
+.help-resource a {
+  display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; margin: .25rem 0; padding: 0 1rem;
+  border-radius: 999px; background: var(--flc-care-action); color: #fff; font-weight: 700; text-decoration: none;
+}
+.help-resource a::before { content: "☎"; }
+.help-resource a:hover { background: var(--flc-care-action-hover); color: #fff; text-decoration: none; }
+.help-choice { display: flex; align-items: center; gap: .65rem; min-height: 44px; padding: .4rem .75rem; margin: .35rem 0; cursor: pointer;
+  border: 1px solid var(--flc-border); border-radius: var(--flc-radius-sm); }
+.help-choice:has(input:checked) { border-color: var(--flc-primary); background: var(--flc-soft); }
+.help-choice input { flex-shrink: 0; margin: 0; }
+.help-field { margin: var(--flc-s4) 0; }
+.help-field > label { display: block; margin-bottom: .4rem; font-weight: 600; }
+.help-field select, .help-field textarea { display: block; width: 100%; min-width: 0; }
+.help-field textarea { resize: vertical; }
+.help-receipt:not(:empty) { margin-top: var(--flc-s5); padding: var(--flc-s4); border: 1px solid var(--flc-success-border); border-radius: var(--flc-radius); background: var(--flc-success-bg); }
+.help-receipt h3 { margin-top: 0; color: var(--flc-success); }
+@media (min-width: 640px) {
+  .help-resource-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

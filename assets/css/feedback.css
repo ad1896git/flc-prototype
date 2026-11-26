@@ -1,0 +1,34 @@
+/* “提意见”按钮放在 base.css 的评审工具条 .flc-review 中；这里只写对话框与提示。 */
+.flc-feedback-trigger { box-shadow: none; }
+body > .flc-feedback-trigger { position: fixed; right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); z-index: 70; box-shadow: var(--flc-shadow-lg); }
+.flc-feedback-dialog { width: min(36rem, calc(100% - 2rem)); }
+.flc-feedback-dialog h2 { margin-top: 0; }
+.flc-feedback-dialog #feedback-context { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .25rem .75rem; padding: .75rem 1rem;
+  background: var(--flc-anno-bg); border: 1px dashed var(--flc-anno-border); border-radius: var(--flc-radius-sm); font-size: .875rem; }
+.flc-feedback-dialog #feedback-context dt, .flc-feedback-dialog #feedback-context dd { margin: 0; }
+.flc-feedback-types { display: flex; flex-wrap: wrap; gap: .25rem .5rem; }
+.flc-feedback-types label { display: flex; align-items: center; min-height: 44px; gap: .4rem; padding: 0 .75rem; border: 1px solid var(--flc-border-strong); border-radius: 999px; cursor: pointer; }
+.flc-feedback-types label:has(input:checked) { border-color: var(--flc-primary); background: var(--flc-soft); color: var(--flc-primary-strong); font-weight: 600; }
+.flc-feedback-dialog form > label { display: block; margin-top: 1rem; font-weight: 600; }
+.flc-feedback-dialog textarea { display: block; width: 100%; resize: vertical; margin-top: .35rem; }
+.flc-feedback-error { margin: .4rem 0; }
+.flc-feedback-error:empty { display: none; }
+.flc-feedback-item { padding: .85rem 0; border-top: 1px solid var(--flc-border); }
+.flc-feedback-item h3 { margin-bottom: .25rem; }
+.flc-feedback-item p { margin: .2rem 0; font-size: .9rem; }
+.flc-feedback-text { white-space: pre-wrap; }
+.flc-feedback-notice {
+  position: fixed;
+  right: 1rem;
+  bottom: 5rem;
+  z-index: 71;
+  max-width: calc(100% - 2rem);
+  padding: .6rem 1rem;
+  border: 1px solid var(--flc-success-border);
+  border-radius: var(--flc-radius-sm);
+  background: var(--flc-success-bg);
+  color: var(--flc-success);
+  box-shadow: var(--flc-shadow);
+}
+[data-app="student"] .flc-feedback-notice { bottom: calc(var(--flc-tabbar-h) + 4.5rem); }
+.flc-feedback-notice:empty { display: none; }

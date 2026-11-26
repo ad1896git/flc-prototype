@@ -1,0 +1,19 @@
+/* 审计查询与配置中心；表格、错误文字、弱化文字见 base.css。 */
+.ac-page section { margin-top: var(--flc-s5); }
+.ac-page th { white-space: nowrap; }
+.ac-page code { font-size: .85em; }
+.ac-page td small { display: block; }
+.ac-filters { display: flex; flex-wrap: wrap; gap: var(--flc-s3); align-items: end; padding: var(--flc-s4); background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius); }
+.ac-filters label, .ac-edit label { display: flex; flex-direction: column; gap: .35rem; font-weight: 600; font-size: .875rem; color: var(--flc-muted); }
+.ac-filters select { max-width: 23rem; }
+.ac-error:empty { margin: 0; }
+.ac-edit { max-width: 40rem; display: grid; gap: var(--flc-s4); }
+.ac-edit textarea { min-height: 7rem; resize: vertical; }
+.ac-edit button { justify-self: start; }
+.ac-detail { display: grid; grid-template-columns: minmax(6rem, 9rem) minmax(0, 1fr); gap: 0 1rem; }
+.ac-detail dt, .ac-detail dd { margin: 0; padding: .45rem 0; border-bottom: 1px solid var(--flc-border); }
+.ac-tag { display: inline-block; font-size: .8rem; font-weight: 600; padding: 0 .5rem; border-radius: 999px; color: var(--flc-warning); background: var(--flc-warning-bg); }
+@media (max-width: 639px) {
+  .ac-filters label { width: 100%; }
+  .ac-detail { grid-template-columns: 1fr; }
+}

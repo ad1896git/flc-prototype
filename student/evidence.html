@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/evidence.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>证据（KWL、进度、反思、作品）｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/student-misc.css">
+  <link rel="stylesheet" href="../assets/css/evidence-credentials.css">
+</head>
+<body>
+  <main>
+    <h1>证据（KWL、进度、反思、作品）</h1>
+    <p class="misc-notice">按任务查看本人的过程证据。KWL 保存于本机演示数据，刷新后可继续查看。</p>
+    <p id="evidence-status" role="status"></p>
+    <section id="evidence-list-view" aria-label="按任务分组的证据列表">
+      <p><a class="flc-button" href="#op">填写一条 KWL</a></p>
+      <div id="evidence-list"></div>
+    </section>
+    <section id="evidence-op-view" aria-labelledby="kwl-title" hidden>
+      <p><a href="evidence.html">返回证据列表</a></p>
+      <h2 id="kwl-title">填写一条 KWL</h2>
+      <p id="evidence-op-notice" role="status"></p>
+      <form id="kwl-form" class="evidence-form" novalidate>
+        <label for="kwl-task">所属任务
+          <select id="kwl-task" name="task_id" required aria-describedby="kwl-task-error"></select>
+        </label>
+        <p id="kwl-task-error" role="alert"></p>
+        <div class="misc-grid">
+          <div>
+            <label for="kwl-k">K · 我已知道（必填）
+              <textarea id="kwl-k" name="k" required aria-describedby="kwl-k-error"></textarea>
+            </label>
+            <p id="kwl-k-error" role="alert"></p>
+          </div>
+          <div>
+            <label for="kwl-w">W · 我想知道（必填）
+              <textarea id="kwl-w" name="w" required aria-describedby="kwl-w-error"></textarea>
+            </label>
+            <p id="kwl-w-error" role="alert"></p>
+          </div>
+          <div>
+            <label for="kwl-l">L · 我已学到（必填）
+              <textarea id="kwl-l" name="l" required aria-describedby="kwl-l-error"></textarea>
+            </label>
+            <p id="kwl-l-error" role="alert"></p>
+          </div>
+        </div>
+        <p id="kwl-save-error" role="alert"></p>
+        <div><button type="submit">保存 KWL</button></div>
+      </form>
+      <aside class="misc-notice" aria-labelledby="upload-title">
+        <h3 id="upload-title">作品上传（示意）</h3>
+        <p>视频请附字幕文件</p>
+        <p>作品附件上传后期提供；当前展示虚构作品摘要。</p>
+      </aside>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/data/student-misc.js"></script>
+  <script src="../assets/js/pages/evidence.js"></script>
+</body>
+</html>

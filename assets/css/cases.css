@@ -1,0 +1,27 @@
+/* 工单队列（教师端）；面板、提示框、错误文字基础样式见 base.css。 */
+.case-layout { display: grid; grid-template-columns: minmax(280px, 1fr) minmax(0, 1.8fr); gap: var(--flc-s4); align-items: start; }
+.case-layout > .case-panel:first-child { position: sticky; top: 76px; }
+.case-list li + li { margin-top: var(--flc-s2); }
+.case-row {
+  display: grid; gap: .15rem; padding: .75rem .9rem; border: 1px solid var(--flc-border); border-radius: var(--flc-radius-sm);
+  color: var(--flc-text); font-weight: 400 !important; font-size: .9rem; text-decoration: none; background: var(--flc-surface);
+}
+.case-row strong { color: var(--flc-primary); font-size: .95rem; }
+.case-row [data-case-sla] { font-weight: 600; color: var(--flc-warning); font-variant-numeric: tabular-nums; }
+.case-row:hover { background: var(--flc-surface-2); border-color: var(--flc-border-strong); text-decoration: none; color: var(--flc-text); }
+.case-row[aria-current] { background: var(--flc-soft); border-color: var(--flc-primary); box-shadow: inset 3px 0 0 var(--flc-primary); }
+.case-fields { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: 0 1rem; margin: 0; }
+.case-fields dt, .case-fields dd { margin: 0; padding: .45rem 0; border-bottom: 1px solid var(--flc-border); }
+#case-feedback { min-height: 1.6rem; }
+#case-operation { border-top: 1px solid var(--flc-border); margin-top: var(--flc-s5); padding-top: var(--flc-s4); }
+#case-operation label { display: block; margin: .8rem 0 .3rem; font-weight: 600; }
+#case-operation textarea, #case-operation select { width: 100%; }
+#case-payload { white-space: pre-wrap; margin-top: var(--flc-s4); }
+.case-history { padding-left: 1.4rem; }
+.case-history li { padding-bottom: .8rem; }
+.case-conversation { margin: var(--flc-s5) 0; padding: var(--flc-s4); background: var(--flc-surface-2); border: 1px solid var(--flc-border); border-radius: var(--flc-radius); }
+.case-conversation h3 { margin-top: 0; }
+@media (max-width: 850px) {
+  .case-layout { grid-template-columns: 1fr; }
+  .case-layout > .case-panel:first-child { position: static; }
+}

@@ -1,0 +1,17 @@
+/* 智能体审核台、风险评估；表格、错误文字基础样式见 base.css。 */
+.governance-table { min-width: 780px; }
+.governance-table tr[data-id] { cursor: pointer; }
+.governance-table small { display: block; }
+.governance-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--flc-s5); }
+.governance-details dd { white-space: pre-wrap; }
+.governance-form label { display: block; font-weight: 600; margin: .75rem 0 .3rem; }
+.governance-form textarea, .governance-form input, .governance-form select { width: 100%; }
+.governance-form textarea { min-height: 6rem; }
+.governance-error { min-height: 1.6em; }
+.governance-error:empty { margin: 0; }
+.governance-history { border-top: 1px solid var(--flc-border); margin-top: var(--flc-s5); }
+#governance-status:empty { display: none; }
+#governance-status:not(:empty) { padding: .7rem 1rem; background: var(--flc-soft); border: 1px solid var(--flc-soft-2); border-radius: var(--flc-radius-sm); }
+@media (max-width: 700px) {
+  .governance-details { grid-template-columns: minmax(0, 1fr); }
+}

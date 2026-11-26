@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/space-search.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>找空间｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/booking.css">
+</head>
+<body>
+  <main>
+    <p class="flc-eyebrow">空间预约 · 检索与预订</p>
+    <h1>找空间</h1>
+    <p>按需要筛选空间与设备。实时占用为演示计数，不显示使用者身份。</p>
+    <section class="booking-card" aria-labelledby="filter-title">
+      <h2 id="filter-title">筛选资源</h2>
+      <form id="filters" class="booking-fields">
+        <label>校区<select id="campus"><option value="">全部校区</option></select></label>
+        <label>分区类型<select id="zone"><option value="">全部分区</option></select></label>
+        <label>至少可容纳人数<input id="capacity" type="number" min="1" step="1" placeholder="不限"></label>
+        <label>无障碍属性<select id="a11y"><option value="">不限</option><option value="wheelchair">轮椅通行</option><option value="adjustable_desk">可调节桌面</option><option value="hearing_loop">助听环路</option></select></label>
+      </form>
+      <p id="resource-count" role="status"></p>
+      <div id="resources" class="booking-grid"></div>
+    </section>
+    <section class="booking-card" aria-labelledby="reserve-title">
+      <h2 id="reserve-title">选择时段并预约</h2>
+      <p id="selected-resource">请先选择资源。</p>
+      <form id="reserve">
+        <div class="booking-fields">
+          <label>日期<input id="date" type="date" required aria-describedby="booking-result"></label>
+          <label>开始时间<input id="from" type="time" required aria-describedby="booking-result"></label>
+          <label>结束时间<input id="to" type="time" required aria-describedby="booking-result"></label>
+        </div>
+        <p>开放时段为每日 08:00–22:00；本原型仅演示规则链子集。</p>
+        <button type="submit" id="submit-booking" disabled>提交预约</button>
+      </form>
+      <div id="booking-result" class="booking-notice" role="alert" hidden></div>
+    </section>
+    <section aria-labelledby="demo-title">
+      <h2 id="demo-title">演示预设</h2>
+      <p>预设填入明天的时段，再点“提交预约”。限次与培训前置请使用 stu-01；禁用期请从顶部切换到 stu-03。</p>
+      <div class="booking-actions">
+        <button type="button" class="flc-secondary" data-demo="limit">限次</button>
+        <button type="button" class="flc-secondary" data-demo="cert">培训前置</button>
+        <button type="button" class="flc-secondary" data-demo="penalty">禁用期</button>
+      </div>
+      <p id="demo-note" role="status"></p>
+      <a href="my-bookings.html">查看我的预约</a>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/booking.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/pages/space-search.js"></script>
+</body>
+</html>

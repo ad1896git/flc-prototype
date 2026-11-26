@@ -1,0 +1,41 @@
+/* AI 边界等级徽章：颜色 + 图标 + 文字三重区分；点开显示规则说明。 */
+.flc-boundary {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  max-width: 100%;
+  min-height: 44px;
+  padding: .3rem .85rem .3rem .6rem;
+  border: 1px solid var(--flc-boundary-border);
+  border-radius: 999px;
+  color: var(--flc-boundary-fg);
+  background: var(--flc-boundary-bg);
+  font: inherit;
+  font-size: .9rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-wrap: wrap;
+}
+.flc-boundary--forbidden { --flc-boundary-bg: var(--flc-b-forbidden-bg); --flc-boundary-fg: var(--flc-b-forbidden-fg); --flc-boundary-border: var(--flc-b-forbidden-line); }
+.flc-boundary--restricted { --flc-boundary-bg: var(--flc-b-restricted-bg); --flc-boundary-fg: var(--flc-b-restricted-fg); --flc-boundary-border: var(--flc-b-restricted-line); }
+.flc-boundary--encouraged { --flc-boundary-bg: var(--flc-b-encouraged-bg); --flc-boundary-fg: var(--flc-b-encouraged-fg); --flc-boundary-border: var(--flc-b-encouraged-line); }
+.flc-boundary--open { --flc-boundary-bg: var(--flc-b-open-bg); --flc-boundary-fg: var(--flc-b-open-fg); --flc-boundary-border: var(--flc-b-open-line); }
+.flc-boundary:hover { background: var(--flc-boundary-bg); color: var(--flc-boundary-fg); border-color: var(--flc-boundary-fg); }
+.flc-boundary .flc-code { color: inherit; border-color: currentColor; background: rgb(255 255 255 / 55%); opacity: .85; }
+.flc-boundary__icon { display: inline-grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: rgb(255 255 255 / 70%); font-size: .95em; line-height: 1; }
+.flc-boundary::after { content: ""; width: .4rem; height: .4rem; margin-left: .1rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); opacity: .7; }
+.flc-boundary[aria-expanded="true"]::after { transform: rotate(-135deg) translateY(-1px); }
+.flc-boundary[aria-expanded="true"] { box-shadow: 0 0 0 2px var(--flc-boundary-border); }
+.flc-boundary__panel {
+  margin-block: .5rem 1rem;
+  padding: .75rem 1rem;
+  border: 1px solid var(--flc-border);
+  border-radius: var(--flc-radius);
+  background: var(--flc-surface);
+  color: var(--flc-text);
+  font-size: .9rem;
+  box-shadow: var(--flc-shadow);
+  overflow-wrap: anywhere;
+}
+.flc-boundary__panel[hidden] { display: none; }
+.flc-boundary__panel p { margin-block: .35rem; }

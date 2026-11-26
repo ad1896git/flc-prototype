@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/my-data.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的数据｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/mydata.css">
+</head>
+<body>
+  <main class="mydata">
+    <h1>我的数据</h1>
+    <p>查看数据用途，管理每个场景的同意，或提交个人数据权利申请。</p>
+    <p class="mydata-note">本页使用本地演示数据。拒绝或撤回同意，不影响正常使用学伴、预约等基本学习服务。</p>
+    <p id="page-status" role="status"></p>
+    <section aria-labelledby="consent-title">
+      <h2 id="consent-title">同意管理</h2>
+      <div id="consent-list" class="mydata-stack"></div>
+      <h3 class="mydata-subtitle">撤回回执</h3>
+      <div id="withdrawal-list" class="mydata-stack" aria-live="polite"></div>
+    </section>
+    <section aria-labelledby="catalog-title">
+      <h2 id="catalog-title">我的数据查阅</h2>
+      <p>以下类别、用途和保留期为示例；可在导出区下载示例明细。</p>
+      <div id="catalog-list" class="mydata-grid"></div>
+    </section>
+    <section aria-labelledby="export-title">
+      <h2 id="export-title">导出</h2>
+      <form id="export-form" class="flc-card">
+        <label for="export-code">演示二次验证：输入任意 6 位数字验证码</label>
+        <input id="export-code" name="code" type="text" inputmode="numeric" autocomplete="off"
+          maxlength="6" required pattern="[0-9]{6}" aria-describedby="export-note export-error">
+        <p id="export-note" class="mydata-note">仅用于演示，不发送短信。提交后依次排队、生成，文件可下载后 24 小时有效。</p>
+        <p id="export-error" class="mydata-error" role="alert"></p>
+        <button type="submit">验证并申请导出</button>
+      </form>
+      <div id="export-list" class="mydata-stack" aria-live="polite"></div>
+    </section>
+    <section aria-labelledby="request-title">
+      <h2 id="request-title">更正申请、删除申请</h2>
+      <p>提交后由数据管理员核验并处理，正式处理时限为 15 个工作日。</p>
+      <p id="sla-note" class="mydata-note"></p>
+      <div class="mydata-grid">
+        <form id="correction-form" class="flc-card" data-request="correction">
+          <h3>更正申请</h3>
+          <label for="correction-content">需要更正的数据及正确信息</label>
+          <textarea id="correction-content" name="content" rows="4" required aria-describedby="correction-error"></textarea>
+          <p id="correction-error" class="mydata-error" role="alert"></p>
+          <button type="submit">提交更正申请</button>
+        </form>
+        <form id="deletion-form" class="flc-card" data-request="deletion">
+          <h3>删除申请</h3>
+          <label for="deletion-content">需要删除的数据及申请说明</label>
+          <textarea id="deletion-content" name="content" rows="4" required aria-describedby="deletion-error"></textarea>
+          <p id="deletion-error" class="mydata-error" role="alert"></p>
+          <button type="submit">提交删除申请</button>
+        </form>
+      </div>
+      <div id="request-list" class="mydata-stack" aria-live="polite"></div>
+    </section>
+    <section aria-labelledby="access-title">
+      <h2 id="access-title">访问记录</h2>
+      <p>列出审计中查看本人会话、证据的记录。</p>
+      <div id="access-list" class="mydata-stack"></div>
+    </section>
+    <section aria-labelledby="attention-title">
+      <h2 id="attention-title">预警关注状态</h2>
+      <div id="attention" class="flc-card"></div>
+      <p id="appeal-note"></p>
+      <a href="help.html?type=appeal">前往求助入口提出申诉</a>
+    </section>
+    <dialog id="withdraw-dialog" aria-labelledby="withdraw-title" aria-describedby="withdraw-basic">
+      <h2 id="withdraw-title">确认撤回同意</h2>
+      <div id="withdraw-impact"></div>
+      <p id="withdraw-basic"></p>
+      <p id="withdraw-error" class="mydata-error" role="alert"></p>
+      <div class="flc-actions">
+        <button id="withdraw-cancel" class="flc-secondary" type="button" autofocus>暂不撤回</button>
+        <button id="withdraw-confirm" type="button">确认撤回</button>
+      </div>
+    </dialog>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/data/consent-scopes.js"></script>
+  <script src="../assets/js/consent.js"></script>
+  <script src="../assets/js/pages/my-data.js"></script>
+</body>
+</html>

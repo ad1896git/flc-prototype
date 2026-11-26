@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN" data-page="teacher/evidence-timeline.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>证据时间线｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/boundary.css">
+  <link rel="stylesheet" href="../assets/css/timeline.css">
+</head>
+<body>
+  <main>
+    <h1>证据时间线</h1>
+    <p>本页显示实名：任课教师在本教学班作用域内可见（设计 §5.3）</p>
+    <div class="timeline-selectors flc-card">
+      <label>教学班<select id="timeline-offering"></select></label>
+      <label>学生<select id="timeline-student"></select></label>
+      <label>任务<select id="timeline-task"></select></label>
+    </div>
+    <p id="timeline-notice" role="status"></p>
+    <div id="timeline-content" hidden>
+      <div id="timeline-boundary"></div>
+      <div class="flc-actions">
+        <button id="timeline-table-toggle" type="button" aria-pressed="false" aria-controls="timeline-tables">数据表视图</button>
+        <button id="timeline-adjust" type="button">任务调整登记</button>
+      </div>
+      <div class="timeline-layout">
+        <section class="flc-card" aria-labelledby="timeline-heading">
+          <h2 id="timeline-heading">证据泳道</h2>
+          <p>点击编号事件查看详情；学伴折线显示提示层级（0–3）。</p>
+          <div id="timeline-chart"></div>
+        </section>
+        <aside id="timeline-detail" class="flc-card" aria-label="证据详情" aria-live="polite"></aside>
+      </div>
+      <section id="timeline-tables" class="flc-card" hidden></section>
+      <section class="flc-card" aria-labelledby="timeline-conversations-heading">
+        <h2 id="timeline-conversations-heading">本任务的题目会话</h2>
+        <ul id="timeline-conversations" class="timeline-conversations"></ul>
+      </section>
+      <section class="flc-card" aria-labelledby="timeline-body-heading">
+        <h2 id="timeline-body-heading">对话正文</h2>
+        <div id="timeline-body" aria-live="polite">请先选择会话并确认查看。</div>
+      </section>
+      <section class="flc-card" aria-labelledby="timeline-adjustments-heading">
+        <h2 id="timeline-adjustments-heading">本任务已有调整登记</h2>
+        <div id="timeline-adjustments"></div>
+      </section>
+    </div>
+    <dialog id="timeline-view-dialog" aria-labelledby="timeline-view-heading" aria-describedby="timeline-view-warning timeline-view-transparency">
+      <h2 id="timeline-view-heading">查看对话正文</h2>
+      <p id="timeline-view-warning" class="flc-alert">此操作会被审计</p>
+      <p id="timeline-view-transparency">学生在'我的数据'中可以看到老师查看过的记录</p>
+      <div class="flc-actions">
+        <button id="timeline-view-cancel" type="button" class="flc-secondary" autofocus>取消</button>
+        <button id="timeline-view-confirm" type="button">确认查看</button>
+      </div>
+    </dialog>
+    <dialog id="timeline-adjust-dialog" aria-labelledby="timeline-adjust-heading">
+      <form id="timeline-adjust-form" novalidate>
+        <h2 id="timeline-adjust-heading">任务调整登记</h2>
+        <p id="timeline-adjust-context"></p>
+        <label for="timeline-summary">调整说明（必填）</label>
+        <textarea id="timeline-summary" rows="5" required aria-describedby="timeline-summary-error"></textarea>
+        <p id="timeline-summary-error" class="timeline-error" aria-live="polite"></p>
+        <div class="flc-actions">
+          <button id="timeline-adjust-cancel" type="button" class="flc-secondary">取消</button>
+          <button type="submit">保存登记</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/boundary.js"></script>
+  <script src="../assets/js/data/teacher.js"></script>
+  <script src="../assets/js/data/student-misc.js"></script>
+  <script src="../assets/js/data/crisis-demo.js"></script>
+  <script src="../assets/js/data/companion-scripts.js"></script>
+  <script src="../assets/js/submission.js"></script>
+  <script src="../assets/js/data/evidence-seed.js"></script>
+  <script src="../assets/js/timeline.js"></script>
+  <script src="../assets/js/pages/evidence-timeline.js"></script>
+</body>
+</html>

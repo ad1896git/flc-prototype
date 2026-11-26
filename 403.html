@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN" data-page="403.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>无权限｜未来学习中心原型</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+</head>
+<body>
+  <main id="main-content">
+    <div class="flc-403">
+      <span class="flc-403-code" aria-hidden="true">403</span>
+      <p class="flc-eyebrow">访问权限 · 403</p>
+      <h1>无权限访问此页面</h1>
+      <p class="flc-muted">当前账号的角色不在该页面的可访问范围内。可以返回自己的首页，或回到登录页切换身份。</p>
+      <div id="forbidden-details" class="flc-card"></div>
+      <div id="current-roles" class="flc-card"></div>
+      <p class="flc-muted">后端越权返回 404，原型按前端行为显示 403（设计 §5.3.4、§7.3）。</p>
+      <div class="flc-actions">
+        <a id="my-home" class="flc-button" href="index.html">返回我的首页</a>
+        <a class="flc-button flc-secondary" href="index.html">切换身份</a>
+      </div>
+    </div>
+  </main>
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/pages-data.js"></script>
+  <script src="assets/js/accounts.js"></script>
+  <script src="assets/js/guard.js"></script>
+  <script src="assets/js/feedback.js"></script>
+  <script src="assets/js/pages/403.js"></script>
+</body>
+</html>

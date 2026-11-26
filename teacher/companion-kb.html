@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN" data-page="teacher/companion-kb.html">
+<head>
+  <meta charset="utf-8">
+  <title>学伴绑定与知识库｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/teacher.css">
+  <link rel="stylesheet" href="../assets/css/boundary.css">
+  <link rel="stylesheet" href="../assets/css/teacher-kb.css">
+</head>
+<body>
+  <main>
+    <p class="flc-eyebrow">教师工作台 · 课程资源</p>
+    <h1>学伴绑定与知识库</h1>
+    <p><a href="courses.html">返回我的课程</a></p>
+    <p id="kb-alert" class="teacher-error" role="alert" tabindex="-1" hidden></p>
+    <div id="kb-content" hidden>
+      <div class="teacher-field kb-offering-picker">
+        <label for="kb-offering">教学班</label>
+        <select id="kb-offering"></select>
+      </div>
+      <p id="kb-message" role="status" aria-live="polite"></p>
+      <div id="kb-list-view">
+        <div class="teacher-actions"><a id="kb-open-op" class="flc-button" href="#op">绑定学伴 / 上传文档</a></div>
+        <section aria-labelledby="bindings-title"><h2 id="bindings-title">已绑定智能体</h2>
+          <ul id="kb-bindings" class="teacher-list"></ul>
+        </section>
+        <section aria-labelledby="documents-title"><h2 id="documents-title">知识库文档</h2>
+          <p class="teacher-help">原型模拟入库状态，不执行真实解析、检索或质量评测。</p>
+          <ul id="kb-documents" class="teacher-list" aria-live="polite"></ul>
+        </section>
+      </div>
+      <div id="kb-op-view" hidden>
+        <p><a id="kb-back" href="#">返回绑定与文档列表</a></p>
+        <div class="kb-operation-grid">
+          <section class="teacher-list-item" aria-labelledby="bind-title">
+            <h2 id="bind-title">绑定或更换智能体</h2>
+            <form id="kb-bind-form" class="teacher-form">
+              <div class="teacher-field"><label for="kb-task">选择任务</label><select id="kb-task" aria-describedby="kb-task-note"></select></div>
+              <p id="kb-task-note" class="teacher-help"></p>
+              <div id="kb-task-boundary"></div>
+              <fieldset><legend>智能体（固定版本）</legend><div id="kb-agent-options" class="teacher-list"></div></fieldset>
+              <p id="kb-bind-error" class="teacher-error" role="alert" tabindex="-1"></p>
+              <button id="kb-bind-submit" type="submit">保存任务绑定</button>
+            </form>
+          </section>
+          <section class="teacher-list-item" aria-labelledby="upload-title">
+            <h2 id="upload-title">上传知识库文档</h2>
+            <p class="teacher-help">仅记录演示文档元数据，文件正文不会上传。请使用 L1 演示材料。</p>
+            <form id="kb-upload-form" class="teacher-form" novalidate>
+              <div class="teacher-field"><label for="kb-file">文档文件</label><input id="kb-file" type="file" aria-describedby="kb-upload-error"></div>
+              <div class="teacher-field"><label for="kb-title">文档名称</label><input id="kb-title" type="text" aria-describedby="kb-upload-error"></div>
+              <div class="teacher-field"><label for="kb-license">版权许可 <small class="flc-code">license</small></label>
+                <select id="kb-license" aria-describedby="kb-upload-error"><option value="own">自有版权（own）</option><option value="cc-by">署名许可（cc-by）</option><option value="school_licensed">学校授权（school_licensed）</option><option value="fair_use_teaching">教学合理使用（fair_use_teaching）</option></select>
+              </div>
+              <label class="teacher-check"><input id="kb-rights" type="checkbox" aria-describedby="kb-upload-error">我确认拥有上传和使用此文档的权利</label>
+              <p id="kb-upload-error" class="teacher-error" role="alert" tabindex="-1"></p>
+              <button type="submit">上传文档</button>
+            </form>
+            <ul id="kb-upload-progress" class="teacher-list" aria-live="polite"></ul>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/data/teacher.js"></script>
+  <script src="../assets/js/data/teacher-kb.js"></script>
+  <script src="../assets/js/boundary.js"></script>
+  <script src="../assets/js/task-editor.js"></script>
+  <script src="../assets/js/pages/companion-kb.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+/* 教师课程与任务设计卡编辑器；卡片、徽章、表单基础样式见 base.css。 */
+.teacher-form, .teacher-fields, .teacher-list, .teacher-task-list { display: grid; gap: var(--flc-s3); min-width: 0; }
+.teacher-form { gap: var(--flc-s4); }
+.teacher-fields { grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--flc-s4); }
+.teacher-field { display: grid; gap: .35rem; align-content: start; min-width: 0; }
+.teacher-field > label, .teacher-field legend { font-weight: 600; font-size: .9rem; }
+.teacher-form fieldset { margin: 0; padding: var(--flc-s4) var(--flc-s5) var(--flc-s5); box-shadow: var(--flc-shadow-sm); }
+.teacher-form > fieldset > legend { font-size: 1rem; padding: .2rem .6rem; background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: 999px; }
+.teacher-form fieldset fieldset { box-shadow: none; background: var(--flc-surface-2); padding: var(--flc-s3) var(--flc-s4); }
+.teacher-form input:not([type="checkbox"]):not([type="radio"]), .teacher-form select, .teacher-form textarea { width: 100%; }
+.teacher-form textarea { min-height: 7rem; resize: vertical; }
+.teacher-check { display: flex; gap: .6rem; align-items: center; min-height: 32px; }
+.teacher-check input { flex: 0 0 auto; }
+.teacher-help { margin: 0; }
+.teacher-error { margin: .25rem 0 0; }
+.teacher-actions { margin: 0; }
+.teacher-list-item { padding: var(--flc-s5); }
+.teacher-list-item > h2 { margin: 0; }
+.teacher-list-item > .teacher-meta { margin: .15rem 0 var(--flc-s3); }
+.teacher-list-item > .teacher-actions { padding-bottom: var(--flc-s4); border-bottom: 1px solid var(--flc-border); }
+.teacher-list-item .teacher-task-list { margin-top: var(--flc-s3); }
+.teacher-task-list > .teacher-task-card { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; box-shadow: none; }
+.teacher-task-list > .teacher-task-card:hover { border-color: var(--flc-soft-2); background: var(--flc-surface-2); }
+.teacher-task-list > .teacher-task-card > h3 { flex-basis: 100%; margin: 0; }
+.teacher-task-list > .teacher-task-card > .flc-boundary__panel { order: 5; flex-basis: 100%; margin: 0; }
+.teacher-task-list > .teacher-task-card > .kb-task-meta { flex: 1; margin: 0; color: var(--flc-muted); font-size: .9rem; }
+.teacher-task-list > .teacher-task-card > a:last-child {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 1rem; margin-left: auto;
+  border: 1px solid var(--flc-border-strong); border-radius: var(--flc-radius-sm); font-weight: 600;
+}
+.teacher-task-list > .teacher-task-card > a:last-child:hover { background: var(--flc-soft); border-color: var(--flc-primary); text-decoration: none; }
+.teacher-task-card h2, .teacher-task-card h3 { margin-top: 0; }
+.teacher-card-header { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.teacher-table-wrap { overflow-x: auto; }
+.teacher-status--closed { background: var(--flc-neutral-bg); color: var(--flc-muted); }
+.teacher-preview { padding: var(--flc-s4); border: 1px dashed var(--flc-border-strong); border-radius: var(--flc-radius); background: var(--flc-surface-2); }
+.teacher-preview > h2:first-child { margin-top: 0; }
+@media (min-width: 1280px) {
+  .teacher-editor-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr); gap: var(--flc-s5); align-items: start; }
+  .teacher-editor-layout > :last-child { position: sticky; top: 76px; }
+}

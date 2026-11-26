@@ -1,0 +1,25 @@
+/* 学生预约各页与门口屏幕示意共用；卡片、提示框、状态徽章基础样式见 base.css。 */
+.booking-grid { display: grid; gap: var(--flc-s3); grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.booking-card + .booking-card { margin-top: var(--flc-s4); }
+.booking-card h2 { margin-top: 0; }
+.booking-card .booking-card { box-shadow: none; background: var(--flc-surface-2); }
+.booking-card .booking-card.is-selected { background: var(--flc-soft); }
+.booking-card .booking-card h2, .booking-card .booking-card h3 { font-size: 1rem; margin-bottom: .25rem; }
+.booking-card .booking-card p { margin: .25rem 0; }
+.booking-card .booking-card button { margin-top: .5rem; }
+.booking-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 140px), 1fr)); gap: var(--flc-s3); margin: var(--flc-s3) 0; }
+.booking-fields label { display: flex; flex-direction: column; gap: .35rem; min-width: 0; font-weight: 600; font-size: .875rem; color: var(--flc-muted); }
+.booking-fields input, .booking-fields select { width: 100%; min-width: 0; color: var(--flc-text); }
+.booking-actions > * { max-width: 100%; }
+.booking-notice { margin-top: var(--flc-s4); overflow-wrap: anywhere; }
+.booking-notice p:last-child { margin-bottom: 0; }
+.booking-list { padding-left: 1.3rem; }
+.booking-list li { padding: .3rem 0; }
+.booking-card dl { margin: var(--flc-s3) 0 0; display: grid; grid-template-columns: minmax(0, 1fr); }
+.booking-card dl dt { margin-top: .5rem; }
+.booking-card dl dd { margin: .1rem 0 .25rem; }
+@media (min-width: 560px) {
+  .booking-card dl { grid-template-columns: 9rem minmax(0, 1fr); column-gap: var(--flc-s4); }
+  .booking-card dl dt { margin: 0; padding: .4rem 0; border-bottom: 1px solid var(--flc-border); }
+  .booking-card dl dd { margin: 0; padding: .4rem 0; border-bottom: 1px solid var(--flc-border); }
+}

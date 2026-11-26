@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/portal.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>门户首页｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/student-misc.css">
+</head>
+<body>
+  <main class="portal">
+    <div class="portal-hero">
+      <p class="flc-eyebrow">门户首页</p>
+      <h1 id="portal-name">欢迎回来</h1>
+      <p id="peer-mentor" class="misc-badge" hidden>朋辈导师 <code>peer_mentor</code></p>
+      <p class="flc-anno portal-sso">统一身份认证登录为示意（演示账号切换代替）</p>
+    </div>
+    <section aria-labelledby="entries-title">
+      <h2 id="entries-title">应用入口</h2>
+      <div id="portal-entries" class="portal-tiles"></div>
+    </section>
+    <section id="external-tools" hidden>
+      <h2>外部工具</h2>
+      <a class="misc-card portal-row" href="../external/lti-launch.html"><span class="flc-tile-icon" data-tone="violet"><svg class="flc-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/></svg></span><span>LTI 工具启动示意页 <span class="flc-later">后期</span></span></a>
+    </section>
+    <section aria-labelledby="todo-title">
+      <h2 id="todo-title">我的待办</h2>
+      <div class="misc-grid">
+        <article class="misc-card portal-todo"><h3>待提交任务</h3><ul id="portal-tasks" class="misc-list"></ul></article>
+        <article class="misc-card portal-todo"><h3>即将开始的预约</h3><ul id="portal-bookings" class="misc-list"></ul></article>
+      </div>
+    </section>
+    <section aria-labelledby="notices-title">
+      <div class="portal-section-head"><h2 id="notices-title">最新通知 · 3 条</h2><a href="messages.html">查看全部消息</a></div>
+      <div class="misc-card portal-notices"><ul id="portal-notices" class="misc-list"></ul></div>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/booking.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/data/student-misc.js"></script>
+  <script src="../assets/js/portal.js"></script>
+  <script src="../assets/js/pages/portal.js"></script>
+</body>
+</html>

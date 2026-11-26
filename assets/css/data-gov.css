@@ -1,0 +1,18 @@
+/* 数据目录、同意范围、共享审批；提示框、错误文字、表格基础样式见 base.css。 */
+.data-gov-table-wrap { max-width: 100%; overflow-x: auto; }
+.data-gov-table { width: 100%; min-width: 780px; }
+.data-gov-table small { display: block; }
+.data-gov-details { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem var(--flc-s5); }
+.data-gov-details > div { min-width: 0; }
+.data-gov-details dd { margin: .2rem 0 .9rem; white-space: pre-wrap; }
+.data-gov-form { max-width: 800px; }
+.data-gov-form label { display: block; font-weight: 600; margin: .85rem 0 .3rem; }
+.data-gov-form input, .data-gov-form select, .data-gov-form textarea { width: 100%; }
+.data-gov-form textarea { min-height: 7rem; }
+.data-gov-error { min-height: 1.6em; }
+.data-gov-error:empty { margin: 0; }
+.data-gov-preview { white-space: pre-wrap; overflow-wrap: anywhere; padding: var(--flc-s4); border: 1px solid var(--flc-border); border-radius: var(--flc-radius-sm); background: var(--flc-surface); }
+.data-gov-notice:empty { display: none; }
+@media (max-width: 700px) {
+  .data-gov-details { grid-template-columns: minmax(0, 1fr); }
+}

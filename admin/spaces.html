@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN" data-page="admin/spaces.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>空间与设备管理｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/admin-space.css">
+</head>
+<body>
+  <main class="as-page">
+    <h1>空间与设备管理</h1>
+    <p id="management-scope" class="as-scope"></p>
+    <p class="as-muted">演示目录补充属性；保存后更新本页管理目录，预约记录保留原状。</p>
+    <section id="space-list" aria-labelledby="list-title">
+      <h2 id="list-title">节点与资源目录</h2>
+      <div id="space-nodes"></div>
+    </section>
+    <section id="op" class="flc-card" aria-labelledby="op-title" hidden>
+      <a href="spaces.html">返回空间列表</a>
+      <h2 id="op-title" tabindex="-1">编辑空间</h2>
+      <div id="op-content"></div>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/booking.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/admin-space.js"></script>
+  <script src="../assets/js/data/utilization.js"></script>
+  <script src="../assets/js/pages/spaces.js"></script>
+</body>
+</html>

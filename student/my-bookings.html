@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN" data-page="student/my-bookings.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>我的预约｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/booking.css">
+</head>
+<body>
+  <main>
+    <h1>我的预约</h1>
+    <p>包含你作为预约人或参与者的全部预约，按预约开始时间倒序展示。时间为浏览器本地时间。</p>
+    <div class="booking-actions">
+      <a class="flc-button" href="space-search.html">找空间</a>
+      <a href="../external/door-qr.html">模拟门口扫码</a>
+    </div>
+    <p id="booking-count" role="status"></p>
+    <div id="my-bookings" class="booking-grid"></div>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/booking.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/pages/my-bookings.js"></script>
+</body>
+</html>

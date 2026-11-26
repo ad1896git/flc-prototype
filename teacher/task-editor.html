@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN" data-page="teacher/task-editor.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>任务设计卡编辑器｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/boundary.css">
+  <link rel="stylesheet" href="../assets/css/teacher.css">
+</head>
+<body>
+  <main>
+    <p><a href="courses.html">返回我的课程</a></p>
+    <h1>任务设计卡编辑器</h1>
+    <p id="task-context" class="teacher-meta"></p>
+    <div id="task-alert" class="teacher-error" role="alert" tabindex="-1" hidden></div>
+    <p id="task-message" role="status" aria-live="polite"></p>
+    <div id="editor-layout" class="teacher-editor-layout" hidden>
+      <form id="task-form" class="teacher-form">
+        <fieldset><legend>任务信息</legend><div id="task-fields" class="teacher-fields"></div></fieldset>
+        <fieldset><legend>AI 边界与学伴</legend><div id="policy-fields" class="teacher-fields"></div></fieldset>
+        <fieldset><legend>证据与交付</legend><div id="delivery-fields" class="teacher-fields"></div></fieldset>
+        <fieldset>
+          <legend>题目列表 <small class="flc-code">problems</small></legend>
+          <div id="problem-fields" class="teacher-form"></div>
+          <p><button id="add-problem" type="button" class="flc-secondary">添加题目</button></p>
+        </fieldset>
+        <div id="reason-field" class="teacher-field" hidden>
+          <label for="change-reason">变更原因 <small class="flc-code">reason</small></label>
+          <textarea id="change-reason" aria-describedby="reason-help"></textarea>
+          <p id="reason-help" class="teacher-help">已发布任务修改等级须填写；成功后将通知学生。</p>
+        </div>
+        <div class="teacher-actions">
+          <button type="submit">保存草稿</button>
+          <button id="publish-task" type="button">发布</button>
+          <button id="close-task" type="button" class="flc-secondary" aria-describedby="close-help">关闭</button>
+        </div>
+        <p id="close-help" class="teacher-help">关闭仅作用于已保存的任务，不保存当前表单修改。</p>
+      </form>
+      <aside class="teacher-preview" aria-labelledby="preview-heading">
+        <h2 id="preview-heading">学生端实时预览</h2>
+        <p class="teacher-help">显示当前表单内容，保存或发布后才生效。</p>
+        <div id="task-preview"></div>
+      </aside>
+    </div>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/seeds.js"></script>
+  <script src="../assets/js/boundary.js"></script>
+  <script src="../assets/js/task-editor.js"></script>
+  <script src="../assets/js/data/teacher.js"></script>
+  <script src="../assets/js/pages/task-editor.js"></script>
+</body>
+</html>

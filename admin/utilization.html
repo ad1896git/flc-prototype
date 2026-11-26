@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN" data-page="admin/utilization.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>利用率报表｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/utilization.css">
+</head>
+<body>
+  <main class="ur-page">
+    <h1>利用率报表</h1>
+    <p id="report-scope" class="ur-scope"></p>
+    <p>演示数据，按节点 / 空间类型展示完整周快照，不代表学校实际运行结果。</p>
+    <section id="report-list" aria-labelledby="report-title">
+      <div class="ur-heading"><h2 id="report-title">利用率概览</h2><a class="flc-button" href="#op">导出报表</a></div>
+      <p id="report-window"></p>
+      <div class="flc-actions" role="group" aria-label="利用率展示方式">
+        <button id="show-chart" type="button" aria-pressed="true" aria-controls="report-chart">图表</button>
+        <button id="show-table" type="button" aria-pressed="false" aria-controls="report-table">数据表</button>
+      </div>
+      <div id="report-chart" class="flc-card"></div>
+      <div id="report-table" hidden></div>
+      <section class="flc-card" aria-labelledby="formula-title">
+        <h2 id="formula-title">指标口径</h2><div id="report-formulas"></div>
+        <p>传感器每 5 分钟采样；连续缺测超过 15 分钟标为缺测，再用签到记录补充；均无数据时不计入使用分钟。缺测超过 20% 时利用率显示“数据不足”。</p>
+        <p>A = 0：频率、占用率、利用率均显示“不开放”；U = 0 且 A &gt; 0：频率与利用率为 0，占用率不适用。不开放的空间不计入平均值。</p>
+      </section>
+      <section aria-labelledby="dead-title"><h2 id="dead-title">死时间分析</h2>
+        <p>独立历史演示快照，非当前周推算。下表按星期 × 小时展示；“—”表示未提供历史数据。</p>
+        <p id="dead-threshold"></p><div id="dead-time"></div>
+      </section>
+    </section>
+    <section id="op" class="flc-card" aria-labelledby="op-title" hidden>
+      <a href="#">返回利用率列表</a><h2 id="op-title" tabindex="-1">导出报表</h2>
+      <p id="export-denied" class="flc-alert" hidden>无权管理该节点</p>
+      <form id="export-form">
+        <p id="range-help">日期包含起止两日；仅导出完整落在范围内的周快照，不拆分或外推。</p>
+        <div class="ur-fields">
+          <label for="export-from">开始日期<input id="export-from" type="date" required aria-describedby="range-help export-status"></label>
+          <label for="export-to">结束日期<input id="export-to" type="date" required aria-describedby="range-help export-status"></label>
+          <label for="export-node">节点<select id="export-node" aria-describedby="export-status"></select></label>
+        </div>
+        <p id="export-status" role="status" aria-live="polite"></p>
+        <button type="submit">导出报表（CSV）</button>
+      </form>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+  <script src="../assets/js/data/spaces.js"></script>
+  <script src="../assets/js/admin-space.js"></script>
+  <script src="../assets/js/data/utilization.js"></script>
+  <script src="../assets/js/pages/utilization.js"></script>
+</body>
+</html>

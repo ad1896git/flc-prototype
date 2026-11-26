@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN" data-page="external/lti-launch.html">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LTI 工具启动（示意）｜未来学习中心原型</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/student-misc.css">
+</head>
+<body>
+  <main>
+    <h1>LTI 工具启动（示意）</h1>
+    <p class="misc-notice">示意页，不做真实对接。页面仅有静态内容，不发起登录、启动、名册或成绩回传请求。</p>
+    <section aria-labelledby="lti-overview-title">
+      <h2 id="lti-overview-title">工具接入概览</h2>
+      <ul>
+        <li>Tool 端：学校已有课程平台通过 LTI 1.3 启动未来学习中心学伴。</li>
+        <li>Platform 端：未来学习中心门户挂载外部工具，本页只展示接入形态。</li>
+      </ul>
+      <p><a class="flc-button" href="#op">查看平台内学伴示意</a></p>
+    </section>
+    <section id="op" aria-labelledby="lti-demo-title">
+      <h2 id="lti-demo-title">外部课程平台中的学伴</h2>
+      <div class="lti-platform">
+        <div class="lti-platform-header">
+          <strong>学校已有课程平台（外部平台框架示意）</strong>
+          <p>示例课程 / 学习活动 / 未来学习中心学伴</p>
+        </div>
+        <div class="lti-workspace">
+          <aside class="lti-sidebar" aria-label="课程栏目示意">
+            <strong>课程栏目</strong><ul><li>课程首页</li><li>学习任务</li><li>智能学伴（当前）</li></ul>
+          </aside>
+          <article class="lti-companion">
+            <h3>未来学习中心 · 智能学伴</h3>
+            <p>内嵌学伴占位块 · 你正在与 AI 学伴交流（界面示意）</p>
+            <p class="lti-placeholder">此处将呈现任务要求、我的尝试与学伴对话。当前没有真实会话，也不会发送消息。</p>
+            <p>真实接入前需校验身份、课程权限与任务 AI 边界；本页不执行这些流程。</p>
+          </article>
+        </div>
+      </div>
+      <p class="misc-meta">AGS 成绩回传、NRPS 名册与 Deep Linking 均为后期能力；本页不连接任何外部平台。</p>
+      <p><a href="../student/portal.html">返回门户首页</a></p>
+    </section>
+  </main>
+  <script src="../assets/js/core.js"></script>
+  <script src="../assets/js/pages-data.js"></script>
+  <script src="../assets/js/accounts.js"></script>
+  <script src="../assets/js/guard.js"></script>
+  <script src="../assets/js/feedback.js"></script>
+</body>
+</html>
