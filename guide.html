@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用说明｜未来学习中心原型</title>
+<style>
+/* 与原型 prototype/assets/css/base.css 的“清爽校园蓝”令牌保持一致；本页自包含，不依赖原型文件 */
+:root {
+  color-scheme: light;
+  --flc-bg: #f4f7fb; --flc-surface: #fff; --flc-surface-2: #f8fafc;
+  --flc-text: #17283a; --flc-muted: #56677a;
+  --flc-primary: #1663a0; --flc-primary-hover: #0e4f82; --flc-primary-strong: #0c3f68;
+  --flc-soft: #eaf3fb; --flc-soft-2: #d6e7f6;
+  --flc-border: #e2e8f0; --flc-border-strong: #cbd5e1;
+  --flc-warning: #7a4a00; --flc-warning-bg: #fff4d6; --flc-warning-border: #e9c46a;
+  --flc-success: #1b6b40; --flc-success-bg: #e6f5ec; --flc-success-border: #a8d8b9;
+  --flc-b-forbidden-bg: #fdecea; --flc-b-forbidden-fg: #9b1c14; --flc-b-forbidden-line: #f1b3ab;
+  --flc-b-restricted-bg: #fff3d6; --flc-b-restricted-fg: #7a4500; --flc-b-restricted-line: #ebc66e;
+  --flc-b-encouraged-bg: #e4effc; --flc-b-encouraged-fg: #11508a; --flc-b-encouraged-line: #a9c9ee;
+  --flc-b-open-bg: #e3f5ea; --flc-b-open-fg: #17643a; --flc-b-open-line: #9fd4b3;
+  --flc-anno: #5b3cc4; --flc-anno-bg: #f4f0ff; --flc-anno-border: #b9a6f0;
+  --flc-focus: #c2410c;
+  --flc-radius-sm: 6px; --flc-radius: 10px; --flc-radius-lg: 14px;
+  --flc-shadow: 0 1px 2px rgb(16 24 40 / 5%), 0 2px 8px rgb(16 24 40 / 6%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  font-size: 16px; line-height: 1.7; color: var(--flc-text); background: var(--flc-bg);
+  -webkit-text-size-adjust: 100%;
+}
+* { box-sizing: border-box; }
+body { margin: 0; overflow-wrap: anywhere; }
+a { color: var(--flc-primary); text-underline-offset: .2em; }
+a:hover { color: var(--flc-primary-hover); }
+:focus-visible { outline: 3px solid var(--flc-focus); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { line-height: 1.35; letter-spacing: .01em; }
+h2 { font-size: 1.3rem; margin: 0 0 1rem; scroll-margin-top: 1.5rem; }
+h3 { font-size: 1.05rem; margin: 1.6rem 0 .6rem; scroll-margin-top: 1.5rem; }
+p { margin: .5rem 0 .9rem; }
+ul, ol { padding-left: 1.4rem; margin: .4rem 0 1rem; }
+li + li { margin-top: .3rem; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .85em; background: var(--flc-surface-2); border: 1px solid var(--flc-border); border-radius: 4px; padding: 0 .3em; }
+strong { font-weight: 650; }
+
+/* 页头 */
+.hero { color: #fff; background: linear-gradient(150deg, #0c3f68 0%, #1663a0 58%, #2a7fbf 100%); position: relative; overflow: hidden; }
+.hero-inner { max-width: 1160px; margin: auto; padding: 2.5rem 1.25rem 2.75rem; position: relative; }
+.brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 600; font-size: .95rem; }
+.brand-mark { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 8px; background: #fff; color: var(--flc-primary-strong); font-weight: 800; }
+.hero h1 { font-size: clamp(1.7rem, 4.5vw, 2.4rem); margin: 1.1rem 0 .5rem; color: #fff; }
+.hero p { color: #d8e9f7; margin: 0 0 1.4rem; max-width: 40rem; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.btn { display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1.1rem; border-radius: var(--flc-radius-sm); font-weight: 600; text-decoration: none; }
+.btn-light { background: #fff; color: var(--flc-primary-strong); }
+.btn-light:hover { background: var(--flc-soft); color: var(--flc-primary-strong); }
+.btn-ghost { color: #fff; border: 1px solid rgb(255 255 255 / 55%); }
+.btn-ghost:hover { background: rgb(255 255 255 / 12%); color: #fff; }
+.hero-art { position: absolute; right: -4%; bottom: -30%; width: min(55%, 520px); color: rgb(255 255 255 / 14%); pointer-events: none; }
+
+/* 布局 */
+.layout { max-width: 1160px; margin: auto; padding: 1.5rem 1.25rem 5rem; display: grid; gap: 1.5rem; }
+.toc { background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius); box-shadow: var(--flc-shadow); padding: .5rem 1rem; }
+.toc summary { cursor: pointer; font-weight: 650; padding: .5rem 0; min-height: 44px; display: flex; align-items: center; }
+.toc ol { list-style: none; padding: 0; margin: .25rem 0 .75rem; }
+.toc li + li { margin-top: 0; }
+.toc a { display: block; padding: .4rem .6rem; border-radius: var(--flc-radius-sm); color: var(--flc-text); text-decoration: none; font-size: .925rem; }
+.toc a:hover { background: var(--flc-soft); color: var(--flc-primary-strong); }
+.toc a.is-active { background: var(--flc-soft); color: var(--flc-primary-strong); font-weight: 650; box-shadow: inset 3px 0 0 var(--flc-primary); }
+.toc .num { display: inline-block; width: 1.6rem; color: var(--flc-muted); font-variant-numeric: tabular-nums; }
+.content { min-width: 0; display: grid; gap: 1.25rem; }
+.section { background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius-lg); box-shadow: var(--flc-shadow); padding: 1.5rem 1.25rem; min-width: 0; }
+.section > :last-child { margin-bottom: 0; }
+.sec-head { display: flex; align-items: center; gap: .7rem; margin-bottom: 1rem; }
+.sec-head h2 { margin: 0; }
+.sec-num { display: inline-grid; place-items: center; flex: none; width: 2rem; height: 2rem; border-radius: 8px; background: var(--flc-soft); color: var(--flc-primary-strong); font-weight: 700; font-size: .95rem; }
+
+/* 读者卡片 */
+.audience { display: grid; gap: .75rem; margin: .5rem 0 1rem; }
+.aud { border: 1px solid var(--flc-border); border-radius: var(--flc-radius); padding: .9rem 1rem; background: var(--flc-surface-2); }
+.aud strong { display: block; margin-bottom: .2rem; }
+.aud span { color: var(--flc-muted); font-size: .925rem; }
+
+/* 提示框 */
+.callout { border-radius: var(--flc-radius); padding: .85rem 1rem; margin: 1rem 0; border: 1px solid; }
+.callout > :first-child { margin-top: 0; } .callout > :last-child { margin-bottom: 0; }
+.callout-info { background: var(--flc-soft); border-color: var(--flc-soft-2); }
+.callout-warn { background: var(--flc-warning-bg); border-color: var(--flc-warning-border); color: var(--flc-warning); }
+.callout-ok { background: var(--flc-success-bg); border-color: var(--flc-success-border); color: var(--flc-success); }
+.callout-title { font-weight: 700; display: block; margin-bottom: .25rem; }
+
+/* 表格 */
+.table-wrap { max-width: 100%; overflow-x: auto; border: 1px solid var(--flc-border); border-radius: var(--flc-radius); margin: .75rem 0 1.1rem; }
+table { border-collapse: collapse; width: 100%; font-size: .925rem; background: var(--flc-surface); }
+th, td { text-align: left; padding: .6rem .8rem; border-bottom: 1px solid var(--flc-border); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { background: var(--flc-surface-2); color: var(--flc-muted); font-size: .82rem; font-weight: 600; white-space: nowrap; }
+td code { white-space: nowrap; }
+tbody tr:hover { background: #fbfcfe; }
+.group { display: inline-block; padding: 0 .5em; border-radius: 999px; font-size: .8rem; font-weight: 600; white-space: nowrap; }
+.g-stu { background: var(--flc-b-open-bg); color: var(--flc-b-open-fg); }
+.g-tch { background: var(--flc-b-encouraged-bg); color: var(--flc-b-encouraged-fg); }
+.g-adm { background: var(--flc-warning-bg); color: var(--flc-warning); }
+
+/* 原型中的标记示例 */
+.anno { display: inline-block; padding: 0 .4em; border: 1px dashed var(--flc-anno-border); border-radius: 4px; background: var(--flc-anno-bg); color: var(--flc-anno); font-size: .78rem; font-weight: 500; line-height: 1.6; white-space: nowrap; }
+.anno.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.badges { display: flex; flex-wrap: wrap; gap: .4rem; }
+.bdg { display: inline-flex; align-items: center; gap: .35em; padding: .15em .7em; border-radius: 999px; border: 1px solid; font-size: .85rem; font-weight: 650; white-space: nowrap; }
+.bdg::before { content: ""; width: .7em; height: .7em; border-radius: 50%; border: 2px solid currentColor; }
+.b-f { background: var(--flc-b-forbidden-bg); color: var(--flc-b-forbidden-fg); border-color: var(--flc-b-forbidden-line); }
+.b-f::before { background: linear-gradient(currentColor, currentColor) center / 70% 2px no-repeat; }
+.b-r { background: var(--flc-b-restricted-bg); color: var(--flc-b-restricted-fg); border-color: var(--flc-b-restricted-line); }
+.b-r::before { background: linear-gradient(90deg, currentColor 50%, transparent 50%); }
+.b-e { background: var(--flc-b-encouraged-bg); color: var(--flc-b-encouraged-fg); border-color: var(--flc-b-encouraged-line); }
+.b-e::before { background: linear-gradient(90deg, transparent 50%, currentColor 50%); }
+.b-o { background: var(--flc-b-open-bg); color: var(--flc-b-open-fg); border-color: var(--flc-b-open-line); }
+.b-o::before { background: currentColor; }
+.ui { display: inline-block; padding: 0 .45em; border-radius: 4px; background: var(--flc-primary); color: #fff; font-size: .85em; font-weight: 600; white-space: nowrap; }
+.ui-2 { background: var(--flc-surface); color: var(--flc-primary); border: 1px solid var(--flc-border-strong); }
+.ui-anno { background: #5b3cc4; }
+kbd { font-family: inherit; font-size: .85em; padding: 0 .4em; border: 1px solid var(--flc-border-strong); border-bottom-width: 2px; border-radius: 4px; background: var(--flc-surface); }
+
+/* 步骤 */
+.steps { list-style: none; padding: 0; counter-reset: s; margin: .75rem 0 1.1rem; }
+.steps > li { counter-increment: s; position: relative; padding: 0 0 .9rem 2.6rem; margin: 0; }
+.steps > li::before { content: counter(s); position: absolute; left: 0; top: .05rem; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; background: var(--flc-primary); color: #fff; font-weight: 700; font-size: .85rem; }
+.steps > li:not(:last-child)::after { content: ""; position: absolute; left: .88rem; top: 2rem; bottom: .15rem; width: 2px; background: var(--flc-soft-2); }
+
+/* 卡片网格 */
+.cards { display: grid; gap: .75rem; margin: .75rem 0 1rem; }
+.card { border: 1px solid var(--flc-border); border-radius: var(--flc-radius); padding: 1rem; background: var(--flc-surface); }
+.card h3 { margin: 0 0 .4rem; }
+.card p, .card ul { margin-bottom: 0; }
+.card .meta { color: var(--flc-muted); font-size: .875rem; margin: 0 0 .5rem; }
+
+/* 常见问题 */
+.faq details { border: 1px solid var(--flc-border); border-radius: var(--flc-radius); background: var(--flc-surface); }
+.faq details + details { margin-top: .6rem; }
+.faq summary { cursor: pointer; padding: .8rem 1rem; font-weight: 650; min-height: 44px; list-style: none; display: flex; justify-content: space-between; gap: 1rem; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--flc-muted); font-weight: 400; font-size: 1.2rem; line-height: 1; }
+.faq details[open] summary::after { content: "−"; }
+.faq details > div { padding: 0 1rem .9rem; color: var(--flc-text); }
+
+.foot { color: var(--flc-muted); font-size: .85rem; text-align: center; padding: 1rem; }
+.to-top { position: fixed; right: 1rem; bottom: 1rem; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--flc-surface); color: var(--flc-primary); border: 1px solid var(--flc-border-strong); box-shadow: var(--flc-shadow); text-decoration: none; font-size: 1.1rem; }
+
+@media (min-width: 640px) {
+  .audience { grid-template-columns: 1fr 1fr; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .section { padding: 1.75rem 2rem; }
+}
+@media (min-width: 1000px) {
+  .layout { grid-template-columns: 240px minmax(0, 1fr); align-items: start; padding-top: 2rem; }
+  .toc { position: sticky; top: 1.25rem; max-height: calc(100vh - 2.5rem); overflow: auto; }
+  .toc summary { pointer-events: none; }
+  .toc summary::marker, .toc summary::-webkit-details-marker { content: ""; display: none; }
+  .cards.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media print {
+  .hero { background: none; color: var(--flc-text); } .hero h1, .hero p, .brand { color: var(--flc-text); }
+  .hero-actions, .hero-art, .toc, .to-top { display: none; }
+  .layout { display: block; } .section { box-shadow: none; break-inside: avoid-page; margin-bottom: 1rem; }
+  .faq details > div { display: block; }
+}
+</style>
+</head>
+<body>
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <span class="brand"><span class="brand-mark" aria-hidden="true">未</span>西南交通大学 · 未来学习中心</span>
+    <h1>界面原型使用说明</h1>
+    <p>写给评审人和组织者：怎么打开、怎么登录和切换身份、怎么提意见并交回，以及每条演示路线看什么。</p>
+    <div class="hero-actions">
+      <a class="btn btn-light" href="./">打开原型 →</a>
+      <a class="btn btn-ghost" href="#feedback">怎么提意见</a>
+    </div>
+    <svg class="hero-art" viewBox="0 0 400 300" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <circle cx="260" cy="150" r="120"/><circle cx="260" cy="150" r="80"/><circle cx="260" cy="150" r="40"/>
+      <path d="M0 240c60-30 120-30 180 0s120 30 220 0"/><path d="M0 270c60-30 120-30 180 0s120 30 220 0"/>
+    </svg>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="toc" aria-label="目录">
+    <details open id="toc-details">
+      <summary>目录</summary>
+      <ol>
+        <li><a href="#s1"><span class="num">1</span>这是什么</a></li>
+        <li><a href="#s2"><span class="num">2</span>打开方式</a></li>
+        <li><a href="#s3"><span class="num">3</span>登录与切换身份</a></li>
+        <li><a href="#s4"><span class="num">4</span>界面导览</a></li>
+        <li><a href="#feedback"><span class="num">5</span>如何提意见</a></li>
+        <li><a href="#s6"><span class="num">6</span>评审工具页</a></li>
+        <li><a href="#s7"><span class="num">7</span>演示路线</a></li>
+        <li><a href="#s8"><span class="num">8</span>按身份的评审重点</a></li>
+        <li><a href="#s9"><span class="num">9</span>组织者须知</a></li>
+        <li><a href="#s10"><span class="num">10</span>常见问题</a></li>
+      </ol>
+    </details>
+  </nav>
+
+  <main class="content">
+    <section class="section" aria-labelledby="intro-title">
+      <h2 id="intro-title">本文写给谁</h2>
+      <div class="audience">
+        <div class="aud"><strong>评审人</strong><span>学生、教师、辅导员、心理中心、空间与设备、数据治理、中心管理、学校领导等各类用户。请按自己的身份试用页面，提出具体的修改意见。</span></div>
+        <div class="aud"><strong>组织者</strong><span>负责分发链接、安排演示、回收意见的人。重点看第 6、7、9 节。</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="s1" aria-labelledby="s1-title">
+      <div class="sec-head"><span class="sec-num">1</span><h2 id="s1-title">这是什么</h2></div>
+      <p>这是“未来学习中心”系统的<strong>可点击界面原型</strong>，用来在正式开发前收集意见，修订《软件详细设计》。</p>
+      <ul>
+        <li><strong>全部是假数据。</strong>原型没有后端，也不调用真实的 AI 模型。人名、课程、预约、对话、工单、指标都是虚构的演示数据。</li>
+        <li><strong>原型用完就丢弃。</strong>原型只用来讨论“页面上有什么、流程顺不顺、字段对不对”。请不必在意加载速度、浏览器兼容性这类工程问题。</li>
+        <li><strong>登录只是示意。</strong>登录页的密码不做校验。真实系统会接入学校统一身份认证。</li>
+        <li><strong>外部系统只是示意页。</strong>教务、学工、一卡通、门禁、企业微信、LTI 外部工具等都用静态示意页表示。</li>
+      </ul>
+    </section>
+
+    <section class="section" id="s2" aria-labelledby="s2-title">
+      <div class="sec-head"><span class="sec-num">2</span><h2 id="s2-title">打开方式</h2></div>
+      <div class="cards">
+        <div class="card"><h3>在线访问（推荐）</h3><p class="meta">发给评审人，直接用浏览器打开</p><p><a href="https://ad1896git.github.io/flc-prototype/">ad1896git.github.io/flc-prototype</a></p></div>
+        <div class="card"><h3>本地打开</h3><p class="meta">组织者本机演示，不需要联网</p><p>双击项目中的 <code>prototype/index.html</code></p></div>
+      </div>
+      <p>浏览器建议用最新版的 Chrome、Edge 或 Safari。</p>
+      <ul>
+        <li><strong>学生端</strong>按手机设计。用电脑看时，可以把窗口拉窄；也可以在 Chrome 中按 <kbd>F12</kbd>，点“设备模拟”图标，选 iPhone 等尺寸，效果最接近手机。也可以直接用手机打开在线地址。</li>
+        <li><strong>教师端和管理端</strong>按电脑设计，宽屏（1280px 以上）效果最好。</li>
+      </ul>
+    </section>
+
+    <section class="section" id="s3" aria-labelledby="s3-title">
+      <div class="sec-head"><span class="sec-num">3</span><h2 id="s3-title">登录与切换身份</h2></div>
+      <p>打开后首先看到登录页：左侧是中心介绍，右侧是登录卡片。</p>
+      <ol class="steps">
+        <li>在登录卡片顶部选分组：<strong>学生 / 教师 / 管理</strong>。</li>
+        <li>在列表中点选一个演示账号。账号框会自动填入账号编号，密码框不用改。</li>
+        <li>点 <span class="ui">登 录</span>，或按 <kbd>回车</kbd>，就会进入该身份的首页。</li>
+      </ol>
+      <p>已经登录时，登录页会显示“当前已登录：某某”，旁边有“退出登录”。</p>
+      <p>进入系统后，可以随时切换身份：</p>
+      <ul>
+        <li><strong>学生端</strong>：点右上角头像，或底部“我的”，再点“切换身份”。</li>
+        <li><strong>教师端和管理端</strong>：点右上角头像菜单，再点“切换身份”。</li>
+      </ul>
+
+      <h3>演示账号一览</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>分组</th><th>账号</th><th>姓名</th><th>身份</th><th>登录后进入</th><th>适合谁试用</th></tr></thead>
+          <tbody>
+            <tr><td><span class="group g-stu">学生</span></td><td><code>stu-01</code></td><td>演示学生甲</td><td>普通学生</td><td>门户首页</td><td>学生</td></tr>
+            <tr><td><span class="group g-stu">学生</span></td><td><code>stu-02</code></td><td>演示学生乙</td><td>学生，同时是朋辈导师</td><td>门户首页</td><td>学生、朋辈导师</td></tr>
+            <tr><td><span class="group g-stu">学生</span></td><td><code>stu-03</code></td><td>演示学生丙</td><td>处于 no-show 禁用期的学生</td><td>找空间（用来演示预约被拒）</td><td>学生</td></tr>
+            <tr><td><span class="group g-tch">教师</span></td><td><code>tch-01</code></td><td>演示教师甲</td><td>任课教师（示例课程）</td><td>我的课程</td><td>任课教师</td></tr>
+            <tr><td><span class="group g-tch">教师</span></td><td><code>csl-01</code></td><td>演示辅导员甲</td><td>辅导员（示例学生组）</td><td>工单队列</td><td>辅导员</td></tr>
+            <tr><td><span class="group g-tch">教师</span></td><td><code>psy-01</code></td><td>演示心理人员甲</td><td>心理中心人员</td><td>工单队列</td><td>心理中心</td></tr>
+            <tr><td><span class="group g-tch">教师</span></td><td><code>eqt-01</code></td><td>演示技术员甲</td><td>设备技术员（中心节点）</td><td>认证签发</td><td>实验室和设备技术员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>spa-01</code></td><td>演示空间管理员甲</td><td>院级节点空间管理员</td><td>空间与设备管理</td><td>学院空间管理员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>agr-01</code></td><td>演示审核员甲</td><td>智能体审核员</td><td>智能体审核台</td><td>教学 AI 审核人员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>eth-01</code></td><td>演示伦理委员甲</td><td>伦理委员会成员</td><td>智能体审核台</td><td>伦理委员会</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>dst-01</code></td><td>演示数据管理员甲</td><td>数据管理员</td><td>数据目录</td><td>数据治理人员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>ctr-01</code></td><td>演示中心管理员甲</td><td>中心管理员</td><td>空间与设备管理</td><td>中心管理人员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>sys-01</code></td><td>演示系统管理员甲</td><td>系统管理员</td><td>配置中心</td><td>信息化技术人员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>aud-01</code></td><td>演示审计员甲</td><td>审计员</td><td>审计查询</td><td>审计、纪检人员</td></tr>
+            <tr><td><span class="group g-adm">管理</span></td><td><code>ldr-01</code></td><td>演示领导甲</td><td>校院领导</td><td>驾驶舱</td><td>学校和学院领导</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout callout-info">
+        <span class="callout-title">看到“无权限”页面是正常的</span>
+        不同身份能看到的页面不同，导航里只列出当前身份有权访问的页面。如果通过链接打开了无权访问的页面，会进入 <strong>403 无权限页</strong>，页面上会说明需要什么角色、你当前是什么角色。这是有意设计的演示，不是故障。
+      </div>
+    </section>
+
+    <section class="section" id="s4" aria-labelledby="s4-title">
+      <div class="sec-head"><span class="sec-num">4</span><h2 id="s4-title">界面导览</h2></div>
+      <div class="cards three">
+        <div class="card">
+          <h3>学生端 · 手机</h3>
+          <p class="meta">顶栏：中心标识和头像菜单</p>
+          <p><strong>底部导航</strong>：首页、找空间、任务、学伴、我的。点“我的”会弹出面板，里面有其余页面和“切换身份”。</p>
+          <p>门户首页、找空间、预约详情和签到、我的预约、学伴、我的任务、任务详情（内嵌学伴）、证据、提交与 AI 声明、我的证书、我的数据、消息、求助。</p>
+        </div>
+        <div class="card">
+          <h3>教师端 · 电脑</h3>
+          <p class="meta">左侧栏：可访问的页面；顶部：页面路径和头像菜单</p>
+          <p>我的课程、任务设计卡编辑器、学伴绑定与知识库、AI 助教草稿箱、证据时间线、学情简报、工单队列、预警复核（辅导员）、认证签发（技术员）。</p>
+        </div>
+        <div class="card">
+          <h3>管理端 · 电脑</h3>
+          <p class="meta">布局与教师端相同</p>
+          <p>空间与设备管理、利用率报表、智能体审核台、风险评估、数据目录、同意范围、共享审批、公平审计、实验管理、驾驶舱、审计查询、配置中心。</p>
+        </div>
+      </div>
+
+      <h3>页面上的几种标记</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>标记</th><th>样子</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td>评审标注</td><td><span class="anno mono">student</span> <span class="anno">设计 §5.3</span></td><td>给评审人看的说明，比如角色代码、状态代码、设计文档条款、“建议值”“待确认”。真实系统里不会出现。</td></tr>
+            <tr><td>后期</td><td><span class="anno"><strong>◷ 后期</strong></span></td><td>这项功能属于第二、三期，原型只做了列表页和一个关键操作页。</td></tr>
+            <tr><td>FR 编号</td><td><span class="anno mono">FR-05 / FR-06</span></td><td>本页对应的需求编号，显示在评审工具条中，见《软件详细设计》§2.1。</td></tr>
+            <tr><td>边界等级徽章</td><td><div class="badges"><span class="bdg b-f">禁止</span><span class="bdg b-r">限制</span><span class="bdg b-e">鼓励</span><span class="bdg b-o">开放</span></div></td><td>任务允许使用 AI 的程度。点开可以看规则说明。</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>评审工具条</h3>
+      <p>每个页面右下角都有评审工具条：</p>
+      <ul>
+        <li><strong>电脑</strong>：常驻一行，显示本页 FR 编号（和“后期”标记）、<strong>隐藏标注 / 显示标注</strong>开关、<span class="ui ui-anno">提意见</span> 按钮。</li>
+        <li><strong>手机</strong>：收成一个紫色圆形按钮，在底部导航上方。点开后展开上面这些内容；再点一次、点页面其他地方或按 <kbd>Esc</kbd>，就会收起。</li>
+      </ul>
+      <p><strong>隐藏标注</strong>会把浅紫色的评审标注全部隐藏，让页面接近真实产品的样子，方便判断界面本身是否清楚。这个开关对所有页面生效，再点一次可以恢复显示。</p>
+    </section>
+
+    <section class="section" id="feedback" aria-labelledby="s5-title">
+      <div class="sec-head"><span class="sec-num">5</span><h2 id="s5-title">如何提意见</h2></div>
+      <div class="callout callout-ok"><span class="callout-title">这是评审中最重要的一步</span>看到任何觉得不对、不清楚、多余或缺少的地方，都请当场提出。</div>
+      <ol class="steps">
+        <li>在出问题的页面上，点右下角的 <span class="ui ui-anno">提意见</span>。手机上先点紫色圆按钮，再点“提意见”。</li>
+        <li>表单会<strong>自动带上</strong>当前身份、页面名称和 FR 编号，不需要手填。</li>
+        <li>选择<strong>问题类型</strong>（见下表）。</li>
+        <li>填写<strong>问题描述</strong>（必填）。请写清楚“哪里”和“怎么了”。</li>
+        <li>填写<strong>期望</strong>（选填）。写出你认为应该怎样，这对修改设计最有帮助。</li>
+        <li>点保存。</li>
+      </ol>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>类型</th><th>什么时候选</th><th>例子</th></tr></thead>
+          <tbody>
+            <tr><td><strong>缺功能</strong></td><td>需要的东西页面上没有</td><td>“预约时希望能看到同时段还有谁约了这间研讨室”</td></tr>
+            <tr><td><strong>流程不对</strong></td><td>步骤顺序、谁来做、何时做不符合实际</td><td>“设备培训认证应由学院实验中心签发，不是中心技术员”</td></tr>
+            <tr><td><strong>多余</strong></td><td>页面上的东西用不上，或者不该出现</td><td>“学生不需要看到策略版本号”</td></tr>
+            <tr><td><strong>文案或字段</strong></td><td>名称、说明、字段、选项不准确</td><td>“‘no-show’改为‘爽约’更好懂”</td></tr>
+            <tr><td><strong>其他</strong></td><td>不属于以上几类</td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>写意见的小建议</h3>
+      <ul>
+        <li><strong>一条意见只说一件事</strong>，方便逐条处理。</li>
+        <li><strong>对照真实工作场景写</strong>，例如“我们学院的研讨室是按周排课后剩余时段才开放预约的”。</li>
+        <li>带“后期”标签的页面，请重点看<strong>这项功能要不要做、范围对不对</strong>，不用纠结细节。</li>
+        <li>评审标注里写着“待确认”或“建议值”的地方（例如阈值、时限、电话号码），特别欢迎给出实际取值。</li>
+      </ul>
+
+      <h3>意见存在哪里，怎么交回</h3>
+      <div class="callout callout-warn">
+        <span class="callout-title">意见只保存在你自己的浏览器里</span>
+        不会自动上传，组织者看不到。换浏览器、换设备，或清除浏览器数据，都会看不到之前的意见。<strong>请在同一个浏览器里完成评审，结束后立即导出。</strong>
+      </div>
+      <ol class="steps">
+        <li>回到登录页（任意页面点“切换身份”即可）。</li>
+        <li>点右上角 <span class="anno"><strong>评审工具</strong></span>。</li>
+        <li>在“意见收集”区域点 <span class="ui">导出全部意见</span>。浏览器会同时下载两个文件：<code>flc-feedback-日期-时间.json</code>（给整理工具读取）和 <code>flc-feedback-日期-时间.md</code>（可以直接阅读）。如果 Chrome 询问“是否允许下载多个文件”，请选择允许。</li>
+        <li>把<strong>两个文件</strong>都发给组织者。文件名请保持不变；也可以在前面加上你的姓名或部门。</li>
+      </ol>
+      <p>导出后，如果确定已经交回，可以点 <span class="ui ui-2">清空意见</span>，避免下次评审时混在一起。清空后无法恢复，请先确认文件已经发出。</p>
+    </section>
+
+    <section class="section" id="s6" aria-labelledby="s6-title">
+      <div class="sec-head"><span class="sec-num">6</span><h2 id="s6-title">评审工具页</h2></div>
+      <p>在登录页右上角点 <span class="anno"><strong>评审工具</strong></span> 进入，点“返回登录页”回去。页面包括：</p>
+      <div class="cards">
+        <div class="card"><h3>演示数据</h3><p><strong>重置演示数据</strong>会把预约、任务、对话、工单、同意记录等恢复到初始状态。已提的意见和当前登录身份不受影响。</p></div>
+        <div class="card"><h3>意见收集</h3><p>显示已有意见的数量和最近 20 条预览，提供导出和清空。</p></div>
+        <div class="card"><h3>演示路线</h3><p>预先编排好的演示步骤，见第 7 节。</p></div>
+        <div class="card"><h3>页面清单</h3><p>全部页面，以及每页对应的应用、可访问角色和 FR 编号。</p></div>
+      </div>
+      <p>需要重置的情况：</p>
+      <ul>
+        <li>试用中把数据改乱了。</li>
+        <li>要演示“从头开始”的流程。</li>
+        <li>演示过危机卡片之后。这次演示会留下一个限制状态，需要重置才能解除。</li>
+      </ul>
+    </section>
+
+    <section class="section" id="s7" aria-labelledby="s7-title">
+      <div class="sec-head"><span class="sec-num">7</span><h2 id="s7-title">演示路线</h2></div>
+      <p>“评审工具 → 演示路线”中的每条路线都写明了<strong>用哪个账号、从哪页开始、按什么步骤操作、应该看到什么结果</strong>。点路线卡片上的“切换到某某并打开”按钮，会自动切换身份并打开起始页。</p>
+      <div class="callout callout-info">
+        <span class="callout-title">使用规则</span>
+        <ul>
+          <li><strong>每条路线开始前先“重置演示数据”</strong>，除非路线说明另有要求。</li>
+          <li>F2 这类分几段的路线，<strong>段与段之间不要重置</strong>；按每段的按钮切换身份继续。</li>
+        </ul>
+      </div>
+
+      <h3>核心流程（建议所有评审人都走一遍）</h3>
+      <div class="cards">
+        <div class="card"><p class="meta"><span class="anno mono">F1</span> 学生甲</p><h3>找空间 → 预约 → 签到</h3><p>找空间 → 预约 → 我的预约 → 对同一预约签到。需要在浏览器本地时间 08:00–22:00 之间演示，预约开始时间选当前时间之后 5 分钟左右。</p></div>
+        <div class="card"><p class="meta"><span class="anno mono">F2</span> 教师甲、学生甲交替</p><h3>任务 → 学伴 → 提交 → 证据</h3><p>教师发布任务 → 学生做任务并使用内嵌学伴 → 提交并填写 AI 声明 → 教师在证据时间线查看。</p></div>
+      </div>
+
+      <h3>关键状态演示</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>编号</th><th>演示什么</th><th>账号</th></tr></thead>
+          <tbody>
+            <tr><td><code>S01–S03</code></td><td>签到失败的三种原因：还没到时间、已过期、不是本人的预约</td><td>学生甲</td></tr>
+            <tr><td><code>S04–S06</code></td><td>预约被规则拒绝：每日限次、需要先完成培训认证、no-show 禁用期（含申诉入口）</td><td>学生甲、学生丙</td></tr>
+            <tr><td><code>S07–S09</code></td><td>边界等级徽章分别出现在任务卡片、学伴顶部、提交页</td><td>学生甲、学生乙</td></tr>
+            <tr><td><code>S10–S16</code></td><td>学伴的交互规则：先写“我的尝试”才能要提示、“提示 2/3”式分层提示、四个反馈按钮、来源卡片、常驻 AI 标识、收尾时的元认知卡片（可跳过）、限制级先显示“正在校验”再给回答</td><td>学生乙</td></tr>
+            <tr><td><code>S17a–d</code></td><td>四个边界等级各自的多轮对话脚本：分层提示、追问、学生质疑</td><td>学生乙</td></tr>
+            <tr><td><code>S18</code></td><td>对话中出现危机信号时的求助卡片，电话可点击拨打（演示后请重置）</td><td>学生丙</td></tr>
+            <tr><td><code>S19</code></td><td>教师查看对话正文前提示“此操作会被审计”</td><td>教师甲</td></tr>
+            <tr><td><code>S20–S24</code></td><td>权限边界：学生访问审计页时进入 403；心理中心只看到转介；系统管理员看不到业务数据；领导只看聚合指标；学情简报中的学生显示为假名</td><td>各对应账号</td></tr>
+            <tr><td><code>S25–S29</code></td><td>我的数据：按场景分别同意、撤回同意及其影响、数据导出状态、更正申请、删除申请</td><td>学生甲</td></tr>
+            <tr><td><code>S30</code></td><td>危机工单的处理时限（SLA）倒计时</td><td>心理人员甲</td></tr>
+            <tr><td><code>S31</code></td><td>教师接手后，学生的对话显示“自动回复已冻结”</td><td>学生甲</td></tr>
+            <tr><td><code>S32</code></td><td>院级空间管理员只能管理本学院节点的空间</td><td>空间管理员甲</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>路线的详细步骤和预期结果，以评审工具页上的说明为准。</p>
+    </section>
+
+    <section class="section" id="s8" aria-labelledby="s8-title">
+      <div class="sec-head"><span class="sec-num">8</span><h2 id="s8-title">按身份的建议评审重点</h2></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>评审人</th><th>建议账号</th><th>重点看</th></tr></thead>
+          <tbody>
+            <tr><td><strong>学生</strong></td><td><code>stu-01</code> <code>stu-02</code></td><td>F1、F2 中的学生部分；学伴各边界等级的对话是否有帮助、提示是否清楚；提交时的 AI 声明是否好填；我的数据中的同意和撤回说明是否看得懂</td></tr>
+            <tr><td><strong>任课教师</strong></td><td><code>tch-01</code></td><td>任务设计卡编辑器中的字段和边界设置；学伴绑定与知识库；证据时间线能否帮助判断学习过程；学情简报</td></tr>
+            <tr><td><strong>辅导员</strong></td><td><code>csl-01</code></td><td>工单队列、预警复核的流程和字段</td></tr>
+            <tr><td><strong>心理中心</strong></td><td><code>psy-01</code></td><td>危机转介的信息是否够用、SLA 时限是否合理；求助卡片的用语和电话（目前标注“待确认”）</td></tr>
+            <tr><td><strong>空间与设备管理</strong></td><td><code>spa-01</code> <code>eqt-01</code> <code>ctr-01</code></td><td>空间与设备管理、预约规则（限次、培训前置、爽约惩罚）、认证签发、利用率报表</td></tr>
+            <tr><td><strong>数据治理与伦理</strong></td><td><code>dst-01</code> <code>eth-01</code> <code>agr-01</code></td><td>数据目录、同意范围、共享审批、风险评估、公平审计、实验管理、智能体审核台</td></tr>
+            <tr><td><strong>信息化与审计</strong></td><td><code>sys-01</code> <code>aud-01</code></td><td>配置中心的范围、审计查询的条件与结果</td></tr>
+            <tr><td><strong>领导</strong></td><td><code>ldr-01</code> <code>ctr-01</code></td><td>驾驶舱的指标是否是想看的，小样本抑制规则是否可接受</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="s9" aria-labelledby="s9-title">
+      <div class="sec-head"><span class="sec-num">9</span><h2 id="s9-title">组织者须知</h2></div>
+      <h3>发放与回收</h3>
+      <ol class="steps">
+        <li>把原型地址和本说明发给评审人。</li>
+        <li>告诉评审人用哪个演示账号、建议走哪几条演示路线（参考第 8 节）。</li>
+        <li>约定截止时间，请评审人把导出的两个文件（<code>.json</code> 和 <code>.md</code>）发回。</li>
+        <li>收齐后交给 Claude 汇总。Claude 会合并意见、去掉重复，再据此修订《软件详细设计》。</li>
+      </ol>
+      <h3>现场演示</h3>
+      <ul>
+        <li>演示前在评审工具中<strong>重置演示数据</strong>。</li>
+        <li>投屏演示学生端时，用 Chrome 的设备模拟（<kbd>F12</kbd> → 设备模拟）选手机尺寸。</li>
+        <li>想展示“干净”的界面时，点评审工具条里的<strong>隐藏标注</strong>；讨论需求编号时再打开。</li>
+        <li>多人共用一台电脑时，每人评审结束都要<strong>导出并清空意见</strong>，否则意见会混在一起，且记录的身份可能不对。</li>
+      </ul>
+      <h3>注意事项</h3>
+      <ul>
+        <li>在线地址是公开的，拿到链接的人都能访问。页面上只有虚构数据，但请不要在意见里填写真实学生的个人信息。</li>
+        <li>原型更新后，在线版本不会自动跟着变，需要同步发布。说“同步发布”，Claude 就会处理。</li>
+      </ul>
+    </section>
+
+    <section class="section faq" id="s10" aria-labelledby="s10-title">
+      <div class="sec-head"><span class="sec-num">10</span><h2 id="s10-title">常见问题</h2></div>
+      <details><summary>进入页面后显示“无权限”（403）？</summary><div>当前身份没有访问这一页的权限，这是有意设计的。点“切换身份”，换一个有权限的账号。</div></details>
+      <details><summary>页面数据和别人看到的不一样？</summary><div>数据存在各自的浏览器里，每个人的操作只影响自己。到评审工具点“重置演示数据”，就能回到统一的初始状态。</div></details>
+      <details><summary>签到总是失败？</summary><div>签到只在预约开始前 15 分钟到开始后 15 分钟之间开放。按演示路线 F1 新建一个预约，开始时间选几分钟之后。另外，S01–S03 本来就是用来演示签到失败的。</div></details>
+      <details><summary>学伴的“提示”按钮点不了？</summary><div>限制级和鼓励级任务要先在“我的尝试”里写下自己的思路并提交，而且要写出实际内容（只写“我不知道”不算）。到 3/3 后提示用完，按钮也会变灰。如果已经点过“我完成了”，会话就结束了，需要重置演示数据后重新开始。</div></details>
+      <details><summary>刚才提的意见不见了？</summary><div>请确认是不是在同一个浏览器里打开的；无痕或隐私模式在关闭窗口后会清空数据。登录页右上角“评审工具”里可以看到意见数量和最近 20 条预览。</div></details>
+      <details><summary>导出时只下载了一个文件？</summary><div>浏览器拦截了第二个下载。在地址栏右侧的下载提示中允许“下载多个文件”，再导出一次。</div></details>
+      <details><summary>手机上找不到“提意见”？</summary><div>在屏幕右下角，底部导航上方有一个紫色圆形按钮，点开就能看到“提意见”。</div></details>
+    </section>
+
+    <p class="foot">未来学习中心 · 可点击界面原型 · 页面数据均为演示虚构</p>
+  </main>
+</div>
+<a class="to-top" href="#top" aria-label="回到顶部">↑</a>
+
+<script>
+// 窄屏目录默认收起；宽屏常开并高亮当前章节
+(function () {
+  var details = document.getElementById('toc-details');
+  var wide = window.matchMedia('(min-width: 1000px)');
+  function sync() { details.open = wide.matches; }
+  sync(); wide.addEventListener('change', sync);
+  details.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { if (!wide.matches) details.open = false; });
+  });
+  var links = {};
+  details.querySelectorAll('a').forEach(function (a) { links[a.getAttribute('href').slice(1)] = a; });
+  if (!('IntersectionObserver' in window)) return;
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting || !links[e.target.id]) return;
+      Object.values(links).forEach(function (l) { l.classList.remove('is-active'); l.removeAttribute('aria-current'); });
+      links[e.target.id].classList.add('is-active'); links[e.target.id].setAttribute('aria-current', 'true');
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  Object.keys(links).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+})();
+</script>
+</body>
+</html>
