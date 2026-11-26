@@ -19,6 +19,13 @@ html[data-view="review"][data-page="index.html"] main { max-width: 1160px; paddi
   font-size: .875rem; font-weight: 600; text-decoration: none;
 }
 .flc-login-tools:hover { background: #ebe4ff; text-decoration: none; }
+.flc-login-guide {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 .9rem; border-radius: 999px;
+  color: var(--flc-primary); border: 1px solid var(--flc-border-strong); background: var(--flc-surface);
+  font-size: .875rem; font-weight: 600; text-decoration: none;
+}
+.flc-login-guide:hover { background: var(--flc-soft); color: var(--flc-primary-strong); text-decoration: none; }
+.flc-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* 品牌区 */
 .flc-login-brand {
@@ -103,6 +110,8 @@ html[data-view="review"][data-page="index.html"] main { max-width: 1160px; paddi
 @media (max-width: 899px) {
   .flc-login { grid-template-columns: 1fr; grid-template-areas: "bar" "card" "brand"; min-height: 0; }
   .flc-login-bar { grid-area: bar; position: static; padding: var(--flc-s3) var(--flc-s4); }
+  .flc-login-bar { flex-wrap: wrap; gap: var(--flc-s2); }
+  .flc-login-guide, .flc-login-tools { padding: 0 .75rem; }
   .flc-login-bar-brand { display: inline-flex; }
   .flc-login-card { align-self: start; width: auto; margin: 0 var(--flc-s4) var(--flc-s5); padding: var(--flc-s5) var(--flc-s4); box-shadow: var(--flc-shadow); justify-self: stretch; }
   .flc-login-options { max-height: none; }
