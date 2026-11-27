@@ -7,3 +7,7 @@
 打开后在登录页选择一个演示身份即可进入；每页右下角可以“提意见”，意见保存在浏览器本地，可在“评审工具”里导出。
 
 详细用法见 [使用说明（网页版）](https://ad1896git.github.io/flc-prototype/guide.html) 或 [使用说明.md](使用说明.md)。
+
+## 探索页（尚未纳入设计）
+
+- [IFMOS 课程设计·教师确认界面](https://ad1896git.github.io/flc-prototype/ifmos/confirm.html)：AI 把课程大纲抽取为 IFMOS 五阶段卡片，教师逐项确认。独立页面，不需要登录。

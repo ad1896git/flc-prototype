@@ -1,0 +1,1349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IFMOS 卡片确认</title>
+<style>
+/* 视觉令牌：照抄 publish/guide.html 的 :root（“清爽校园蓝”） */
+:root {
+  color-scheme: light;
+  --flc-bg: #f4f7fb; --flc-surface: #fff; --flc-surface-2: #f8fafc;
+  --flc-text: #17283a; --flc-muted: #56677a;
+  --flc-primary: #1663a0; --flc-primary-hover: #0e4f82; --flc-primary-strong: #0c3f68;
+  --flc-soft: #eaf3fb; --flc-soft-2: #d6e7f6;
+  --flc-border: #e2e8f0; --flc-border-strong: #cbd5e1;
+  --flc-warning: #7a4a00; --flc-warning-bg: #fff4d6; --flc-warning-border: #e9c46a;
+  --flc-success: #1b6b40; --flc-success-bg: #e6f5ec; --flc-success-border: #a8d8b9;
+  --flc-b-forbidden-bg: #fdecea; --flc-b-forbidden-fg: #9b1c14; --flc-b-forbidden-line: #f1b3ab;
+  --flc-b-restricted-bg: #fff3d6; --flc-b-restricted-fg: #7a4500; --flc-b-restricted-line: #ebc66e;
+  --flc-b-encouraged-bg: #e4effc; --flc-b-encouraged-fg: #11508a; --flc-b-encouraged-line: #a9c9ee;
+  --flc-b-open-bg: #e3f5ea; --flc-b-open-fg: #17643a; --flc-b-open-line: #9fd4b3;
+  --flc-anno: #5b3cc4; --flc-anno-bg: #f4f0ff; --flc-anno-border: #b9a6f0;
+  --flc-focus: #c2410c;
+  --flc-radius-sm: 6px; --flc-radius: 10px; --flc-radius-lg: 14px;
+  --flc-shadow: 0 1px 2px rgb(16 24 40 / 5%), 0 2px 8px rgb(16 24 40 / 6%);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  font-size: 16px; line-height: 1.7; color: var(--flc-text); background: var(--flc-bg);
+  -webkit-text-size-adjust: 100%;
+}
+/* 本页补充（取自 prototype/assets/css/base.css） */
+:root { --flc-input-border: #7c8b9b; --flc-neutral-bg: #eef2f6; --top: 72px; }
+
+* { box-sizing: border-box; }
+body { margin: 0; overflow-wrap: anywhere; background: var(--flc-bg); }
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid var(--flc-focus); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3, h4 { line-height: 1.35; letter-spacing: .01em; margin: 0; }
+button, select, input, textarea { font: inherit; color: inherit; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.muted { color: var(--flc-muted); }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 按钮 */
+.btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: .4rem 1rem; border-radius: var(--flc-radius-sm);
+  border: 1px solid var(--flc-border-strong); background: var(--flc-surface); font-weight: 600; cursor: pointer; }
+.btn:hover:not(:disabled) { background: var(--flc-soft); border-color: var(--flc-primary); color: var(--flc-primary-strong); }
+.btn-primary { background: var(--flc-primary); border-color: var(--flc-primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--flc-primary-hover); color: #fff; }
+.btn:disabled { cursor: not-allowed; background: var(--flc-neutral-bg); border-color: var(--flc-border-strong); color: var(--flc-muted); }
+.btn-sm { min-height: 32px; padding: .15rem .65rem; font-size: .85rem; }
+.lnk { background: none; border: 0; padding: .1rem .25rem; color: var(--flc-primary); font-size: .85rem; font-weight: 600; cursor: pointer; border-radius: 4px; text-decoration: underline; text-underline-offset: .2em; text-decoration-thickness: 1px; }
+.lnk:hover { color: var(--flc-primary-hover); background: var(--flc-soft); }
+
+/* 顶栏 */
+.top { position: sticky; top: 0; z-index: 20; background: var(--flc-primary-strong); color: #fff; box-shadow: 0 2px 6px rgb(12 63 104 / 25%); }
+.top-in { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; padding: .6rem 1.25rem; }
+.top-title { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; min-width: 0; }
+.top h1 { font-size: 1.2rem; font-weight: 700; }
+.top .kicker { font-size: .8rem; color: #cfe2f3; }
+.state-pill { display: inline-flex; align-items: center; gap: .35rem; font-size: .8rem; font-weight: 600; padding: .1rem .6rem; border-radius: 999px;
+  background: var(--flc-warning-bg); color: var(--flc-warning); border: 1px solid var(--flc-warning-border); }
+.state-pill.done { background: var(--flc-success-bg); color: var(--flc-success); border-color: var(--flc-success-border); }
+.top-prog { display: flex; align-items: center; gap: .6rem; margin-left: auto; }
+.prog-txt { font-size: .875rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.prog-bar { width: 140px; height: 8px; border-radius: 99px; background: rgb(255 255 255 / 22%); overflow: hidden; }
+.prog-bar > i { display: block; height: 100%; background: #8fd0a8; width: 0; transition: width .2s; }
+.save-wrap { display: flex; flex-direction: column; align-items: flex-end; }
+.save-why { font-size: .75rem; color: #cfe2f3; margin-top: .15rem; }
+.top .btn:disabled { background: rgb(255 255 255 / 12%); border-color: rgb(255 255 255 / 35%); color: #dbe8f4; }
+.top .btn-primary:not(:disabled) { background: #fff; color: var(--flc-primary-strong); border-color: #fff; }
+
+/* 软提示条 */
+.hints { margin: 1rem 1.25rem 0; background: var(--flc-surface); border: 1px solid var(--flc-warning-border); border-left: 5px solid var(--flc-warning-border); border-radius: var(--flc-radius); box-shadow: var(--flc-shadow); }
+.hints-head { display: flex; align-items: center; gap: .75rem; padding: .5rem .75rem .5rem 1rem; flex-wrap: wrap; }
+.hints-head h2 { font-size: 1rem; }
+.hints-head .note { font-size: .85rem; color: var(--flc-muted); }
+.hints-head .btn { margin-left: auto; }
+.hints-body { border-top: 1px solid var(--flc-border); padding: .3rem 1rem .6rem; max-height: min(34vh, 300px); overflow: auto; }
+.hint-list { list-style: none; margin: 0; padding: 0; display: grid; gap: .15rem; }
+.hint { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; gap: .1rem .75rem; align-items: baseline; padding: .3rem .25rem; border-bottom: 1px dashed var(--flc-border); }
+.hint:last-child { border-bottom: 0; }
+.hint .msg { font-size: .9rem; }
+.hint .why { font-size: .8rem; color: var(--flc-muted); margin-left: .4rem; }
+.hint .jumps { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0 .3rem; align-items: baseline; font-size: .8rem; color: var(--flc-muted); max-width: 22rem; }
+.lvl { display: inline-block; text-align: center; font-size: .75rem; font-weight: 700; padding: .05rem .4rem; border-radius: 4px; border: 1px solid; white-space: nowrap; }
+.lvl-warn { background: var(--flc-warning-bg); color: var(--flc-warning); border-color: var(--flc-warning-border); }
+.lvl-info { background: var(--flc-b-encouraged-bg); color: var(--flc-b-encouraged-fg); border-color: var(--flc-b-encouraged-line); }
+.lvl-ai { background: var(--flc-anno-bg); color: var(--flc-anno); border-color: var(--flc-anno-border); border-style: dashed; }
+.hint-pass { margin: .5rem 0 0; font-size: .85rem; color: var(--flc-success); }
+.hint-pass b { font-weight: 650; }
+
+/* 主体两栏 */
+.main { display: grid; grid-template-columns: minmax(360px, 5fr) minmax(0, 7fr); gap: 1rem; padding: 1rem 1.25rem 1.5rem; align-items: start; }
+.card { background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius); box-shadow: var(--flc-shadow); }
+.src { position: sticky; top: calc(var(--top) + 1rem); height: calc(100vh - var(--top) - 2rem); display: flex; flex-direction: column; overflow: hidden; }
+.src-head { padding: .6rem 1rem; border-bottom: 1px solid var(--flc-border); }
+.src-head h2 { font-size: 1rem; display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap; }
+.src-head h2 small { font-weight: 400; font-size: .8rem; color: var(--flc-muted); }
+.src-cap { margin-top: .25rem; font-size: .82rem; color: var(--flc-muted); min-height: 1.4em; }
+.src-cap b { color: var(--flc-text); font-weight: 650; }
+.src-body { flex: 1; overflow: auto; padding: .5rem 0 2rem; font-size: .875rem; line-height: 1.75; }
+.src-body:focus-visible { outline-offset: -3px; }
+.sl { display: grid; grid-template-columns: 3rem 1fr; padding-right: 1rem; border-left: 3px solid transparent; }
+.sl .no { text-align: right; padding-right: .75rem; color: #8a99a8; font-size: .75rem; user-select: none; font-variant-numeric: tabular-nums; padding-top: .15em; }
+.sl .tx { white-space: pre-wrap; }
+.sl.h1 .tx, .sl.h2 .tx { font-weight: 700; color: var(--flc-primary-strong); }
+.sl.h1 { margin-top: .6rem; }
+.sl.hit { background: #fffaeb; border-left-color: var(--flc-focus); }
+.sl mark { background: #ffe08a; color: inherit; border-radius: 2px; box-shadow: 0 0 0 1px #e9b730; }
+.src.flash { box-shadow: 0 0 0 3px var(--flc-focus); }
+
+/* 阶段标签 */
+.stage { min-width: 0; }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: .35rem; margin-bottom: .75rem; }
+.tab { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: .2rem; padding: .5rem .65rem; border: 1px solid var(--flc-border-strong);
+  border-radius: var(--flc-radius); background: var(--flc-surface); cursor: pointer; text-align: left; min-height: 64px; }
+.tab:hover { border-color: var(--flc-primary); background: var(--flc-soft); }
+.tab[aria-selected="true"] { border-color: var(--flc-primary); background: var(--flc-soft); box-shadow: inset 0 -3px 0 var(--flc-primary); }
+.tab .tl { font-weight: 700; font-size: .95rem; }
+.tab .tl .letter { display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 6px; background: var(--flc-primary-strong); color: #fff; font-size: .8rem; margin-right: .35rem; }
+.tab .cnts { display: flex; flex-wrap: wrap; gap: .2rem; }
+.tab.lack { border-style: dashed; border-color: var(--flc-b-forbidden-line); }
+.tab .lack-tag { font-size: .72rem; font-weight: 700; color: var(--flc-b-forbidden-fg); background: var(--flc-b-forbidden-bg); border: 1px solid var(--flc-b-forbidden-line); border-radius: 4px; padding: 0 .35rem; }
+.cnt { font-size: .7rem; font-weight: 600; padding: 0 .3rem; border-radius: 4px; border: 1px solid; line-height: 1.5; font-variant-numeric: tabular-nums; }
+
+/* 状态徽标 */
+.badge { display: inline-flex; align-items: center; gap: .2rem; font-size: .72rem; font-weight: 650; padding: 0 .4rem; border-radius: 4px; border: 1px solid; white-space: nowrap; line-height: 1.6; }
+.st-e { background: var(--flc-b-encouraged-bg); color: var(--flc-b-encouraged-fg); border-color: var(--flc-b-encouraged-line); }
+.st-i { background: var(--flc-anno-bg); color: var(--flc-anno); border-color: var(--flc-anno-border); }
+.st-m { background: var(--flc-b-forbidden-bg); color: var(--flc-b-forbidden-fg); border-color: var(--flc-b-forbidden-line); }
+.st-t { background: var(--flc-b-open-bg); color: var(--flc-b-open-fg); border-color: var(--flc-b-open-line); }
+.st-e::before { content: "原"; } .st-i::before { content: "归"; } .st-m::before { content: "缺"; } .st-t::before { content: "改"; }
+.badge.st-e::before, .badge.st-i::before, .badge.st-m::before, .badge.st-t::before { content: none; }
+.check-tag { font-size: .72rem; font-weight: 700; color: var(--flc-warning); background: var(--flc-warning-bg); border: 1px solid var(--flc-warning-border); border-radius: 4px; padding: 0 .35rem; white-space: nowrap; line-height: 1.6; }
+.anchor { display: inline-flex; align-items: center; gap: .15rem; font-size: .72rem; font-weight: 650; color: var(--flc-primary-strong); border: 1px solid var(--flc-primary); border-radius: 4px; padding: 0 .3rem; white-space: nowrap; line-height: 1.6; }
+.anchor svg { width: 11px; height: 11px; }
+.hint-tag { font-size: .72rem; font-weight: 700; color: var(--flc-warning); white-space: nowrap; }
+
+/* 面板 */
+.panel { display: grid; gap: .9rem; }
+.panel-intro { padding: .75rem 1rem; }
+.panel-intro h2 { font-size: 1.05rem; }
+.panel-intro p { margin: .25rem 0 0; font-size: .9rem; color: var(--flc-muted); }
+.lack-banner { padding: .75rem 1rem; border: 2px dashed var(--flc-b-forbidden-line); background: var(--flc-b-forbidden-bg); color: var(--flc-b-forbidden-fg); border-radius: var(--flc-radius); }
+.lack-banner strong { font-size: 1rem; }
+.lack-banner p { margin: .25rem 0 0; font-size: .9rem; color: var(--flc-text); }
+.private-note { display: flex; gap: .5rem; align-items: center; padding: .55rem 1rem; border-radius: var(--flc-radius); background: var(--flc-anno-bg); border: 1px solid var(--flc-anno-border); color: var(--flc-anno); font-size: .9rem; font-weight: 600; }
+.sec { padding: .75rem 1rem 1rem; }
+.sec-head { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-bottom: .5rem; }
+.sec-head h3 { font-size: 1rem; }
+.sec-head .btn { margin-left: auto; }
+.sec h4 { font-size: .9rem; margin: .9rem 0 .4rem; color: var(--flc-primary-strong); }
+
+/* 字段 */
+.fld { position: relative; border-radius: var(--flc-radius-sm); scroll-margin-top: calc(var(--top) + 1rem); }
+.fld:focus, .panel:focus { outline: none; }
+.fld:focus-within, .fld.is-cur { background: #fffaeb; box-shadow: inset 3px 0 0 var(--flc-focus); }
+.fld.flash { animation: flash 1.8s ease-out; }
+@keyframes flash { 0%, 40% { box-shadow: 0 0 0 3px var(--flc-focus); background: #ffefc2; } 100% { box-shadow: none; } }
+.fld-row { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: .1rem .9rem; padding: .5rem .6rem; border-bottom: 1px solid var(--flc-border); }
+.fld-row:last-child { border-bottom: 0; }
+.f-label { font-size: .875rem; color: var(--flc-muted); font-weight: 600; padding-top: .1rem; display: flex; flex-direction: column; align-items: flex-start; gap: .2rem; }
+.f-main { min-width: 0; display: grid; gap: .25rem; }
+.f-val { font-size: .95rem; }
+.f-val ul { margin: 0; padding-left: 1.2rem; }
+.f-val .empty { color: var(--flc-muted); font-style: italic; }
+.f-meta { display: flex; flex-wrap: wrap; gap: .3rem .45rem; align-items: center; }
+.f-basis { font-size: .78rem; color: var(--flc-muted); }
+.f-note { font-size: .82rem; color: var(--flc-b-forbidden-fg); font-weight: 600; }
+.fld.has-hint { box-shadow: inset 3px 0 0 var(--flc-warning-border); }
+.fld-cell { padding: .3rem .35rem; display: grid; gap: .2rem; }
+.fld-cell .f-val { font-size: .9rem; }
+.ck { display: inline-flex; align-items: center; gap: .25rem; font-size: .8rem; font-weight: 650; color: var(--flc-primary-strong); cursor: pointer; padding: 0 .35rem; border: 1px solid var(--flc-border-strong); border-radius: 4px; background: var(--flc-surface); min-height: 26px; }
+.ck input { width: 16px; height: 16px; margin: 0; accent-color: var(--flc-success); }
+.ck.on { color: var(--flc-success); background: var(--flc-success-bg); border-color: var(--flc-success-border); }
+.ck:not(.on) { border-color: var(--flc-primary); }
+.ib { background: none; border: 1px solid transparent; color: var(--flc-primary); font-size: .8rem; font-weight: 600; padding: 0 .35rem; min-height: 26px; border-radius: 4px; cursor: pointer; }
+.ib:hover { background: var(--flc-soft); border-color: var(--flc-soft-2); }
+.inp { width: 100%; padding: .35rem .5rem; border: 1px solid var(--flc-input-border); border-radius: var(--flc-radius-sm); background: #fff; font-size: .9rem; }
+textarea.inp { resize: vertical; min-height: 4.5rem; line-height: 1.6; }
+.inp.need { border: 2px dashed var(--flc-b-forbidden-line); background: #fffdfc; }
+.inp.need:focus { border-style: solid; }
+.edit-act { display: flex; gap: .4rem; align-items: center; flex-wrap: wrap; font-size: .78rem; color: var(--flc-muted); }
+.err { color: var(--flc-b-forbidden-fg); font-size: .8rem; font-weight: 600; }
+
+/* 表格 */
+.tbl-wrap { overflow-x: auto; }
+.tbl { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tbl th { text-align: left; font-size: .8rem; color: var(--flc-muted); font-weight: 650; background: var(--flc-surface-2); padding: .35rem .5rem; border-bottom: 1px solid var(--flc-border-strong); white-space: nowrap; }
+.tbl td { padding: .15rem .25rem; border-bottom: 1px solid var(--flc-border); vertical-align: top; }
+.tbl tfoot td { font-weight: 650; background: var(--flc-surface-2); padding: .35rem .5rem; font-variant-numeric: tabular-nums; }
+.tbl .num { text-align: right; font-variant-numeric: tabular-nums; }
+.tbl td.c-strategy { width: 12.5rem; } .tbl td.c-hours, .tbl td.c-score, .tbl td.c-weight { width: 11.5rem; } .tbl td.c-ptype { width: 12.5rem; }
+.fld-cell .f-meta { gap: .25rem .35rem; }
+.tbl select.inp { padding: .2rem .35rem; min-width: 6.5rem; }
+.sum-bad { color: var(--flc-warning); }
+.sum-ok { color: var(--flc-success); }
+
+/* 模块折叠 */
+.mod { background: var(--flc-surface); border: 1px solid var(--flc-border); border-radius: var(--flc-radius); box-shadow: var(--flc-shadow); scroll-margin-top: calc(var(--top) + 1rem); }
+.mod > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .75rem; padding: .65rem 1rem; border-radius: var(--flc-radius); }
+.mod > summary::-webkit-details-marker { display: none; }
+.mod > summary::before { content: ""; width: .55rem; height: .55rem; border-right: 2px solid var(--flc-primary); border-bottom: 2px solid var(--flc-primary); transform: rotate(-45deg); transition: transform .15s; margin-right: .2rem; }
+.mod[open] > summary::before { transform: rotate(45deg); }
+.mod > summary:hover { background: var(--flc-soft); }
+.mod[open] > summary { border-bottom: 1px solid var(--flc-border); border-radius: var(--flc-radius) var(--flc-radius) 0 0; }
+.mod-no { font-weight: 700; color: var(--flc-primary-strong); }
+.mod-name { font-weight: 650; }
+.mod-meta { margin-left: auto; display: flex; gap: .4rem; flex-wrap: wrap; font-size: .8rem; color: var(--flc-muted); font-variant-numeric: tabular-nums; }
+.mod-meta span { background: var(--flc-surface-2); border: 1px solid var(--flc-border); border-radius: 4px; padding: 0 .4rem; }
+.mod-meta .all-ok { color: var(--flc-success); border-color: var(--flc-success-border); background: var(--flc-success-bg); }
+.mod-body { padding: .5rem 1rem 1rem; }
+.mod-top { display: grid; grid-template-columns: 1fr 1.7fr; gap: 0 .75rem; }
+.mod-top .fld-row { grid-template-columns: 5rem minmax(0, 1fr); border-bottom: 0; }
+
+/* 目标芯片 */
+.chips { display: flex; flex-wrap: wrap; gap: .25rem; }
+.chip { display: inline-flex; align-items: center; gap: .3rem; font-size: .78rem; line-height: 1.5; padding: .05rem .45rem; border-radius: 999px; border: 1px solid; white-space: nowrap; }
+.chip b { font-variant-numeric: tabular-nums; }
+.chip .ab { font-size: .68rem; font-weight: 700; opacity: .85; }
+.cat-cognitive { background: #e4effc; color: #11508a; border-color: #a9c9ee; }
+.cat-values { background: #fdecea; color: #9b1c14; border-color: #f1b3ab; }
+.cat-generic { background: #e3f5ea; color: #17643a; border-color: #9fd4b3; }
+.cat-unknown { background: var(--flc-neutral-bg); color: var(--flc-muted); border-color: var(--flc-border-strong); border-style: dashed; }
+.pick { display: grid; gap: .35rem; padding: .5rem; border: 1px solid var(--flc-border-strong); border-radius: var(--flc-radius-sm); background: var(--flc-surface-2); }
+.pick-row { display: flex; flex-wrap: wrap; gap: .3rem; align-items: center; }
+.pick-row .pk { font-size: .75rem; color: var(--flc-muted); width: 3.2rem; }
+button.chip { cursor: pointer; min-height: 28px; opacity: .55; background: #fff; }
+button.chip[aria-pressed="true"] { opacity: 1; box-shadow: 0 0 0 1px currentColor; }
+button.chip[aria-pressed="true"].cat-cognitive { background: #e4effc; } button.chip[aria-pressed="true"].cat-values { background: #fdecea; } button.chip[aria-pressed="true"].cat-generic { background: #e3f5ea; }
+button.chip[aria-pressed="true"]::before { content: "✓"; font-weight: 700; }
+button.chip:hover { opacity: 1; }
+.legend { display: flex; gap: .4rem; flex-wrap: wrap; align-items: center; font-size: .8rem; color: var(--flc-muted); }
+
+/* 目标卡 */
+.obj-group { margin-top: .75rem; }
+.obj-group-head { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; margin-bottom: .35rem; }
+.obj-group-head h4 { margin: 0; }
+.obj-group-head .btn { margin-left: auto; }
+.objs { display: grid; gap: .5rem; }
+.obj { border: 1px solid var(--flc-border); border-radius: var(--flc-radius-sm); padding: .35rem .5rem .5rem; }
+.obj-grid { display: grid; grid-template-columns: 10.5rem 11rem minmax(0, 1fr); gap: .25rem; }
+.obj-src { font-size: .8rem; color: var(--flc-muted); margin: .25rem .35rem 0; }
+.obj-cover { font-size: .75rem; font-weight: 600; color: var(--flc-muted); white-space: nowrap; }
+.obj-cover.zero { color: var(--flc-warning); }
+.cell-lbl { font-size: .72rem; color: var(--flc-muted); font-weight: 600; }
+
+/* 资源表 */
+.res-name { background: none; border: 0; padding: .1rem .2rem; text-align: left; font-weight: 600; color: var(--flc-primary-strong); cursor: pointer; border-radius: 4px; text-decoration: underline dotted; text-underline-offset: .25em; }
+.res-name:hover { background: var(--flc-soft); }
+.tbl td.pad { padding: .35rem .5rem; }
+.tbl tr.res-todo select.need-sel { border: 2px dashed var(--flc-b-forbidden-line); }
+.fill-cnt { font-size: .85rem; color: var(--flc-muted); }
+
+/* 页脚与提示框 */
+.foot { padding: 1rem 1.25rem 2rem; font-size: .82rem; color: var(--flc-muted); border-top: 1px solid var(--flc-border); margin: 0 1.25rem; }
+.toast { position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%); background: var(--flc-success); color: #fff; padding: .6rem 1.1rem; border-radius: var(--flc-radius); box-shadow: 0 8px 28px rgb(16 24 40 / 20%); font-weight: 600; z-index: 50; max-width: calc(100vw - 2rem); }
+
+@media (max-width: 1100px) {
+  .main { grid-template-columns: 1fr; }
+  .src { position: relative; top: 0; height: 46vh; }
+  .top-prog { margin-left: 0; }
+}
+@media (max-width: 720px) {
+  .tabs { grid-template-columns: repeat(3, 1fr); }
+  .fld-row { grid-template-columns: 1fr; }
+  .mod-top, .obj-grid { grid-template-columns: 1fr; }
+  .hints, .main, .foot { margin-left: 0; margin-right: 0; }
+  .hint { grid-template-columns: 1fr; } .hint .jumps { justify-content: flex-start; max-width: none; }
+  .mod-meta { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="top-in">
+    <div class="top-title">
+      <span class="kicker">IFMOS 课程设计 · 五阶段卡片</span>
+      <h1 id="course-name">课程</h1>
+      <span class="state-pill" id="state-pill">AI 抽取草稿 · 待教师确认</span>
+    </div>
+    <div class="top-prog">
+      <div>
+        <div class="prog-txt" id="prog-txt">已确认锚点 0 / 0</div>
+        <div class="prog-bar" role="progressbar" id="prog-bar" aria-label="锚点确认进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+      </div>
+      <div class="save-wrap">
+        <button class="btn btn-primary" id="save-btn" type="button" disabled aria-describedby="save-why">全部锚点确认后可保存为设计 v1</button>
+        <span class="save-why" id="save-why"></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="hints" id="hints" aria-labelledby="hints-title">
+  <div class="hints-head">
+    <h2 id="hints-title">一致性提示 <span id="hint-count"></span></h2>
+    <span class="note">只是提示，不影响保存；随你的修改实时重算。点“查看”跳到相关字段。</span>
+    <button class="btn btn-sm" type="button" id="hints-toggle" aria-expanded="true" aria-controls="hints-body">收起</button>
+  </div>
+  <div class="hints-body" id="hints-body">
+    <ul class="hint-list" id="hint-list"></ul>
+    <p class="hint-pass" id="hint-pass"></p>
+  </div>
+</section>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<main class="main">
+  <section class="card src" id="src" aria-labelledby="src-title">
+    <div class="src-head">
+      <h2 id="src-title">大纲原文 <small>source.txt · 表格已拍平为行</small></h2>
+      <div class="src-cap" id="src-cap">点击或聚焦右侧字段，这里会高亮对应原文。</div>
+    </div>
+    <div class="src-body mono" id="src-body" tabindex="0" aria-label="大纲原文，可滚动"></div>
+  </section>
+
+  <section class="stage" aria-label="五阶段卡片">
+    <div class="tabs" role="tablist" aria-label="IFMOS 阶段" id="tabs"></div>
+    <div class="panel" role="tabpanel" id="panel" tabindex="-1"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  演示数据：页面内容为《微电子电路》大纲的 AI 抽取结果，属离线试验产物，仅在本页内存中修改，刷新即恢复；不连接后端，“保存”仅为演示。
+  卡片结构依据 schema 草案 <span class="mono">ifmos/course-design@0.1-draft</span>（docs/ifmos-spike/schema.json），一致性提示规则移植自 docs/ifmos-spike/check.py。
+</footer>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<!-- 内联数据（file:// 下无法 fetch）：原样内联，勿手改 -->
+<script type="application/json" id="d-extracted">{
+  "_meta": {
+    "schema": "ifmos/course-design@0.1-draft",
+    "source": "source.txt（《微电子电路》课程教学大纲，粘贴文本，表格已被拍平）",
+    "note": "叶子字段为 {v: 值, s: e=extracted / i=inferred / m=missing, src: 原文片段}。锚点字段的 src 必须能在原文中逐字找到。本次试验省略了 teacher_actions / student_actions 的值（纯文本，照抄即可，不影响评估）。"
+  },
+  "I": {
+    "course_profile": {
+      "name": { "v": "微电子电路", "s": "e", "src": "课程名称\n微电子电路" },
+      "course_type": { "v": "专业必修课", "s": "e", "src": "专业必修课" },
+      "major": { "v": "微电子科学与工程", "s": "e", "src": "微电子科学与工程" },
+      "credits": { "v": 4, "s": "e", "src": "课程学分\n4" },
+      "hours_total": { "v": 64, "s": "e", "src": "课程总学时\n64" },
+      "hours_project": { "v": 32, "s": "e", "src": "项目式教学学时\n32" },
+      "semester": { "v": "第3学期", "s": "e", "src": "第3学期" },
+      "textbook": { "v": "微电子基础（第3版）拉扎维 机械工业出版社", "s": "e", "src": "微电子基础（第3版）拉扎维 机械工业出版社" },
+      "prerequisites": { "v": ["电路"], "s": "e", "src": "先修课程\n电路" },
+      "followups": { "v": ["模拟集成电路设计"], "s": "e", "src": "模拟集成电路设计" },
+      "accreditation": { "v": "工程教育专业认证", "s": "e", "src": "工程教育专业认证" }
+    },
+    "teacher_intent": { "v": "衔接电路基础与微电子器件、集成电路分析设计；形成器件—电路—系统整体认识；重分析建模、工程推理与严谨求证；要求课外投入、规范表达、学术诚信与服务国家集成电路产业的价值认同。", "s": "i", "src": "二、教师对课程的期待（整段，AI 摘要）" },
+    "learner_analysis": { "v": null, "s": "m", "src": null },
+    "needs_research": { "v": "学生运用设计思维访谈教师、学生与维修人员，开展同理心调查，提炼真实需求与约束", "s": "e", "src": "学生先运用设计思维访谈教师、学生与维修人员，开展同理心调查，提炼真实需求与约束" },
+    "context": { "v": "为高校电子实验室和基层科普设计电池供电、便携、安全、低成本的便携式多波形信号发生器；学生作为微电子测试设备企业模拟电路设计团队成员", "s": "e", "src": "为高校电子实验室和基层科普设计电池供电、便携、安全、低成本的便携式多波形信号发生器" }
+  },
+  "F": {
+    "objectives": [
+      { "code": { "v": "1.1", "s": "e", "src": "1.1 能够针对给定模拟电路设计指标" }, "category": { "v": "cognitive", "s": "e", "src": "（一）核心认知目标" }, "short_name": { "v": "电路等效化简与手工估算", "s": "i", "src": "1.1 能够针对给定模拟电路设计指标，对反馈网络、偏置网络、输出负载及多级链路进行等效化简和手工定量估算" } },
+      { "code": { "v": "1.2", "s": "e", "src": "1.2 能够确定MOSFET放大级和输出级的直流工作点" }, "category": { "v": "cognitive", "s": "e", "src": "（一）核心认知目标" }, "short_name": { "v": "MOSFET工作点与小信号建模", "s": "i", "src": "1.2 能够确定MOSFET放大级和输出级的直流工作点，判断其工作区，建立小信号模型" } },
+      { "code": { "v": "1.3", "s": "e", "src": "1.3 能够比较共源、共栅、源极跟随器" }, "category": { "v": "cognitive", "s": "e", "src": "（一）核心认知目标" }, "short_name": { "v": "放大器拓扑比较与选型", "s": "i", "src": "1.3 能够比较共源、共栅、源极跟随器及电流源负载等基本放大器拓扑" } },
+      { "code": { "v": "1.4", "s": "e", "src": "1.4 能够分析典型运放反馈与信号调理电路" }, "category": { "v": "cognitive", "s": "e", "src": "（一）核心认知目标" }, "short_name": { "v": "运放电路分析与非理想误差", "s": "i", "src": "1.4 能够分析典型运放反馈与信号调理电路的输入输出关系" } },
+      { "code": { "v": "1.5", "s": "e", "src": "1.5 能够估算多级电路的频率响应" }, "category": { "v": "cognitive", "s": "e", "src": "（一）核心认知目标" }, "short_name": { "v": "频率响应与方案权衡", "s": "i", "src": "1.5 能够估算多级电路的频率响应与动态性能限制" } },
+      { "code": { "v": "2.1", "s": "e", "src": "2.1 树立科技报国" }, "category": { "v": "values", "s": "e", "src": "（二）课程思政目标" }, "short_name": { "v": "科技报国与工程精神", "s": "i", "src": "2.1 树立科技报国、服务国家集成电路与测试仪器自主创新的使命意识" } },
+      { "code": { "v": "2.2", "s": "e", "src": "2.2 强化质量可靠" }, "category": { "v": "values", "s": "e", "src": "（二）课程思政目标" }, "short_name": { "v": "质量安全与工程伦理", "s": "i", "src": "2.2 强化质量可靠、安全底线与工程伦理意识" } },
+      { "code": { "v": "2.3", "s": "e", "src": "2.3 培养绿色低碳" }, "category": { "v": "values", "s": "e", "src": "（二）课程思政目标" }, "short_name": { "v": "绿色设计与诚信担当", "s": "i", "src": "2.3 培养绿色低碳与可持续设计观" } },
+      { "code": { "v": "3.1", "s": "e", "src": "3.1 能围绕用户需求开展访谈" }, "category": { "v": "generic", "s": "e", "src": "（三）通用能力目标" }, "short_name": { "v": "需求沟通与技术文档", "s": "i", "src": "3.1 能围绕用户需求开展访谈、需求转译与方案陈述" } },
+      { "code": { "v": "3.2", "s": "e", "src": "3.2 能在多角色团队中合理分工" }, "category": { "v": "generic", "s": "e", "src": "（三）通用能力目标" }, "short_name": { "v": "团队协作与答辩", "s": "i", "src": "3.2 能在多角色团队中合理分工、协同推进、管理进度与冲突" } },
+      { "code": { "v": "3.3", "s": "e", "src": "3.3 能制定学习与项目计划" }, "category": { "v": "generic", "s": "e", "src": "（三）通用能力目标" }, "short_name": { "v": "自我监控与持续改进", "s": "i", "src": "3.3 能制定学习与项目计划，运用反思日志、同伴互评和故障复盘进行自我监控与持续改进" } }
+    ],
+    "core_task": {
+      "title": { "v": "便携式多波形信号发生器模拟核心电路设计与验证", "s": "e", "src": "便携式多波形信号发生器模拟核心电路设计与验证" },
+      "description": { "v": "电池供电便携多波形信号发生器模拟核心电路：正弦/方波/三角波的产生、整形、稳幅、缓冲与输出驱动；综合运放反馈、MOSFET放大级、电流源偏置与输出级；在电源、负载、频率、幅度、失真、功耗、温漂约束下选型；估算—仿真—实测闭环。", "s": "i", "src": "四、项目任务·任务描述（AI 摘要）" }
+    },
+    "deliverables": { "v": ["实物样机（含电源、接口、外壳或底板）", "焊接完成的核心电路板/模块", "原理图、PCB版图或洞洞板布局图", "设计与调试记录册", "测试验证报告及实测数据图表", "作品演示说明卡或展板"], "s": "e", "src": "五、项目需提交的最终成果" },
+    "assessment_scheme": [
+      { "type": { "v": "闭卷考试", "s": "e", "src": "闭卷考试 19.5" }, "weight": { "v": 19.5, "s": "e", "src": "闭卷考试 19.5" }, "knowledge_types": { "v": ["事实性知识", "概念性知识", "程序性知识"], "s": "e", "src": "闭卷考试 19.5 事实性知识、概念性知识、程序性知识" } },
+      { "type": { "v": "课后作业", "s": "e", "src": "课后作业 19.5" }, "weight": { "v": 19.5, "s": "e", "src": "课后作业 19.5" }, "knowledge_types": { "v": ["事实性知识", "概念性知识", "程序性知识"], "s": "e", "src": "课后作业 19.5 事实性知识、概念性知识、程序性知识" } },
+      { "type": { "v": "在线测试", "s": "e", "src": "在线测试 19.5" }, "weight": { "v": 19.5, "s": "e", "src": "在线测试 19.5" }, "knowledge_types": { "v": ["事实性知识", "概念性知识", "程序性知识"], "s": "e", "src": "在线测试 19.5 事实性知识、概念性知识、程序性知识" } },
+      { "type": { "v": "项目式学习", "s": "e", "src": "项目式学习 14.5" }, "weight": { "v": 14.5, "s": "e", "src": "项目式学习 14.5" }, "knowledge_types": { "v": ["程序性知识", "高阶能力与元认知"], "s": "e", "src": "项目式学习 14.5 程序性知识、高阶能力与元认知" } },
+      { "type": { "v": "课堂小测", "s": "e", "src": "课堂小测 12.5" }, "weight": { "v": 12.5, "s": "e", "src": "课堂小测 12.5" }, "knowledge_types": { "v": ["事实性知识", "概念性知识"], "s": "e", "src": "课堂小测 12.5 事实性知识、概念性知识" } },
+      { "type": { "v": "其它", "s": "e", "src": "其它 7.5" }, "weight": { "v": 7.5, "s": "e", "src": "其它 7.5" }, "knowledge_types": { "v": ["高阶能力与元认知"], "s": "e", "src": "其它 7.5 高阶能力与元认知" } },
+      { "type": { "v": "操作测试", "s": "e", "src": "操作测试 7.0" }, "weight": { "v": 7.0, "s": "e", "src": "操作测试 7.0" }, "knowledge_types": { "v": ["程序性知识"], "s": "e", "src": "操作测试 7.0 程序性知识" } }
+    ],
+    "alignment_note": { "v": null, "s": "m", "src": null }
+  },
+  "M": {
+    "modules": [
+      {
+        "seq": { "v": 1, "s": "e", "src": "1 需求规格与方案选型" }, "name": { "v": "需求规格与方案选型", "s": "e", "src": "需求规格与方案选型" },
+        "activities": [
+          { "strategy": { "v": "示证新知", "s": "e", "src": "示证新知" }, "hours": { "v": 2.5, "s": "e", "src": "需求规格与方案选型 2.5" }, "content": { "v": "需求转译与方案选型原理", "s": "e", "src": "需求转译与方案选型原理" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 2, "s": "e", "src": "需求规格与方案选型 2 方案评审与共识" }, "content": { "v": "方案评审与共识", "s": "e", "src": "方案评审与共识" } },
+          { "strategy": { "v": "自主任务式学习", "s": "e", "src": "自主任务式学习" }, "hours": { "v": 3.5, "s": "e", "src": "需求规格与方案选型 3.5" }, "content": { "v": "个人完成规格书与方案卡", "s": "e", "src": "个人完成规格书与方案卡" } }
+        ],
+        "probes": [
+          { "type": { "v": "基础理论", "s": "e", "src": "基础理论评价探针 1.3、1.5 4.1" }, "objectives": { "v": ["1.3", "1.5"], "s": "e", "src": "基础理论评价探针 1.3、1.5 4.1" }, "score": { "v": 4.1, "s": "e", "src": "基础理论评价探针 1.3、1.5 4.1" } },
+          { "type": { "v": "问题分析与方案设计", "s": "e", "src": "问题分析与方案设计评价探针 2.1、2.3 4.1" }, "objectives": { "v": ["2.1", "2.3"], "s": "e", "src": "问题分析与方案设计评价探针 2.1、2.3 4.1" }, "score": { "v": 4.1, "s": "e", "src": "问题分析与方案设计评价探针 2.1、2.3 4.1" } },
+          { "type": { "v": "协作沟通与分工配合", "s": "e", "src": "协作沟通与分工配合评价探针 3.1、3.3 4.3" }, "objectives": { "v": ["3.1", "3.3"], "s": "e", "src": "协作沟通与分工配合评价探针 3.1、3.3 4.3" }, "score": { "v": 4.3, "s": "e", "src": "协作沟通与分工配合评价探针 3.1、3.3 4.3" } }
+        ],
+        "stage_submission": { "v": "需求规格书与方案比较矩阵", "s": "e", "src": "模块1提交需求规格书与方案比较矩阵" }
+      },
+      {
+        "seq": { "v": 2, "s": "e", "src": "2 单元电路手工估算与偏置设计" }, "name": { "v": "单元电路手工估算与偏置设计", "s": "e", "src": "单元电路手工估算与偏置设计" },
+        "activities": [
+          { "strategy": { "v": "示证新知", "s": "e", "src": "示证新知" }, "hours": { "v": 2, "s": "e", "src": "单元电路手工估算与偏置设计 2 放大级" }, "content": { "v": "放大级、电流镜、输出级直流工作点与小信号估算框架", "s": "e", "src": "放大级、电流镜、输出级直流工作点与小信号估算框架" } },
+          { "strategy": { "v": "认知学徒制", "s": "e", "src": "认知学徒制" }, "hours": { "v": 3, "s": "e", "src": "单元电路手工估算与偏置设计 3 输入输出电阻" }, "content": { "v": "输入输出电阻、摆幅、功耗与偏置网络估算及工作区判断", "s": "e", "src": "输入输出电阻、摆幅、功耗与偏置网络估算及工作区判断" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 1.5, "s": "e", "src": "单元电路手工估算与偏置设计 1.5 项目电路定值约束" }, "content": { "v": "项目电路定值约束", "s": "e", "src": "项目电路定值约束" } },
+          { "strategy": { "v": "自主任务式学习", "s": "e", "src": "自主任务式学习" }, "hours": { "v": 3.5, "s": "e", "src": "单元电路手工估算与偏置设计 3.5 个人完成单元电路参数计算书" }, "content": { "v": "个人完成单元电路参数计算书", "s": "e", "src": "个人完成单元电路参数计算书" } }
+        ],
+        "probes": [
+          { "type": { "v": "基础理论", "s": "e", "src": "基础理论评价探针 1.1；1.2；1.3 6.2" }, "objectives": { "v": ["1.1", "1.2", "1.3"], "s": "e", "src": "基础理论评价探针 1.1；1.2；1.3 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基础理论评价探针 1.1；1.2；1.3 6.2" } },
+          { "type": { "v": "基本技能", "s": "e", "src": "基本技能评价探针 2.2；2.3 6.2" }, "objectives": { "v": ["2.2", "2.3"], "s": "e", "src": "基本技能评价探针 2.2；2.3 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基本技能评价探针 2.2；2.3 6.2" } },
+          { "type": { "v": "协作沟通与分工配合", "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" }, "objectives": { "v": ["3.3"], "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" }, "score": { "v": 6.3, "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" } }
+        ],
+        "stage_submission": { "v": "参数计算书与工作点检查记录", "s": "e", "src": "模块2提交参数计算书与工作点检查记录" }
+      },
+      {
+        "seq": { "v": 3, "s": "e", "src": "3 波形发生/整形与SPICE仿真" }, "name": { "v": "波形发生/整形与SPICE仿真", "s": "e", "src": "波形发生/整形与SPICE仿真" },
+        "activities": [
+          { "strategy": { "v": "认知学徒制", "s": "e", "src": "认知学徒制" }, "hours": { "v": 4, "s": "e", "src": "波形发生/整形与SPICE仿真 4 文氏桥" }, "content": { "v": "文氏桥/弛豫/积分比较器原理；比较器滞回、限幅整形；DC/瞬态/AC/参数扫描；多波形切换与校准", "s": "e", "src": "比较器滞回、限幅整形" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 2, "s": "e", "src": "波形发生/整形与SPICE仿真 2 仿真方案与分工" }, "content": { "v": "仿真方案与分工", "s": "e", "src": "仿真方案与分工" } },
+          { "strategy": { "v": "自主任务式学习", "s": "e", "src": "自主任务式学习" }, "hours": { "v": 4.5, "s": "e", "src": "波形发生/整形与SPICE仿真 4.5 个人完成波形发生" }, "content": { "v": "个人完成波形发生/整形全流程仿真", "s": "e", "src": "个人完成波形发生/整形全流程仿真" } }
+        ],
+        "probes": [
+          { "type": { "v": "基础理论", "s": "e", "src": "基础理论评价探针 1.4；2.2 6.2" }, "objectives": { "v": ["1.4", "2.2"], "s": "e", "src": "基础理论评价探针 1.4；2.2 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基础理论评价探针 1.4；2.2 6.2" } },
+          { "type": { "v": "基本技能", "s": "e", "src": "基本技能评价探针 1.5；3.1；3.3 6.2" }, "objectives": { "v": ["1.5", "3.1", "3.3"], "s": "e", "src": "基本技能评价探针 1.5；3.1；3.3 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基本技能评价探针 1.5；3.1；3.3 6.2" } },
+          { "type": { "v": "问题解决与迭代优化", "s": "e", "src": "问题解决与迭代优化评价探针 2.3；3.3 6.3" }, "objectives": { "v": ["2.3", "3.3"], "s": "e", "src": "问题解决与迭代优化评价探针 2.3；3.3 6.3" }, "score": { "v": 6.3, "s": "e", "src": "问题解决与迭代优化评价探针 2.3；3.3 6.3" } }
+        ],
+        "stage_submission": { "v": "SPICE仿真报告与关键波形", "s": "e", "src": "模块3提交SPICE仿真报告与关键波形" }
+      },
+      {
+        "seq": { "v": 4, "s": "e", "src": "4 原理图/PCB或洞洞板实现与焊接调试" }, "name": { "v": "原理图/PCB或洞洞板实现与焊接调试", "s": "e", "src": "原理图/PCB或洞洞板实现与焊接调试" },
+        "activities": [
+          { "strategy": { "v": "认知学徒制", "s": "e", "src": "认知学徒制" }, "hours": { "v": 5, "s": "e", "src": "原理图/PCB或洞洞板实现与焊接调试 5 焊接工艺" }, "content": { "v": "焊接工艺、上电检查与故障排查的示范—模仿—迁移", "s": "e", "src": "焊接工艺、上电检查与故障排查的示范—模仿—迁移" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 1.5, "s": "e", "src": "原理图/PCB或洞洞板实现与焊接调试 1.5 布局" }, "content": { "v": "布局/去耦/接地/测试点/接口与焊接顺序的研讨优化", "s": "e", "src": "布局/去耦/接地/测试点/接口与焊接顺序的研讨优化" } },
+          { "strategy": { "v": "自主任务式学习", "s": "e", "src": "自主任务式学习" }, "hours": { "v": 4, "s": "e", "src": "原理图/PCB或洞洞板实现与焊接调试 4 个人完成" }, "content": { "v": "个人完成布局、焊接装配、上电检查与调试记录初稿", "s": "e", "src": "上电检查与调试记录初稿" } }
+        ],
+        "probes": [
+          { "type": { "v": "基本技能", "s": "e", "src": "基本技能评价探针 1.2、1.4、2.1、2.2 6.2" }, "objectives": { "v": ["1.2", "1.4", "2.1", "2.2"], "s": "e", "src": "基本技能评价探针 1.2、1.4、2.1、2.2 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基本技能评价探针 1.2、1.4、2.1、2.2 6.2" } },
+          { "type": { "v": "问题分析与方案设计", "s": "e", "src": "问题分析与方案设计评价探针 2.1、3.2 6.2" }, "objectives": { "v": ["2.1", "3.2"], "s": "e", "src": "问题分析与方案设计评价探针 2.1、3.2 6.2" }, "score": { "v": 6.2, "s": "e", "src": "问题分析与方案设计评价探针 2.1、3.2 6.2" } },
+          { "type": { "v": "协作沟通与分工配合", "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" }, "objectives": { "v": ["3.3"], "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" }, "score": { "v": 6.3, "s": "e", "src": "协作沟通与分工配合评价探针 3.3 6.3" } }
+        ],
+        "stage_submission": { "v": "原理图或版图或洞洞板布局图、实物核心板及调试记录初稿", "s": "e", "src": "模块4提交原理图或版图或洞洞板布局图、实物核心板及调试记录初稿" }
+      },
+      {
+        "seq": { "v": 5, "s": "e", "src": "5 整机集成、测试验证与优化迭代" }, "name": { "v": "整机集成、测试验证与优化迭代", "s": "e", "src": "整机集成、测试验证与优化迭代" },
+        "activities": [
+          { "strategy": { "v": "认知学徒制", "s": "e", "src": "认知学徒制" }, "hours": { "v": 3, "s": "e", "src": "整机集成、测试验证与优化迭代 3 整机测试规范" }, "content": { "v": "整机测试规范、波形/负载/功耗测量、误差分析与故障排查", "s": "e", "src": "整机测试规范、波形/负载/功耗测量、误差分析与故障排查" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 1.5, "s": "e", "src": "整机集成、测试验证与优化迭代 1.5 测试分工" }, "content": { "v": "测试分工、误差定位、优化方案与迭代优先级", "s": "e", "src": "测试分工、误差定位、优化方案与迭代优先级" } },
+          { "strategy": { "v": "工作室制", "s": "e", "src": "工作室制" }, "hours": { "v": 7, "s": "e", "src": "整机集成、测试验证与优化迭代 7 整机集成" }, "content": { "v": "整机集成、全波形测试、误差分析、至少一轮参数优化与报告图表", "s": "e", "src": "整机集成、全波形测试、误差分析、至少一轮参数优化与报告图表" } }
+        ],
+        "probes": [
+          { "type": { "v": "基本技能", "s": "e", "src": "基本技能评价探针 1.1；1.4 6.2" }, "objectives": { "v": ["1.1", "1.4"], "s": "e", "src": "基本技能评价探针 1.1；1.4 6.2" }, "score": { "v": 6.2, "s": "e", "src": "基本技能评价探针 1.1；1.4 6.2" } },
+          { "type": { "v": "问题解决与迭代优化", "s": "e", "src": "问题解决与迭代优化评价探针 1.5；2.2；2.3 6.2" }, "objectives": { "v": ["1.5", "2.2", "2.3"], "s": "e", "src": "问题解决与迭代优化评价探针 1.5；2.2；2.3 6.2" }, "score": { "v": 6.2, "s": "e", "src": "问题解决与迭代优化评价探针 1.5；2.2；2.3 6.2" } },
+          { "type": { "v": "手工制品质量", "s": "e", "src": "手工制品质量评价探针 3.1；3.3 6.3" }, "objectives": { "v": ["3.1", "3.3"], "s": "e", "src": "手工制品质量评价探针 3.1；3.3 6.3" }, "score": { "v": 6.3, "s": "e", "src": "手工制品质量评价探针 3.1；3.3 6.3" } }
+        ],
+        "stage_submission": { "v": "测试验证报告、实测数据图表与迭代记录", "s": "e", "src": "模块5提交测试验证报告、实测数据图表与迭代记录" }
+      },
+      {
+        "seq": { "v": 6, "s": "e", "src": "6 成果展示、答辩与反思" }, "name": { "v": "成果展示、答辩与反思", "s": "e", "src": "成果展示、答辩与反思" },
+        "activities": [
+          { "strategy": { "v": "示证新知", "s": "e", "src": "示证新知" }, "hours": { "v": 1.5, "s": "e", "src": "成果展示、答辩与反思 1.5 优秀展示答辩范例" }, "content": { "v": "优秀展示答辩范例、说明卡与展板设计、演示脚本、质询回应", "s": "e", "src": "优秀展示答辩范例、说明卡与展板设计、演示脚本、质询回应" } },
+          { "strategy": { "v": "小组研讨", "s": "e", "src": "小组研讨" }, "hours": { "v": 2, "s": "e", "src": "成果展示、答辩与反思 2 成果包完整性核查" }, "content": { "v": "成果包完整性核查、展示流程与答辩分工、质询预演", "s": "e", "src": "成果包完整性核查、展示流程与答辩分工、质询预演" } },
+          { "strategy": { "v": "工作室制", "s": "e", "src": "工作室制" }, "hours": { "v": 6, "s": "e", "src": "成果展示、答辩与反思 6 展板与说明卡完善" }, "content": { "v": "展板与说明卡完善、现场演示、答辩、同伴互评与反思", "s": "e", "src": "展板与说明卡完善、现场演示、答辩、同伴互评与反思" } }
+        ],
+        "probes": [
+          { "type": { "v": "汇报表达", "s": "e", "src": "汇报表达评价探针 1.5；2.1；3.1 4.2" }, "objectives": { "v": ["1.5", "2.1", "3.1"], "s": "e", "src": "汇报表达评价探针 1.5；2.1；3.1 4.2" }, "score": { "v": 4.2, "s": "e", "src": "汇报表达评价探针 1.5；2.1；3.1 4.2" } },
+          { "type": { "v": "学习反思与自我改进", "s": "e", "src": "学习反思与自我改进评价探针 2.3；3.2；3.3 4.2" }, "objectives": { "v": ["2.3", "3.2", "3.3"], "s": "e", "src": "学习反思与自我改进评价探针 2.3；3.2；3.3 4.2" }, "score": { "v": 4.2, "s": "e", "src": "学习反思与自我改进评价探针 2.3；3.2；3.3 4.2" } },
+          { "type": { "v": "协作沟通与分工配合", "s": "e", "src": "协作沟通与分工配合评价探针 2.1；3.1 4.3" }, "objectives": { "v": ["2.1", "3.1"], "s": "e", "src": "协作沟通与分工配合评价探针 2.1；3.1 4.3" }, "score": { "v": 4.3, "s": "e", "src": "协作沟通与分工配合评价探针 2.1；3.1 4.3" } }
+        ],
+        "stage_submission": { "v": "最终成果包", "s": "e", "src": "模块6提交最终成果包" }
+      }
+    ]
+  },
+  "P": {
+    "resources": [
+      { "name": "比较矩阵", "kind": "template", "used_in_modules": [1] },
+      { "name": "评审checklist", "kind": "checklist", "used_in_modules": [1] },
+      { "name": "访谈提纲", "kind": "template", "used_in_modules": [1] },
+      { "name": "规格模板", "kind": "template", "used_in_modules": [1] },
+      { "name": "方案卡模板", "kind": "template", "used_in_modules": [1] },
+      { "name": "往届样例", "kind": "case", "used_in_modules": [1] },
+      { "name": "检查表", "kind": "checklist", "used_in_modules": [2, 4] },
+      { "name": "速查卡", "kind": "card", "used_in_modules": [2] },
+      { "name": "四步卡", "kind": "card", "used_in_modules": [2] },
+      { "name": "提示卡", "kind": "card", "used_in_modules": [2] },
+      { "name": "公式卡", "kind": "card", "used_in_modules": [2] },
+      { "name": "仿真模板", "kind": "template", "used_in_modules": [3] },
+      { "name": "参数扫描脚本", "kind": "script", "used_in_modules": [3] },
+      { "name": "检查清单", "kind": "checklist", "used_in_modules": [3] },
+      { "name": "波形指标表", "kind": "checklist", "used_in_modules": [3] },
+      { "name": "参考电路库", "kind": "case", "used_in_modules": [3] },
+      { "name": "焊接工艺卡", "kind": "card", "used_in_modules": [4] },
+      { "name": "仪器操作卡", "kind": "card", "used_in_modules": [4] },
+      { "name": "故障树", "kind": "other", "used_in_modules": [4] },
+      { "name": "布局检查表", "kind": "checklist", "used_in_modules": [4] },
+      { "name": "装配图模板", "kind": "template", "used_in_modules": [4] },
+      { "name": "调试记录模板", "kind": "template", "used_in_modules": [4] },
+      { "name": "测试计划模板", "kind": "template", "used_in_modules": [5] },
+      { "name": "误差分析框架", "kind": "template", "used_in_modules": [5] },
+      { "name": "故障复盘表", "kind": "template", "used_in_modules": [5] },
+      { "name": "优化checklist", "kind": "checklist", "used_in_modules": [5] },
+      { "name": "决策矩阵", "kind": "template", "used_in_modules": [5] },
+      { "name": "测试报告评价表", "kind": "rubric", "used_in_modules": [5] },
+      { "name": "展板模板", "kind": "template", "used_in_modules": [6] },
+      { "name": "演示脚本", "kind": "template", "used_in_modules": [6] },
+      { "name": "质询问题库", "kind": "other", "used_in_modules": [6] },
+      { "name": "成果包清单", "kind": "checklist", "used_in_modules": [6] },
+      { "name": "答辩评分表", "kind": "rubric", "used_in_modules": [6] },
+      { "name": "互评表", "kind": "rubric", "used_in_modules": [6] },
+      { "name": "反思框架", "kind": "template", "used_in_modules": [6] }
+    ],
+    "_resources_status": "全部 s=e（名称照抄）；kind 为 AI 归类 s=i；attached 与 origin 全部 s=m（原文无实物、无来源说明）。评价工具（量规/核查清单）另有 20+ 条散落在七（二），本次未合并去重。",
+    "run_rules": {
+      "submission_channel": { "v": "按教师规定的格式、命名规则和提交渠道；实物与纸质材料现场签收", "s": "e", "src": "所有作业、阶段成果和最终成果包应按教师规定的格式、命名规则和提交渠道提交" },
+      "late_policy": { "v": "截止前申请延期，未获批准迟交按评分标准处理，补交须标注", "s": "e", "src": "确需延期的，应在截止前向教师提出书面或课程平台申请并说明原因" },
+      "rework_policy": { "v": "未达最低要求按整改清单限期整改再提交，附修改说明与对比证据", "s": "e", "src": "学生应根据教师整改清单在约定期限内完成整改并再次提交" },
+      "integrity": { "v": null, "s": "m", "src": "原文“学术诚信要求”标题后无内容（粘贴截断）" }
+    },
+    "pilot_plan": { "v": null, "s": "m", "src": null }
+  },
+  "S": {
+    "ifmos_scale": { "v": null, "s": "m", "src": null },
+    "evidence_plan": { "v": null, "s": "m", "src": null },
+    "revision_log": { "v": null, "s": "m", "src": null }
+  }
+}</script>
+<script type="application/json" id="d-schema">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ifmos/course-design@0.1-draft",
+  "title": "IFMOS 五阶段卡片（临时草案，供讨论）",
+  "description": "每个叶子字段在抽取结果中包装为 {value, status, source}。status ∈ extracted（原文直接有）/ inferred（AI 归纳，需教师重点看）/ missing（原文没有）。x-anchor=true 的字段系统要用，必须教师确认，且 value 必须能在原文中逐字找到。x-infer=forbid 的字段不允许 AI 推断，原文没有就只能是 missing。x-source 是在大纲中的常见来源，用于固定章节到阶段的归属。",
+  "$defs": {
+    "objective_category": { "enum": ["cognitive", "values", "generic"], "description": "认知 / 思政 / 通用能力（字典项，可扩展）" },
+    "strategy": { "enum": ["示证新知", "认知学徒制", "小组研讨", "自主任务式学习", "工作室制"], "description": "教学策略字典（可扩展）" },
+    "probe_type": { "enum": ["基础理论", "基本技能", "问题分析与方案设计", "问题解决与迭代优化", "协作沟通与分工配合", "手工制品质量", "汇报表达", "学习反思与自我改进"], "description": "评价探针字典（可扩展）" },
+    "resource_kind": { "enum": ["template", "rubric", "checklist", "card", "script", "case", "game", "other"] },
+    "origin": { "enum": ["adopt", "adapt", "create"], "description": "借鉴 / 改编 / 自创" }
+  },
+  "type": "object",
+  "properties": {
+    "I": {
+      "title": "初始化 Initialization",
+      "type": "object",
+      "properties": {
+        "course_profile": {
+          "x-source": "一、课程基本信息",
+          "type": "object",
+          "properties": {
+            "name": { "type": "string", "x-anchor": true },
+            "course_type": { "type": "string" },
+            "major": { "type": "string" },
+            "credits": { "type": "number", "x-anchor": true },
+            "hours_total": { "type": "number", "x-anchor": true },
+            "hours_project": { "type": "number", "x-anchor": true },
+            "semester": { "type": "string" },
+            "textbook": { "type": "string" },
+            "prerequisites": { "type": "array", "items": { "type": "string" } },
+            "followups": { "type": "array", "items": { "type": "string" } },
+            "accreditation": { "type": "string" }
+          }
+        },
+        "teacher_intent": { "type": "string", "x-source": "二、教师对课程的期待" },
+        "learner_analysis": { "type": "string", "x-source": "（大纲通常没有）学情：已有基础、差异、困难", "x-infer": "forbid" },
+        "needs_research": { "type": "string", "x-source": "四、任务情境中的调研/访谈描述", "description": "设计思维的同理心环节：调研对象与方法" },
+        "context": { "type": "string", "x-source": "四、任务情境" }
+      }
+    },
+    "F": {
+      "title": "框架 Framework",
+      "type": "object",
+      "properties": {
+        "objectives": {
+          "x-source": "三、课程教学目标",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string", "x-anchor": true },
+              "category": { "$ref": "#/$defs/objective_category", "x-anchor": true },
+              "short_name": { "type": "string", "description": "≤15 字，AI 归纳", "x-anchor": true },
+              "text": { "type": "string" }
+            }
+          }
+        },
+        "core_task": {
+          "x-source": "四、项目任务",
+          "type": "object",
+          "properties": {
+            "title": { "type": "string", "x-anchor": true },
+            "description": { "type": "string" }
+          }
+        },
+        "deliverables": { "x-source": "五、最终成果", "type": "array", "items": { "type": "string" } },
+        "assessment_scheme": {
+          "x-source": "七（一）课程总体考核",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { "type": "string", "x-anchor": true },
+              "weight": { "type": "number", "x-anchor": true },
+              "knowledge_types": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "alignment_note": { "type": "string", "x-source": "（大纲通常没有）目标—成果—评价的对齐说明", "x-infer": "forbid" }
+      }
+    },
+    "M": {
+      "title": "模块 Module",
+      "type": "object",
+      "properties": {
+        "modules": {
+          "x-source": "六、教学日历 + 七（二）项目式学习评价",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "seq": { "type": "integer", "x-anchor": true },
+              "name": { "type": "string", "x-anchor": true },
+              "activities": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "strategy": { "$ref": "#/$defs/strategy", "x-anchor": true },
+                    "hours": { "type": "number", "x-anchor": true },
+                    "content": { "type": "string" },
+                    "teacher_actions": { "type": "string" },
+                    "student_actions": { "type": "string" }
+                  }
+                }
+              },
+              "probes": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": { "$ref": "#/$defs/probe_type", "x-anchor": true },
+                    "objectives": { "type": "array", "items": { "type": "string" }, "x-anchor": true },
+                    "score": { "type": "number", "x-anchor": true },
+                    "evidence": { "type": "string" },
+                    "tools": { "type": "array", "items": { "type": "string" } }
+                  }
+                }
+              },
+              "stage_submission": { "type": "string", "x-source": "八（一）提交与节点要求第 1 条" }
+            }
+          }
+        }
+      }
+    },
+    "P": {
+      "title": "原型 Prototype",
+      "type": "object",
+      "properties": {
+        "resources": {
+          "x-source": "教学日历中提到的模板/量规/清单/卡片等名称；七（二）评价工具",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "kind": { "$ref": "#/$defs/resource_kind" },
+              "used_in_modules": { "type": "array", "items": { "type": "integer" } },
+              "attached": { "type": "boolean", "description": "是否已附实物文件", "x-infer": "forbid" },
+              "origin": { "$ref": "#/$defs/origin", "x-infer": "forbid" }
+            }
+          }
+        },
+        "run_rules": {
+          "x-source": "八、课程要求",
+          "type": "object",
+          "properties": {
+            "submission_channel": { "type": "string" },
+            "late_policy": { "type": "string" },
+            "rework_policy": { "type": "string" },
+            "integrity": { "type": "string" }
+          }
+        },
+        "pilot_plan": { "type": "string", "x-source": "（大纲通常没有）试讲/小范围试运行安排", "x-infer": "forbid" }
+      }
+    },
+    "S": {
+      "title": "自评估 Self-assessment",
+      "x-infer": "forbid",
+      "type": "object",
+      "properties": {
+        "ifmos_scale": { "type": "object", "description": "IFMOS 评价量表自评得分", "x-infer": "forbid" },
+        "evidence_plan": { "type": "string", "description": "打算用哪些证据检验设计是否有效", "x-infer": "forbid" },
+        "revision_log": { "type": "array", "description": "本轮证据推动的修改（对接 task_adjustment_log）", "x-infer": "forbid" }
+      }
+    }
+  }
+}</script>
+<script type="application/json" id="d-source">"课程教学大纲\n微电子电路\n一、课程基本信息\n课程名称\n微电子电路\n课程类型\n专业必修课\n修读专业\n微电子科学与工程\n课程学分\n4\n课程总学时\n64\n项目式教学学时\n32\n修读学期\n第3学期\n教材\n微电子基础（第3版）拉扎维 机械工业出版社\n先修课程\n电路\n后续课程\n模拟集成电路设计\n专业认证类别\n工程教育专业认证\n备注\n\n二、教师对课程的期待\n本课程作为微电子科学与工程专业第3学期专业必修课，在人才培养方案中承担衔接电路基础与微电子器件、集成电路分析设计的支撑功能。教师期待学生明确课程目标，掌握微电子电路基本概念、分析方法和工程规范，形成器件—电路—系统的整体认识；注重分析与建模能力、工程推理能力和严谨求证习惯的培养，为后续专业课程奠定基础。课程要求学生保证课外预习复习与习题训练投入，按时完成作业和综合性练习，课堂专注参与、主动提问、规范表达；成果产出应体现概念准确、推导清晰、结论可靠和工程文档规范。教师同时要求学生恪守学术诚信，树立质量意识、责任意识和团队协作精神，在学习中形成服务国家集成电路产业发展的价值认同。\n三、课程教学目标\n（一）核心认知目标\n核心认知目标：1.1 能够针对给定模拟电路设计指标，对反馈网络、偏置网络、输出负载及多级链路进行等效化简和手工定量估算，写出关键节点电压、电流、增益、输入/输出电阻、摆幅与功耗的表达式或数值，并据此判断电路是否满足约束。1.2 能够确定MOSFET放大级和输出级的直流工作点，判断其工作区，建立小信号模型，计算跨导、输出电阻、增益及电流源/电流镜偏置参数，并分析工作点对摆幅和线性范围的影响。1.3 能够比较共源、共栅、源极跟随器及电流源负载等基本放大器拓扑，围绕增益、带宽、输入输出阻抗、摆幅、功耗和驱动能力列出性能差异，选择合适拓扑并说明取舍依据。1.4 能够分析典型运放反馈与信号调理电路的输入输出关系，用理想化近似完成手工计算，识别运放带宽、压摆率、失调和输出限幅等非理想因素造成的误差，并给出修正方向。1.5 能够估算多级电路的频率响应与动态性能限制，判断运放带宽、MOSFET寄生电容、负载电容和级联效应对频率范围、速度与稳定性的影响，并围绕增益、带宽、阻抗、摆幅、功耗、失真和精度等指标比较拓扑、偏置、负载与反馈方案，形成可检验的设计选择与参数依据。\n（二）课程思政目标\n2.1 树立科技报国、服务国家集成电路与测试仪器自主创新的使命意识，坚持严谨求实、精益求精的工程精神。2.2 强化质量可靠、安全底线与工程伦理意识，理解电池供电、负载驱动、失真温漂等约束对用户安全和社会责任的影响。2.3 培养绿色低碳与可持续设计观，在功耗、材料、可制造性和环境友好性权衡中主动降低资源消耗与潜在风险，并以诚实守信、责任担当对待数据与评审。\n（三）通用能力目标\n3.1 能围绕用户需求开展访谈、需求转译与方案陈述，撰写规格说明、测试报告和评审材料，进行清晰、有证据的沟通表达。3.2 能在多角色团队中合理分工、协同推进、管理进度与冲突，并通过评审答辩有效回应质询。3.3 能制定学习与项目计划，运用反思日志、同伴互评和故障复盘进行自我监控与持续改进，形成终身学习能力。\n四、项目任务\n任务编号\n1\n核心表现性任务\n便携式多波形信号发生器模拟核心电路设计与验证\n任务描述\n以微电子测试设备企业研发项目为情境，学生作为模拟电路设计团队成员，为电池供电的便携式多波形信号发生器设计并验证模拟核心电路。任务要求从需求规格出发，完成正弦波、方波和三角波的产生、整形、稳幅、缓冲与输出驱动链路设计；电路需综合使用运放反馈结构、MOSFET放大级、电流源偏置与输出级，并在给定电源电压、负载条件、输出频率范围、幅度范围、失真度、功耗和温漂约束下进行方案选择。学生需交付需求规格与权衡矩阵、手工估算与参数设计、SPICE仿真验证、面包板或实验板测试报告、故障排查记录和设计评审答辩，并用实测数据说明增益、带宽、输入输出阻抗、摆幅、线性度、功耗与精度之间的取舍。最终成果应能驱动规定负载并输出可切换的多种波形，体现从指标到电路、从估算到仿真、从仿真到实测的完整工程闭环。\n任务情境\n以“为高校电子实验室和基层科普设计电池供电、便携、安全、低成本的便携式多波形信号发生器”为情境。学生先运用设计思维访谈教师、学生与维修人员，开展同理心调查，提炼真实需求与约束；再作为微电子测试设备企业模拟电路设计团队成员，从需求规格出发完成波形产生、整形、稳幅、缓冲与输出驱动链路设计，经历估算—仿真—实测—排查—评审闭环，交付可驱动规定负载的多波形核心电路样机及证据材料。\n五、项目需提交的最终成果\n便携式多波形信号发生器模拟核心电路实物样机（含电源、接口、外壳或底板，可现场输出正弦波、方波、三角波等）；焊接完成的核心电路板/模块（附测试点标识与关键元器件说明）；电路原理图、PCB版图或洞洞板布局图（纸质/展板实体版）；设计与调试记录册（含参数计算、元器件选型、仿真与实测对比、故障排查记录）；测试验证报告及实测数据图表（含示波器波形截图、频率/幅值/失真度等测试结果与误差分析）；作品演示说明卡或展板（说明工作原理、操作方法、验证过程与改进迭代）。\n六、教学日历\n教学日历根据课程模块、子任务和教学策略自动汇总，学时合计应与课程安排一致。\n1 需求规格与方案选型 2.5 需求转译与方案选型原理：用户需求映射为频率、幅值、失真、功耗、供电、接口指标；比较文氏桥、弛豫、积分比较器方案 示证新知 以便携多波形输出典型实例展示需求；归纳指标与取舍原理；示范规格书和比较矩阵填写；对接项目任务，用模板示范需求到指标映射，用矩阵示范取舍\n1 需求规格与方案选型 2 方案评审与共识：比较三种波形发生方案，依据指标取舍，形成系统框图与选型评审意见 小组研讨 提出研讨主题“哪一方案满足便携多波形且可检验”；发放比较矩阵和评审checklist；巡回追问取舍依据；用矩阵逐项打分、checklist核查指标完整性；组织互评\n1 需求规格与方案选型 3.5 个人完成规格书与方案卡：将访谈需求转译为可检验指标，完成方案比较与选型理由，提交个人规格书和方案卡 自主任务式学习 明确阶段任务目标与提交标准；发放访谈提纲、规格模板、方案卡模板；用模板和往届样例说明合格标准并支持个人独立完成；课内答疑与个别反馈；组织组内互评\n2 单元电路手工估算与偏置设计 2 放大级、电流镜、输出级直流工作点与小信号估算框架 示证新知 展示典型单管放大与电流镜实例；归纳公式与工作区判据；示范“规格→列式→计算书”步骤；用检查表示范判断并说明速查卡查热阻/跨导\n2 单元电路手工估算与偏置设计 3 输入输出电阻、摆幅、功耗与偏置网络估算及工作区判断 认知学徒制 拆解建模→列式→代入→校核四步；示范偏置电路；巡视并用检查表纠错；逐步撤提示，要求迁移到衰减/校准网络；说明四步卡与提示卡使用时机\n2 单元电路手工估算与偏置设计 1.5 项目电路定值约束：工作区、增益、摆幅、功耗取舍与校准网络方案 小组研讨 给出主题“为何此工作点可行？”；追问：增益余量够吗？摆幅受限在哪？功耗超限如何改？旁听记录共性错误；引导形成优化方案与分工\n2 单元电路手工估算与偏置设计 3.5 个人完成单元电路参数计算书：工作点、增益、输入输出电阻、摆幅、功耗与工作区判断 自主任务式学习 明确个人成果标准；发放模板与检查表；课堂个别指导，提示先查数据手册再列式；用公式卡核对关键步骤；组织提交、自评互评并说明课外独立完成\n3 波形发生/整形与SPICE仿真 4 文氏桥/弛豫/积分比较器原理；比较器滞回、限幅整形；DC/瞬态/AC/参数扫描；多波形切换与校准 认知学徒制 拆解SPICE建模步骤；用仿真模板示范文氏桥起振、比较器滞回与限幅整形；用参数扫描脚本演示AC/参数扫描；用检查清单和波形指标表逐项反馈；学生模仿时巡回纠错，逐步撤除支持\n3 波形发生/整形与SPICE仿真 2 仿真方案与分工：多波形切换、滞回、限幅、幅度频率校准、输出衰减、参数锁定 小组研讨 明确研讨主题：一组仿真如何覆盖五类波形并锁定参数；提供参考电路库和指标表；组织组内交流与组间质疑，追问失真、裕量、可复现性；引导形成优化方案与分工\n3 波形发生/整形与SPICE仿真 4.5 个人完成波形发生/整形全流程仿真，形成报告与关键波形，锁定原理图参数 自主任务式学习 发布个人任务目标与提交标准；说明仿真模板、脚本、检查清单和指标表的使用节点；课内启动与中期检查，个别答疑；组织报告与参数表评审，按指标表反馈\n4 原理图/PCB或洞洞板实现与焊接调试 5 焊接工艺、上电检查与故障排查的示范—模仿—迁移 认知学徒制 用焊接工艺卡分步示范焊接与检查；用上电流程、仪器操作卡示范测试点测量；用故障树针对个体纠错；安排独立操作与迁移任务\n4 原理图/PCB或洞洞板实现与焊接调试 1.5 布局/去耦/接地/测试点/接口与焊接顺序的研讨优化 小组研讨 提出研讨问题：去耦电容是否靠近电源引脚？地回流是否连续？测试点是否覆盖关键节点？接口标识是否清晰？用布局检查表和故障树引导审查；追问总结并明确分工\n4 原理图/PCB或洞洞板实现与焊接调试 4 个人完成原理图/PCB或洞洞板布局、焊接装配、上电检查与调试记录初稿 自主任务式学习 明确个人任务与成果标准；发放装配图模板和调试记录模板；用检查表巡回答疑；组织提交与评价；用故障树指导自查\n5 整机集成、测试验证与优化迭代 3 整机测试规范、波形/负载/功耗测量、误差分析与故障排查 认知学徒制 示范整机测试与示波器截图；用测试计划模板、误差分析框架、故障复盘表示范填写；针对个体纠错；讨论“失真/负载异常来自哪级？”；用速查表讲解探头补偿与接地。\n5 整机集成、测试验证与优化迭代 1.5 测试分工、误差定位、优化方案与迭代优先级 小组研讨 明确研讨主题：哪项指标未达标？误差来自模型/器件/布局/测量？首轮优化改什么？发放优化checklist、故障复盘表和决策矩阵；巡回用“证据是什么？”追问；要求形成分工表。\n5 整机集成、测试验证与优化迭代 7 整机集成、全波形测试、误差分析、至少一轮参数优化与报告图表 工作室制 发布任务书与验收标准；集中工作场景巡视，按测试报告评价表即时反馈；用优化checklist检查迭代记录；组织现场抽测；对共性故障用复盘表集中点评；不直接给方案。\n6 成果展示、答辩与反思 1.5 优秀展示答辩范例、说明卡与展板设计、演示脚本、质询回应 示证新知 展示优秀与问题范例，归纳展示答辩要点；示范说明卡和演示脚本；使用评分表、展板模板、演示脚本、质询问题库组织模拟\n6 成果展示、答辩与反思 2 成果包完整性核查、展示流程与答辩分工、质询预演 小组研讨 明确研讨主题：成果包是否齐全？演示如何分工？质询如何回应？巡视记录，使用成果包清单和质询问题库追问纠错\n6 成果展示、答辩与反思 6 展板与说明卡完善、现场演示、答辩、同伴互评与反思 工作室制 明确成果包提交与答辩目标；集中指导展板完善和现场演示；使用答辩评分表、质询问题库组织答辩，使用互评表和反思框架组织评价并反馈\n七、成绩评定方法\n（一）课程总体考核\n闭卷考试 19.5 事实性知识、概念性知识、程序性知识\n课后作业 19.5 事实性知识、概念性知识、程序性知识\n在线测试 19.5 事实性知识、概念性知识、程序性知识\n项目式学习 14.5 程序性知识、高阶能力与元认知\n课堂小测 12.5 事实性知识、概念性知识\n其它 7.5 高阶能力与元认知\n操作测试 7.0 程序性知识\n（二）项目式学习评价\n模块1：需求规格与方案选型 基础理论评价探针 1.3、1.5 4.1 问题分析与方案设计评价探针 2.1、2.3 4.1 协作沟通与分工配合评价探针 3.1、3.3 4.3\n模块2：单元电路手工估算与偏置设计 基础理论评价探针 1.1；1.2；1.3 6.2 基本技能评价探针 2.2；2.3 6.2 协作沟通与分工配合评价探针 3.3 6.3\n模块3：波形发生/整形与SPICE仿真 基础理论评价探针 1.4；2.2 6.2 基本技能评价探针 1.5；3.1；3.3 6.2 问题解决与迭代优化评价探针 2.3；3.3 6.3\n模块4：原理图/PCB或洞洞板实现与焊接调试 基本技能评价探针 1.2、1.4、2.1、2.2 6.2 问题分析与方案设计评价探针 2.1、3.2 6.2 协作沟通与分工配合评价探针 3.3 6.3\n模块5：整机集成、测试验证与优化迭代 基本技能评价探针 1.1；1.4 6.2 问题解决与迭代优化评价探针 1.5；2.2；2.3 6.2 手工制品质量评价探针 3.1；3.3 6.3\n模块6：成果展示、答辩与反思 汇报表达评价探针 1.5；2.1；3.1 4.2 学习反思与自我改进评价探针 2.3；3.2；3.3 4.2 协作沟通与分工配合评价探针 2.1；3.1 4.3\n八、课程要求\n（一）作业与项目成果提交要求\n1. 项目阶段成果按模块推进节点提交：模块1提交需求规格书与方案比较矩阵，模块2提交参数计算书与工作点检查记录，模块3提交SPICE仿真报告与关键波形，模块4提交原理图或版图或洞洞板布局图、实物核心板及调试记录初稿，模块5提交测试验证报告、实测数据图表与迭代记录，具体截止时间以教师课程通知为准。2. 模块6提交最终成果包。3. 所有作业、阶段成果和最终成果包应按教师规定的格式、命名规则和提交渠道提交，电子材料应文件完整、版本清晰、数据可追溯，实物和纸质材料应在指定课堂或评审现场提交并完成签收确认。4. 学生应在截止时间前完成提交；确需延期的，应在截止前向教师提出书面或课程平台申请并说明原因，经批准后按批准时间提交；未获批准迟交、缺交或补交的，按课程评分标准处理，补交材料须明确标注“补交”及补交时间。5. 阶段评审、测试或答辩未达到最低要求或存在关键指标缺陷的，学生应根据教师整改清单在约定期限内完成整改并再次提交，再次提交时须附修改说明、整改前后对比和补充验证证据，再次提交结果按课程评分标准计入。\n学术诚信要求\n"</script>
+
+<script>
+"use strict";
+(function () {
+/* ---------------- 数据 ---------------- */
+const DATA = JSON.parse(document.getElementById("d-extracted").textContent);
+const ORIG = JSON.parse(document.getElementById("d-extracted").textContent);
+const SCHEMA = JSON.parse(document.getElementById("d-schema").textContent);
+const SOURCE = JSON.parse(document.getElementById("d-source").textContent);
+
+const STAGES = [
+  { k: "I", name: "初始化", desc: "课程基本信息、教师期待、学情与任务情境。" },
+  { k: "F", name: "框架", desc: "课程目标、核心任务、最终成果与评价方案。" },
+  { k: "M", name: "模块", desc: "按模块组织的教学活动与评价探针。" },
+  { k: "P", name: "原型", desc: "教学资源（模板、量规、清单等）与运行规则。" },
+  { k: "S", name: "自评估", desc: "用 IFMOS 量表自评，并规划检验设计是否有效的证据。" }
+];
+const LABEL = {
+  name: "课程名称", course_type: "课程类型", major: "修读专业", credits: "学分", hours_total: "总学时", hours_project: "项目式教学学时",
+  semester: "修读学期", textbook: "教材", prerequisites: "先修课程", followups: "后续课程", accreditation: "专业认证类别",
+  teacher_intent: "教师对课程的期待", learner_analysis: "学情分析", needs_research: "需求调研（同理心）", context: "任务情境",
+  code: "编号", category: "类别", short_name: "短名", title: "核心任务名称", description: "任务描述", deliverables: "最终成果清单",
+  type: "类型", weight: "权重（%）", knowledge_types: "知识类型", alignment_note: "目标—成果—评价对齐说明",
+  seq: "序号", strategy: "策略", hours: "学时", content: "内容", objectives: "对应目标", score: "分值", stage_submission: "阶段提交物",
+  submission_channel: "提交方式", late_policy: "延期与迟交", rework_policy: "整改与再提交", integrity: "学术诚信要求", pilot_plan: "试运行安排",
+  ifmos_scale: "IFMOS 量表自评", evidence_plan: "证据计划", revision_log: "修改记录"
+};
+const CAT = { cognitive: "认知", values: "思政", generic: "通用能力" };
+const CAT_AB = { cognitive: "认", values: "思", generic: "通" };
+const KIND = { template: "模板", rubric: "量规", checklist: "核查清单", card: "卡片", script: "脚本", case: "案例/样例", game: "游戏", other: "其他" };
+const ORIGIN = { adopt: "借鉴", adapt: "改编", create: "自创" };
+const STATUS = { e: "原文抽取", i: "AI 归纳", m: "缺失", t: "教师修改" };
+const LONG = new Set(["teacher_intent", "learner_analysis", "needs_research", "context", "description", "alignment_note", "pilot_plan",
+  "ifmos_scale", "evidence_plan", "revision_log", "submission_channel", "late_policy", "rework_policy", "integrity", "content", "textbook"]);
+
+/* ---------------- 路径与 schema ---------------- */
+const segs = p => p.replace(/\[(\d+)\]/g, ".$1").split(".");
+function getAt(obj, p) { let n = obj; for (const s of segs(p)) { if (n == null) return undefined; n = n[s]; } return n; }
+const isLeaf = n => n && typeof n === "object" && !Array.isArray(n) && "s" in n && "v" in n;
+function* leaves(node, path) {
+  if (isLeaf(node)) { yield path; return; }
+  if (Array.isArray(node)) { for (let i = 0; i < node.length; i++) yield* leaves(node[i], `${path}[${i}]`); return; }
+  if (node && typeof node === "object") for (const k of Object.keys(node)) if (!k.startsWith("_")) yield* leaves(node[k], path ? `${path}.${k}` : k);
+}
+const scCache = new Map();
+function schemaAt(p) {
+  if (scCache.has(p)) return scCache.get(p);
+  let n = SCHEMA, forbid = false;
+  for (const s of segs(p)) {
+    if (!n) break;
+    n = /^\d+$/.test(s) ? n.items : (n.properties && n.properties[s]);
+    if (n && n["x-infer"] === "forbid") forbid = true;
+  }
+  let r = n || {};
+  if (r.$ref) r = Object.assign({}, SCHEMA.$defs[r.$ref.split("/").pop()], r);
+  const out = { anchor: !!r["x-anchor"], forbid: forbid, enumv: r.enum, type: r.type, desc: r.description };
+  scCache.set(p, out);
+  return out;
+}
+const lastKey = p => segs(p).pop();
+const ALL_LEAVES = [...leaves(DATA, "")];
+const ANCHORS = ALL_LEAVES.filter(p => schemaAt(p).anchor);
+
+/* ---------------- 状态 ---------------- */
+const confirmed = new Set();
+const edited = new Set();
+const openMods = new Set([0]);
+let active = "I", editing = null, editErr = "", saved = false;
+const resState = DATA.P.resources.map(r => ({ attached: "", origin: "", kind: r.kind }));
+
+const statusOf = p => edited.has(p) ? "t" : getAt(DATA, p).s;
+const statusText = p => edited.has(p) ? (getAt(ORIG, p).s === "m" ? "教师填写" : "教师修改") : STATUS[getAt(DATA, p).s];
+const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+function setValue(p, v) {
+  getAt(DATA, p).v = v;
+  if (same(getAt(ORIG, p).v, v)) edited.delete(p); else edited.add(p);
+  if (schemaAt(p).anchor) confirmed.add(p);
+}
+
+/* ---------------- 工具 ---------------- */
+const $ = (s, r) => (r || document).querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const num = v => (typeof v === "number" ? v : Number(v));
+const fmt = n => (Number.isFinite(n) ? String(+n.toFixed(2)) : "?");
+const near = (a, b) => Math.abs(a - b) < 1e-6;
+const sum = a => a.reduce((x, y) => x + (Number.isFinite(y) ? y : 0), 0);
+const ANCHOR_SVG = '<svg viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="8" cy="3.2" r="1.7"/><path d="M8 5v9.2M4.6 7.5h6.8M2.5 9.5c.4 2.7 2.8 4.7 5.5 4.7s5.1-2 5.5-4.7"/></svg>';
+
+function describe(p) {
+  const s = segs(p), k = lastKey(p);
+  if (s[0] === "M" && s[1] === "modules") {
+    const m = +s[2] + 1;
+    if (s[3] === "activities") return `模块${m} 活动${+s[4] + 1} ${LABEL[k]}`;
+    if (s[3] === "probes") return `模块${m}「${getAt(DATA, `M.modules[${s[2]}].probes[${s[4]}].type`).v}」${LABEL[k]}`;
+    return `模块${m} ${LABEL[k]}`;
+  }
+  if (s[1] === "objectives") return `目标 ${getAt(DATA, `F.objectives[${s[2]}].code`).v} ${LABEL[k]}`;
+  if (s[1] === "assessment_scheme") return `考核「${getAt(DATA, `F.assessment_scheme[${s[2]}].type`).v}」${k === "type" ? "名称" : LABEL[k]}`;
+  return LABEL[k] || k;
+}
+
+/* ---------------- 原文定位 ---------------- */
+const MAP = []; let NSRC = "";
+for (let i = 0; i < SOURCE.length; i++) if (!/\s/.test(SOURCE[i])) { MAP.push(i); NSRC += SOURCE[i]; }
+const norm = s => String(s).replace(/\s+/g, "");
+const LINES = SOURCE.split("\n");
+const LSTART = []; { let o = 0; for (const l of LINES) { LSTART.push(o); o += l.length + 1; } }
+const isRefSrc = s => /^[一二三四五六七八]、/.test(s) || /^（[一二三]）/.test(s) || /（.*摘要|整段|截断/.test(s);
+
+function locate(src, ctx) {
+  if (!src) return null;
+  let from = 0;
+  for (const c of ctx || []) { const i = NSRC.indexOf(norm(c), from); if (i >= 0) from = i; }
+  const q = norm(src);
+  let i = NSRC.indexOf(q, from);
+  if (i < 0 && from > 0) i = NSRC.indexOf(q);
+  if (i >= 0) return { a: MAP[i], b: MAP[i + q.length - 1] + 1, ref: isRefSrc(src) };
+  // 章节引用：取引号内文字，或按“·”拆分后逐段向后找，去掉末尾括注
+  const quoted = src.match(/“([^”]+)”/);
+  const parts = quoted ? [quoted[1]] : src.split("·");
+  let pos = 0, hit = null;
+  for (let p of parts) {
+    p = norm(p).replace(/（[^（）]*）$/, "");
+    if (!p) continue;
+    const j = NSRC.indexOf(p, pos);
+    if (j >= 0) { hit = [j, p.length]; pos = j + p.length; }
+  }
+  return hit ? { a: MAP[hit[0]], b: MAP[hit[0] + hit[1] - 1] + 1, ref: true } : null;
+}
+function ctxFor(p) {
+  const s = segs(p);
+  if (s[0] === "M" && s[3] === "activities") return [getAt(ORIG, `M.modules[${s[2]}].activities[${s[4]}].hours`).src];
+  if (s[0] === "M" && s[3] === "probes") return ["模块" + (+s[2] + 1) + "："];
+  return [];
+}
+
+const srcBody = $("#src-body"), srcCap = $("#src-cap");
+function lineClass(l) {
+  if (/^[一二三四五六七八]、/.test(l)) return "h1";
+  if (/^（[一二三]）/.test(l) || l === "学术诚信要求" || l === "课程教学大纲") return "h2";
+  return "";
+}
+srcBody.innerHTML = LINES.map((l, n) => `<div class="sl ${lineClass(l)}" id="sl-${n}"><span class="no">${n + 1}</span><span class="tx">${esc(l) || " "}</span></div>`).join("");
+let hitLines = [];
+function clearHit() {
+  for (const n of hitLines) { const el = $("#sl-" + n); el.classList.remove("hit"); $(".tx", el).textContent = LINES[n] || " "; }
+  hitLines = [];
+}
+function highlight(loc, caption) {
+  clearHit();
+  if (!loc) { srcCap.innerHTML = caption; return; }
+  for (let n = 0; n < LINES.length; n++) {
+    const ls = LSTART[n], le = ls + LINES[n].length;
+    if (le <= loc.a || ls >= loc.b) continue;
+    const a = Math.max(loc.a, ls) - ls, b = Math.min(loc.b, le) - ls, t = LINES[n];
+    const el = $("#sl-" + n);
+    el.classList.add("hit");
+    $(".tx", el).innerHTML = esc(t.slice(0, a)) + "<mark>" + esc(t.slice(a, b)) + "</mark>" + esc(t.slice(b));
+    hitLines.push(n);
+  }
+  srcCap.innerHTML = caption;
+  const mk = $("mark", srcBody);
+  if (mk) {
+    const top = mk.getBoundingClientRect().top - srcBody.getBoundingClientRect().top + srcBody.scrollTop - srcBody.clientHeight / 3;
+    srcBody.scrollTo({ top: Math.max(0, top), behavior: "instant" });
+  }
+}
+let lastFocusPath = null;
+function showSourceFor(p) {
+  if (p === lastFocusPath) return;
+  lastFocusPath = p;
+  const o = getAt(ORIG, p), d = describe(p);
+  if (!o.src) { highlight(null, `<b>${esc(d)}</b>：原文中没有对应内容（缺失）。`); return; }
+  const loc = locate(o.src, ctxFor(p));
+  if (!loc) { highlight(null, `<b>${esc(d)}</b>：未能在原文中定位（来源记为“${esc(o.src)}”）。`); return; }
+  highlight(loc, `<b>${esc(d)}</b>：${loc.ref ? "按章节定位" + (o.src.length > 0 ? `（${esc(o.src)}）` : "") : "原文片段"}，第 ${LINES.findIndex((_, n) => LSTART[n] + LINES[n].length >= loc.a) + 1} 行。`);
+}
+
+/* ---------------- 一致性软提示（移植 check.py 第 3 部分） ---------------- */
+const EXPECT = {
+  "基础理论": ["cognitive"], "基本技能": ["cognitive"], "手工制品质量": ["cognitive"],
+  "问题分析与方案设计": ["cognitive", "generic"], "问题解决与迭代优化": ["cognitive", "generic"],
+  "协作沟通与分工配合": ["generic"], "汇报表达": ["generic"], "学习反思与自我改进": ["generic"]
+};
+const COLLAB = { "协作沟通与分工配合": "3.2" };
+let HINTS = [], PASS = [], HINT_PATHS = new Set();
+const modHours = m => sum(m.activities.map(a => num(a.hours.v)));
+const modScore = m => sum(m.probes.map(p => num(p.score.v)));
+function computeHints() {
+  const H = [], P = [];
+  const prof = DATA.I.course_profile;
+  const total = num(prof.hours_total.v), proj = num(prof.hours_project.v);
+  const mods = DATA.M.modules;
+  const mh = mods.map(modHours), cal = sum(mh);
+  const fp = { t: "field", path: "I.course_profile.hours_total", label: "总学时" };
+  const fpp = { t: "field", path: "I.course_profile.hours_project", label: "项目学时" };
+  if (!(near(cal, total) || near(cal, proj))) {
+    H.push({ lvl: "warn", msg: `教学日历合计 ${fmt(cal)} 学时，既不等于总学时 ${fmt(total)}，也不等于项目学时 ${fmt(proj)}`,
+      why: "各模块：" + mods.map((m, i) => `${m.seq.v}=${fmt(mh[i])}`).join("，"),
+      targets: [fp, fpp, { t: "id", stage: "M", id: "m-overview", label: "模块学时汇总" }] });
+  } else P.push(`教学日历合计 ${fmt(cal)} 学时`);
+
+  const scheme = DATA.F.assessment_scheme;
+  const w = sum(scheme.map(a => num(a.weight.v)));
+  if (near(w, 100)) P.push(`总体考核权重合计 ${fmt(w)}`);
+  else H.push({ lvl: "warn", msg: `总体考核权重合计 ${fmt(w)}，不是 100`, targets: [{ t: "id", stage: "F", id: "f-scheme", label: "评价方案表" }] });
+
+  const pi = scheme.findIndex(a => a.type.v === "项目式学习");
+  if (pi >= 0 && total > 0) {
+    const pw = num(scheme[pi].weight.v), ratio = proj / total * 100;
+    if (ratio - pw > 20) H.push({ lvl: "warn", msg: `项目学时占比 ${Math.round(ratio)}%，项目成绩占比 ${fmt(pw)}%，偏差较大，请确认`,
+      why: `项目式教学 ${fmt(proj)} / 总 ${fmt(total)} 学时；“项目式学习”在总体考核中占 ${fmt(pw)}`,
+      targets: [fpp, { t: "field", path: `F.assessment_scheme[${pi}].weight`, label: "项目式学习权重" }] });
+  }
+
+  const ps = sum(mods.map(modScore));
+  if (near(ps, 100)) P.push(`项目评价探针分值合计 ${fmt(ps)}`);
+  else H.push({ lvl: "warn", msg: `项目评价探针分值合计 ${fmt(ps)}，不是 100`, targets: [{ t: "id", stage: "M", id: "m-overview", label: "模块分值汇总" }] });
+
+  const objs = {}; DATA.F.objectives.forEach((o, i) => { objs[o.code.v] = { cat: o.category.v, i }; });
+  const cover = {};
+  mods.forEach(m => m.probes.forEach(p => (p.objectives.v || []).forEach(c => { cover[c] = (cover[c] || 0) + 1; })));
+  const miss = Object.keys(objs).filter(c => !cover[c]);
+  if (!miss.length) P.push("每条目标都被至少一个探针覆盖");
+  else H.push({ lvl: "warn", msg: `未被探针覆盖的目标：${miss.join("、")}`,
+    targets: miss.map(c => ({ t: "field", path: `F.objectives[${objs[c].i}].code`, label: "目标 " + c })) });
+
+  mods.forEach((m, mi) => m.probes.forEach((p, pi2) => {
+    const t = p.type.v, oc = p.objectives.v || [], path = `M.modules[${mi}].probes[${pi2}].objectives`;
+    const tgt = [{ t: "field", path, label: `模块${m.seq.v}「${t}」` }];
+    const unknown = oc.filter(c => !objs[c]);
+    if (unknown.length) H.push({ lvl: "warn", msg: `模块${m.seq.v}「${t}」引用了不存在的目标编号 ${unknown.join("、")}`, targets: tgt });
+    const cats = new Set(oc.filter(c => objs[c]).map(c => objs[c].cat));
+    const exp = EXPECT[t];
+    if (exp && !exp.some(c => cats.has(c))) H.push({ lvl: "warn",
+      msg: oc.length ? `模块${m.seq.v}「${t}」对应 ${oc.join("、")}，没有一条属于期望类别（${exp.slice().sort().map(c => CAT[c]).join("/")}）`
+                     : `模块${m.seq.v}「${t}」没有对应任何目标（期望类别：${exp.slice().sort().map(c => CAT[c]).join("/")}）`,
+      why: `“${t}”类探针通常对应${exp.map(c => CAT[c] + "目标").join("或")}`, targets: tgt });
+    if (COLLAB[t] && !oc.includes(COLLAB[t])) H.push({ lvl: "info",
+      msg: `模块${m.seq.v}「${t}」未对应团队协作目标 ${COLLAB[t]}（现对应 ${oc.join("、") || "无"}）`, targets: tgt });
+  }));
+
+  H.push({ lvl: "ai", msg: "模块 3 小组研讨主题写“一组仿真如何覆盖五类波形”，与项目任务中的三种波形（正弦波、方波、三角波）不一致",
+    why: "规则查不出的文本矛盾，由 AI 通读发现，请教师判断以哪处为准",
+    targets: [{ t: "src", src: "一组仿真如何覆盖五类波形", label: "原文：五类波形" },
+              { t: "src", src: "完成正弦波、方波和三角波的产生", label: "原文：三种波形" },
+              { t: "field", path: "M.modules[2].activities[1].content", label: "模块3 研讨内容" }] });
+  HINTS = H; PASS = P; COVER = cover;
+  HINT_PATHS = new Set(H.flatMap(h => h.targets.filter(t => t.t === "field").map(t => t.path)));
+}
+let COVER = {};
+const LVL = { warn: "需核对", info: "建议", ai: "AI 通读" };
+let prevHintKey = "";
+function renderHints() {
+  $("#hint-count").textContent = `（${HINTS.length} 条）`;
+  $("#hint-list").innerHTML = HINTS.map((h, i) => `<li class="hint"><span class="lvl lvl-${h.lvl}">${LVL[h.lvl]}</span>
+    <span class="msg">${esc(h.msg)}${h.why ? `<span class="why">${esc(h.why)}</span>` : ""}</span>
+    <span class="jumps">查看：${h.targets.map((t, j) => `<button type="button" class="lnk" data-act="jump" data-h="${i}" data-t="${j}">${esc(t.label)}</button>`).join("")}</span></li>`).join("");
+  $("#hint-pass").innerHTML = PASS.length ? `<b>已通过：</b>${PASS.map(esc).join("；")}` : "";
+  const key = HINTS.map(h => h.msg).join("|");
+  if (prevHintKey && key !== prevHintKey) $("#live").textContent = `一致性提示已更新，现有 ${HINTS.length} 条。`;
+  prevHintKey = key;
+}
+
+/* ---------------- 字段渲染 ---------------- */
+function kindOf(p) {
+  const sc = schemaAt(p), k = lastKey(p);
+  if (/probes\[\d+\]\.objectives$/.test(p)) return "chips";
+  if (sc.enumv) return "enum";
+  if (sc.type === "number" || sc.type === "integer") return "number";
+  if (sc.type === "array") return "list";
+  return LONG.has(k) || sc.type === "object" ? "textarea" : "input";
+}
+function objChip(code) {
+  const o = DATA.F.objectives.find(x => x.code.v === code);
+  const cat = o ? o.category.v : "unknown";
+  return `<span class="chip cat-${cat}" title="${esc(o ? CAT[cat] + "目标 " + code + "：" + o.short_name.v : "不存在的目标编号")}"><span class="ab">${o ? CAT_AB[cat] : "?"}</span><b>${esc(code)}</b>${o ? esc(o.short_name.v) : "（未知）"}</span>`;
+}
+function valueHTML(p, v) {
+  const k = kindOf(p), key = lastKey(p);
+  if (v == null || v === "" || (Array.isArray(v) && !v.length)) return '<span class="empty">（空）</span>';
+  if (k === "chips") return `<span class="chips">${v.map(objChip).join("")}</span>`;
+  if (key === "category") return `<span class="chip cat-${esc(v)}">${esc(CAT[v] || v)}</span>`;
+  if (k === "number") return `<span class="mono">${esc(fmt(num(v)))}</span>`;
+  if (k === "list") return v.length > 3 ? `<ul>${v.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : esc(v.join("、"));
+  return esc(v);
+}
+function editorHTML(p, v) {
+  const k = kindOf(p), sc = schemaAt(p), d = esc(describe(p));
+  if (k === "chips") {
+    const cur = new Set(v || []);
+    const rows = Object.keys(CAT).map(cat => `<div class="pick-row"><span class="pk">${CAT[cat]}</span>${DATA.F.objectives.filter(o => o.category.v === cat).map(o =>
+      `<button type="button" class="chip cat-${cat}" data-act="chip" data-code="${esc(o.code.v)}" data-fk="chip-${esc(o.code.v)}" aria-pressed="${cur.has(o.code.v)}"><b>${esc(o.code.v)}</b>${esc(o.short_name.v)}</button>`).join("")}</div>`).join("");
+    return `<div class="pick" role="group" aria-label="选择${d}（可多选，点击即生效）">${rows}
+      <div class="edit-act"><button type="button" class="btn btn-sm" data-act="done" data-fk="done">完成</button><span>点击芯片即可增减，提示会实时重算。</span></div></div>`;
+  }
+  let ctl;
+  if (k === "enum") ctl = `<select class="inp" data-fk="inp" aria-label="${d}">${sc.enumv.map(e => `<option value="${esc(e)}"${e === v ? " selected" : ""}>${esc(lastKey(p) === "category" ? CAT[e] : e)}</option>`).join("")}</select>`;
+  else if (k === "list") ctl = `<textarea class="inp" data-fk="inp" rows="${Math.max(2, (v || []).length + 1)}" aria-label="${d}（每行一项）">${esc((v || []).join("\n"))}</textarea>`;
+  else if (k === "textarea") ctl = `<textarea class="inp" data-fk="inp" rows="3" aria-label="${d}">${esc(v == null ? "" : v)}</textarea>`;
+  else ctl = `<input class="inp" data-fk="inp" ${k === "number" ? 'inputmode="decimal"' : ""} value="${esc(v == null ? "" : (k === "number" ? fmt(num(v)) : v))}" aria-label="${d}">`;
+  return `${ctl}<div class="edit-act"><button type="button" class="btn btn-sm btn-primary" data-act="save" data-fk="save">保存</button><button type="button" class="btn btn-sm" data-act="cancel">取消</button>
+    <span>${k === "list" ? "每行一项；" : ""}${k === "textarea" || k === "list" ? "Ctrl/⌘+Enter 保存" : "Enter 保存"}，Esc 取消</span>${editErr ? `<span class="err" role="alert">${esc(editErr)}</span>` : ""}</div>`;
+}
+const SHORT = { "原文抽取": "原文", "AI 归纳": "AI 归纳", "缺失": "缺失", "教师修改": "教师改", "教师填写": "教师填" };
+function metaHTML(p, mode) {
+  const sc = schemaAt(p), st = statusOf(p), d = esc(describe(p)), full = statusText(p);
+  const out = [mode === "cell" ? `<span class="badge st-${st}" title="${full}">${SHORT[full]}<span class="sr">（${full}）</span></span>` : `<span class="badge st-${st}">${full}</span>`];
+  if (st === "i") out.push('<span class="check-tag">请重点核对</span>');
+  if (sc.anchor) {
+    const on = confirmed.has(p);
+    out.push(`<label class="ck${on ? " on" : ""}"><input type="checkbox" data-act="confirm" data-fk="confirm" aria-label="确认 ${d}"${on ? " checked" : ""}>${on ? "已确认" : "确认"}</label>`);
+  }
+  if (getAt(ORIG, p).s !== "m" && editing !== p) out.push(`<button type="button" class="ib" data-act="edit" data-fk="edit" aria-label="修改 ${d}">修改</button>`);
+  if (edited.has(p) && getAt(ORIG, p).s !== "m") out.push(`<button type="button" class="ib" data-act="revert" data-fk="revert" aria-label="恢复 AI 值：${d}">恢复 AI 值</button>`);
+  if (HINT_PATHS.has(p)) out.push('<span class="hint-tag">⚠ 有一致性提示</span>');
+  return out.join("");
+}
+function fillHTML(p, mode) {
+  // 原文缺失的字段：始终显示输入框
+  const leaf = getAt(DATA, p), sc = schemaAt(p), o = getAt(ORIG, p), k = kindOf(p), d = esc(describe(p));
+  const val = Array.isArray(leaf.v) ? leaf.v.join("\n") : (leaf.v == null ? "" : String(leaf.v));
+  const note = sc.forbid ? "该项不允许 AI 推断，请教师填写" : `原文缺失${o.src ? "：" + esc(o.src) : ""}，请教师补充`;
+  const ph = k === "list" ? "每行一项" : (sc.desc ? sc.desc : "请填写");
+  return `<textarea class="inp need" data-act="fill" data-fk="inp" rows="${mode === "row" ? 3 : 2}" aria-label="${d}" aria-describedby="note-${cssId(p)}" placeholder="${esc(ph)}">${esc(val)}</textarea>
+    <div class="f-note" id="note-${cssId(p)}">${note}</div>`;
+}
+const cssId = p => p.replace(/[^a-zA-Z0-9]/g, "_");
+function fieldHTML(p, mode, label) {
+  const leaf = getAt(DATA, p), o = getAt(ORIG, p), sc = schemaAt(p);
+  const cls = ["fld", "fld-" + mode]; if (HINT_PATHS.has(p)) cls.push("has-hint");
+  const isFill = o.s === "m";
+  const body = isFill ? fillHTML(p, mode) : (editing === p ? editorHTML(p, leaf.v) : `<div class="f-val">${valueHTML(p, leaf.v)}</div>`);
+  const basis = statusOf(p) === "i" && o.src && mode === "row" ? `<div class="f-basis">依据：${esc(o.src)}</div>` : "";
+  const meta = `<div class="f-meta">${metaHTML(p, mode)}</div>`;
+  if (mode === "row") {
+    const lbl = label || LABEL[lastKey(p)] || lastKey(p);
+    return `<div class="${cls.join(" ")}" data-path="${esc(p)}" tabindex="-1"><div class="f-label">${esc(lbl)}${sc.anchor ? `<span class="anchor" title="系统要用，必须教师确认">${ANCHOR_SVG}锚点</span>` : ""}</div>
+      <div class="f-main">${body}${basis}${meta}</div></div>`;
+  }
+  return `<div class="${cls.join(" ")}" data-path="${esc(p)}" tabindex="-1">${label ? `<span class="cell-lbl">${esc(label)}${sc.anchor ? " · 锚点" : ""}</span>` : ""}${body}${meta}</div>`;
+}
+function groupBtn(prefixes, label) {
+  const list = ANCHORS.filter(a => prefixes.some(px => a === px || a.startsWith(px + ".") || a.startsWith(px + "[")));
+  const left = list.filter(a => !confirmed.has(a)).length;
+  return `<button type="button" class="btn btn-sm" data-act="group" data-prefixes="${esc(prefixes.join("|"))}" data-fk="grp-${esc(prefixes.join("|"))}" ${left ? "" : "disabled"}>${left ? `${label}（还剩 ${left} 个）` : `${label.replace(/全部确认.*/, "")}已全部确认`}</button>`;
+}
+const anchorCount = px => { const l = ANCHORS.filter(a => a.startsWith(px)); return [l.filter(a => confirmed.has(a)).length, l.length]; };
+
+/* ---------------- 各阶段面板 ---------------- */
+function introHTML(st) {
+  const s = STAGES.find(x => x.k === st);
+  const [c, t] = anchorCount(st + ".");
+  return `<div class="card panel-intro"><h2>${st} · ${s.name}</h2><p>${s.desc}${t ? ` 本阶段锚点已确认 ${c} / ${t}。` : " 本阶段没有锚点字段。"}
+    状态说明：<span class="badge st-e">原文抽取</span> 原文直接有；<span class="badge st-i">AI 归纳</span> 请重点核对；<span class="badge st-m">缺失</span> 需教师填写；<span class="anchor">${ANCHOR_SVG}锚点</span> 系统要用，须逐项确认。</p></div>`;
+}
+function panelI() {
+  const keys = Object.keys(DATA.I.course_profile);
+  return introHTML("I") +
+    `<section class="card sec"><div class="sec-head"><h3>课程基本信息</h3>${groupBtn(["I.course_profile"], "本组锚点全部确认")}</div>
+      ${keys.map(k => fieldHTML(`I.course_profile.${k}`, "row")).join("")}</section>
+    <section class="card sec"><div class="sec-head"><h3>教师期待、学情与情境</h3></div>
+      ${["teacher_intent", "learner_analysis", "needs_research", "context"].map(k => fieldHTML(`I.${k}`, "row")).join("")}</section>`;
+}
+function panelF() {
+  const objs = DATA.F.objectives;
+  const groups = Object.keys(CAT).map(cat => {
+    const idx = objs.map((o, i) => i).filter(i => objs[i].category.v === cat);
+    if (!idx.length) return "";
+    return `<div class="obj-group"><div class="obj-group-head"><h4>${CAT[cat]}目标（${idx.length}）</h4>${groupBtn(idx.map(i => `F.objectives[${i}]`), "本组锚点全部确认")}</div>
+      <div class="objs">${idx.map(i => {
+        const n = COVER[objs[i].code.v] || 0;
+        return `<div class="obj"><div class="obj-grid">${fieldHTML(`F.objectives[${i}].code`, "cell", "编号")}${fieldHTML(`F.objectives[${i}].category`, "cell", "类别")}${fieldHTML(`F.objectives[${i}].short_name`, "cell", "短名（≤15 字）")}</div>
+          <div class="obj-src">原文：${esc(getAt(ORIG, `F.objectives[${i}].short_name`).src)}… <span class="obj-cover${n ? "" : " zero"}">· 被 ${n} 个探针引用</span></div></div>`;
+      }).join("")}</div></div>`;
+  }).join("");
+  const sch = DATA.F.assessment_scheme, w = sum(sch.map(a => num(a.weight.v)));
+  return introHTML("F") +
+    `<section class="card sec"><div class="sec-head"><h3>课程目标</h3><span class="legend">芯片颜色与前缀：<span class="chip cat-cognitive"><span class="ab">认</span>认知</span><span class="chip cat-values"><span class="ab">思</span>思政</span><span class="chip cat-generic"><span class="ab">通</span>通用能力</span></span></div>${groups}</section>
+    <section class="card sec" id="f-scheme" tabindex="-1"><div class="sec-head"><h3>评价方案（课程总体考核）</h3>${groupBtn(["F.assessment_scheme"], "本组锚点全部确认")}</div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>考核方式</th><th>权重（%）</th><th>知识类型</th></tr></thead><tbody>
+      ${sch.map((a, i) => `<tr><td>${fieldHTML(`F.assessment_scheme[${i}].type`, "cell")}</td><td class="c-weight">${fieldHTML(`F.assessment_scheme[${i}].weight`, "cell")}</td><td>${fieldHTML(`F.assessment_scheme[${i}].knowledge_types`, "cell")}</td></tr>`).join("")}
+      </tbody><tfoot><tr><td>合计</td><td class="${near(w, 100) ? "sum-ok" : "sum-bad"}">${fmt(w)}${near(w, 100) ? " ✓" : " ⚠ 不是 100"}</td><td></td></tr></tfoot></table></div></section>
+    <section class="card sec"><div class="sec-head"><h3>核心任务</h3></div>${fieldHTML("F.core_task.title", "row")}${fieldHTML("F.core_task.description", "row")}</section>
+    <section class="card sec"><div class="sec-head"><h3>成果清单</h3></div>${fieldHTML("F.deliverables", "row")}${fieldHTML("F.alignment_note", "row")}</section>`;
+}
+function panelM() {
+  const mods = DATA.M.modules;
+  const total = num(DATA.I.course_profile.hours_total.v), proj = num(DATA.I.course_profile.hours_project.v);
+  const mh = mods.map(modHours), ms = mods.map(modScore), ch = sum(mh), cs = sum(ms);
+  const hOk = near(ch, total) || near(ch, proj);
+  const ov = `<section class="card sec" id="m-overview" tabindex="-1"><div class="sec-head"><h3>模块汇总</h3><span class="muted" style="font-size:.85rem">总学时 ${fmt(total)} · 项目式教学学时 ${fmt(proj)}</span></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>模块</th><th class="num">学时小计</th><th class="num">探针分值</th><th class="num">锚点确认</th></tr></thead><tbody>
+    ${mods.map((m, i) => { const [c, t] = anchorCount(`M.modules[${i}].`); return `<tr><td class="pad"><button type="button" class="lnk" data-act="openmod" data-mod="${i}">模块 ${esc(m.seq.v)} · ${esc(m.name.v)}</button></td><td class="num pad">${fmt(mh[i])}</td><td class="num pad">${fmt(ms[i])}</td><td class="num pad">${c} / ${t}</td></tr>`; }).join("")}
+    </tbody><tfoot><tr><td>合计</td><td class="num ${hOk ? "sum-ok" : "sum-bad"}">${fmt(ch)}${hOk ? " ✓" : " ⚠"}</td><td class="num ${near(cs, 100) ? "sum-ok" : "sum-bad"}">${fmt(cs)}${near(cs, 100) ? " ✓" : " ⚠"}</td><td></td></tr></tfoot></table></div>
+    ${hOk ? "" : `<p class="muted" style="font-size:.85rem;margin:.4rem 0 0">⚠ 日历合计 ${fmt(ch)} 学时，与总学时 ${fmt(total)}、项目学时 ${fmt(proj)} 都不相等。</p>`}</section>`;
+  const body = mods.map((m, i) => {
+    const px = `M.modules[${i}]`, [c, t] = anchorCount(px + ".");
+    return `<details class="mod" data-mod="${i}" id="mod-${i}"${openMods.has(i) ? " open" : ""}><summary><span class="mod-no">模块 ${esc(m.seq.v)}</span><span class="mod-name">${esc(m.name.v)}</span>
+      <span class="mod-meta"><span>${fmt(mh[i])} 学时</span><span>探针 ${fmt(ms[i])} 分</span><span class="${c === t ? "all-ok" : ""}">锚点 ${c}/${t}${c === t ? " ✓" : ""}</span></span></summary>
+      <div class="mod-body">
+        <div class="sec-head"><span class="muted" style="font-size:.85rem">模块信息、活动与探针中的锚点字段需逐项确认。</span>${groupBtn([px], "本模块锚点全部确认")}</div>
+        <div class="mod-top">${fieldHTML(px + ".seq", "row")}${fieldHTML(px + ".name", "row")}</div>
+        <h4>教学活动</h4>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>策略</th><th>学时</th><th>内容</th></tr></thead><tbody>
+        ${m.activities.map((a, j) => `<tr><td class="c-strategy">${fieldHTML(`${px}.activities[${j}].strategy`, "cell")}</td><td class="c-hours">${fieldHTML(`${px}.activities[${j}].hours`, "cell")}</td><td>${fieldHTML(`${px}.activities[${j}].content`, "cell")}</td></tr>`).join("")}
+        </tbody><tfoot><tr><td>学时小计</td><td>${fmt(mh[i])}</td><td></td></tr></tfoot></table></div>
+        <h4>评价探针</h4>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>类型</th><th>对应目标</th><th>分值</th></tr></thead><tbody>
+        ${m.probes.map((p, j) => `<tr><td class="c-ptype">${fieldHTML(`${px}.probes[${j}].type`, "cell")}</td><td>${fieldHTML(`${px}.probes[${j}].objectives`, "cell")}</td><td class="c-score">${fieldHTML(`${px}.probes[${j}].score`, "cell")}</td></tr>`).join("")}
+        </tbody><tfoot><tr><td>分值小计</td><td></td><td>${fmt(ms[i])}</td></tr></tfoot></table></div>
+        ${fieldHTML(px + ".stage_submission", "row")}
+      </div></details>`;
+  }).join("");
+  return introHTML("M") + ov + body;
+}
+function panelP() {
+  const res = DATA.P.resources;
+  const fa = resState.filter(r => r.attached).length, fo = resState.filter(r => r.origin).length;
+  const sel = (i, f, opts, v) => `<select class="inp${v ? "" : " need-sel"}" data-act="res" data-i="${i}" data-f="${f}" data-fk="res-${i}-${f}" aria-label="${esc(res[i].name)}：${f === "attached" ? "是否已附实物" : f === "origin" ? "来源" : "类别"}">
+    ${f !== "kind" ? `<option value=""${v ? "" : " selected"}>待填</option>` : ""}${Object.entries(opts).map(([k, t]) => `<option value="${k}"${k === v ? " selected" : ""}>${t}</option>`).join("")}</select>`;
+  return introHTML("P") +
+    `<div class="lack-banner"><strong>大纲中缺失，需要教师补充</strong><p>AI 从教学日历中找到 ${res.length} 项资源名称，但大纲没有附实物，也没有说明来源。按 schema，“是否已附实物”和“来源”不允许 AI 推断，请逐项选择。试运行安排、学术诚信要求在原文中也没有内容。</p></div>
+    <section class="card sec"><div class="sec-head"><h3>资源清单</h3><span class="fill-cnt" id="res-cnt">已附实物已填 ${fa}/${res.length} · 来源已填 ${fo}/${res.length}</span></div>
+      <p class="muted" style="font-size:.85rem;margin:0 0 .5rem">名称为<span class="badge st-e">原文抽取</span>，类别为<span class="badge st-i">AI 归纳</span>（请重点核对）。点名称可在原文中定位。</p>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>名称</th><th>类别</th><th>用于模块</th><th>是否已附实物</th><th>来源</th></tr></thead><tbody>
+      ${res.map((r, i) => { const rs = resState[i], kChanged = rs.kind !== r.kind;
+        return `<tr class="${rs.attached && rs.origin ? "" : "res-todo"}"><td class="pad"><button type="button" class="res-name" data-act="res-src" data-i="${i}" data-fk="res-${i}-name">${esc(r.name)}</button></td>
+        <td class="pad">${sel(i, "kind", KIND, rs.kind)} <span class="badge st-${kChanged ? "t" : "i"}">${kChanged ? "教师修改" : "AI 归类"}</span></td>
+        <td class="pad mono">${r.used_in_modules.map(n => "模块" + n).join("、")}</td>
+        <td class="pad">${sel(i, "attached", { yes: "已附", no: "未附" }, rs.attached)}</td>
+        <td class="pad">${sel(i, "origin", ORIGIN, rs.origin)}</td></tr>`; }).join("")}
+      </tbody></table></div></section>
+    <section class="card sec"><div class="sec-head"><h3>运行规则</h3></div>${Object.keys(DATA.P.run_rules).map(k => fieldHTML(`P.run_rules.${k}`, "row")).join("")}</section>
+    <section class="card sec"><div class="sec-head"><h3>试运行</h3></div>${fieldHTML("P.pilot_plan", "row")}</section>`;
+}
+function panelS() {
+  return introHTML("S") +
+    `<div class="lack-banner"><strong>大纲中缺失，需要教师补充</strong><p>自评估是教师对本轮设计的反思，大纲里没有，AI 也不允许推断。以下三项请你本人填写，可以先空着，不影响保存设计 v1。</p></div>
+    <div class="private-note"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>S 阶段数据默认仅教师本人可见。</div>
+    <section class="card sec"><div class="sec-head"><h3>自评估</h3></div>
+      ${fieldHTML("S.ifmos_scale", "row", "IFMOS 量表自评")}${fieldHTML("S.evidence_plan", "row", "证据计划")}${fieldHTML("S.revision_log", "row", "修改记录")}</section>`;
+}
+const PANELS = { I: panelI, F: panelF, M: panelM, P: panelP, S: panelS };
+
+/* ---------------- 标签与全局 ---------------- */
+const tabsEl = $("#tabs"), panel = $("#panel");
+function stageCounts(st) {
+  const c = { e: 0, i: 0, m: 0, t: 0 };
+  for (const p of ALL_LEAVES) if (p.startsWith(st + ".")) c[statusOf(p)]++;
+  return c;
+}
+function renderTabs() {
+  tabsEl.innerHTML = STAGES.map(s => {
+    const c = stageCounts(s.k), lack = s.k === "P" || s.k === "S";
+    const sel = s.k === active;
+    const parts = [`原文 ${c.e}`, `归纳 ${c.i}`, `缺失 ${c.m}`].concat(c.t ? [`教师 ${c.t}`] : []);
+    return `<button type="button" role="tab" class="tab${lack ? " lack" : ""}" id="tab-${s.k}" data-stage="${s.k}" aria-selected="${sel}" aria-controls="panel" tabindex="${sel ? 0 : -1}"
+      aria-label="${s.k} ${s.name}：${parts.join("，")}${lack ? "，大纲中缺失，需要教师补充" : ""}">
+      <span class="tl"><span class="letter">${s.k}</span>${s.name}</span>
+      <span class="cnts" aria-hidden="true"><span class="cnt st-e" title="原文抽取">${c.e}</span><span class="cnt st-i" title="AI 归纳">${c.i}</span><span class="cnt st-m" title="缺失">${c.m}</span>${c.t ? `<span class="cnt st-t" title="教师修改">${c.t}</span>` : ""}</span>
+      ${lack ? '<span class="lack-tag" aria-hidden="true">缺失 · 需教师补充</span>' : ""}</button>`;
+  }).join("");
+}
+function renderGlobal() {
+  const n = ANCHORS.filter(a => confirmed.has(a)).length, N = ANCHORS.length, left = N - n;
+  $("#course-name").textContent = "《" + DATA.I.course_profile.name.v + "》";
+  $("#prog-txt").textContent = `已确认锚点 ${n} / ${N}`;
+  const pb = $("#prog-bar"); pb.setAttribute("aria-valuenow", Math.round(n / N * 100)); pb.setAttribute("aria-valuetext", `${n} / ${N}`); $("i", pb).style.width = (n / N * 100) + "%";
+  const btn = $("#save-btn");
+  btn.disabled = left > 0;
+  btn.textContent = left > 0 ? "全部锚点确认后可保存为设计 v1" : (saved ? "已保存为设计 v1（可再次保存）" : "保存为设计 v1");
+  $("#save-why").textContent = left > 0 ? `还有 ${left} 个锚点未确认（各阶段卡片中带“锚点”标记的字段）` : "锚点已全部确认；一致性提示不阻断保存";
+  const pill = $("#state-pill");
+  pill.textContent = saved ? "设计 v1 · 已保存（演示）" : "AI 抽取草稿 · 待教师确认";
+  pill.classList.toggle("done", saved);
+  renderTabs();
+}
+function snapshotFocus() {
+  const a = document.activeElement;
+  if (!a || !panel.contains(a)) return null;
+  const f = a.closest("[data-path]");
+  return { path: f ? f.dataset.path : null, fk: a.dataset ? a.dataset.fk : null, self: a.matches("[data-path]") };
+}
+function restoreFocus(s) {
+  if (!s) return;
+  let root = panel;
+  if (s.path) { root = panel.querySelector(`[data-path="${CSS.escape(s.path)}"]`); if (!root) return; }
+  const el = s.self ? root : (s.fk ? root.querySelector(`[data-fk="${CSS.escape(s.fk)}"]`) : null);
+  (el || (s.path ? root : null))?.focus({ preventScroll: true });
+}
+function render(focusSpec) {
+  computeHints();
+  const snap = focusSpec === undefined ? snapshotFocus() : focusSpec;
+  panel.innerHTML = PANELS[active]();
+  renderHints();
+  renderGlobal();
+  restoreFocus(snap);
+}
+function setStage(st, focusTab) {
+  if (active !== st) { active = st; editing = null; editErr = ""; }
+  panel.setAttribute("aria-labelledby", "tab-" + st);
+  render(null);
+  const tb = tabsEl.getBoundingClientRect().top, topH = $("#top").offsetHeight;
+  if (tb < topH) window.scrollBy(0, tb - topH - 12);
+  if (focusTab) $("#tab-" + st).focus({ preventScroll: true });
+}
+
+/* ---------------- 交互 ---------------- */
+tabsEl.addEventListener("click", e => { const t = e.target.closest(".tab"); if (t) setStage(t.dataset.stage, true); });
+tabsEl.addEventListener("keydown", e => {
+  const ks = STAGES.map(s => s.k), i = ks.indexOf(active);
+  let n = null;
+  if (e.key === "ArrowRight") n = (i + 1) % ks.length; else if (e.key === "ArrowLeft") n = (i + ks.length - 1) % ks.length;
+  else if (e.key === "Home") n = 0; else if (e.key === "End") n = ks.length - 1;
+  if (n !== null) { e.preventDefault(); setStage(ks[n], true); }
+});
+
+panel.addEventListener("focusin", e => { const f = e.target.closest("[data-path]"); if (f) showSourceFor(f.dataset.path); });
+panel.addEventListener("toggle", e => { const d = e.target; if (d.matches && d.matches("details.mod")) { const i = +d.dataset.mod; d.open ? openMods.add(i) : openMods.delete(i); } }, true);
+
+function readEditor(p, f) {
+  const k = kindOf(p), el = f.querySelector('[data-fk="inp"]'), raw = el ? el.value : "";
+  if (k === "number") {
+    const t = raw.trim(); const n = Number(t);
+    if (!t || !Number.isFinite(n)) return { err: "请输入数字" };
+    if (schemaAt(p).type === "integer" && !Number.isInteger(n)) return { err: "请输入整数" };
+    return { v: n };
+  }
+  if (k === "list") return { v: raw.split("\n").map(s => s.trim()).filter(Boolean) };
+  if (k === "enum") return { v: raw };
+  const t = raw.trim();
+  if (!t && schemaAt(p).anchor) return { err: "锚点字段不能为空" };
+  return { v: t };
+}
+function commit(p, f) {
+  const r = readEditor(p, f);
+  if (r.err) { editErr = r.err; render({ path: p, fk: "inp" }); return; }
+  setValue(p, r.v); editing = null; editErr = "";
+  render({ path: p, fk: "edit" });
+}
+
+panel.addEventListener("click", e => {
+  const b = e.target.closest("[data-act]"); if (!b || !panel.contains(b)) return;
+  const f = b.closest("[data-path]"), p = f && f.dataset.path, act = b.dataset.act;
+  if (act === "edit") { editing = p; editErr = ""; render({ path: p, fk: kindOf(p) === "chips" ? "done" : "inp" }); }
+  else if (act === "cancel") { editing = null; editErr = ""; render({ path: p, fk: "edit" }); }
+  else if (act === "save") commit(p, f);
+  else if (act === "done") { editing = null; render({ path: p, fk: "edit" }); }
+  else if (act === "chip") {
+    const cur = new Set(getAt(DATA, p).v || []), c = b.dataset.code;
+    cur.has(c) ? cur.delete(c) : cur.add(c);
+    const order = DATA.F.objectives.map(o => o.code.v);
+    setValue(p, [...cur].sort((a, z) => order.indexOf(a) - order.indexOf(z)));
+    render({ path: p, fk: "chip-" + c });
+  }
+  else if (act === "revert") { setValue(p, JSON.parse(JSON.stringify(getAt(ORIG, p).v))); edited.delete(p); confirmed.delete(p); render({ path: p, fk: "edit" }); }
+  else if (act === "group") {
+    const pxs = b.dataset.prefixes.split("|");
+    ANCHORS.filter(a => pxs.some(px => a === px || a.startsWith(px + ".") || a.startsWith(px + "["))).forEach(a => confirmed.add(a));
+    render({ path: null, fk: b.dataset.fk });
+    if (!document.activeElement || document.activeElement === document.body) panel.focus({ preventScroll: true });
+  }
+  else if (act === "openmod") { const i = +b.dataset.mod; openMods.add(i); render(null); const d = $("#mod-" + i); d.scrollIntoView({ block: "start" }); $("summary", d).focus({ preventScroll: true }); }
+  else if (act === "res-src") {
+    const r = DATA.P.resources[+b.dataset.i], m = r.used_in_modules[0], mod = DATA.M.modules[m - 1];
+    const loc = locate(r.name, mod ? [m + " " + mod.name.v] : []);
+    lastFocusPath = null;
+    highlight(loc, loc ? `<b>资源「${esc(r.name)}」</b>：在模块 ${m} 的教学日历中首次出现。` : `<b>资源「${esc(r.name)}」</b>：未能在原文中定位。`);
+  }
+});
+panel.addEventListener("change", e => {
+  const t = e.target;
+  if (t.dataset.act === "confirm") {
+    const p = t.closest("[data-path]").dataset.path;
+    t.checked ? confirmed.add(p) : confirmed.delete(p);
+    render({ path: p, fk: "confirm" });
+  } else if (t.dataset.act === "res") {
+    resState[+t.dataset.i][t.dataset.f] = t.value;
+    render({ path: null, fk: t.dataset.fk });
+  }
+});
+panel.addEventListener("input", e => {
+  const t = e.target; if (t.dataset.act !== "fill") return;
+  const f = t.closest("[data-path]"), p = f.dataset.path, k = kindOf(p);
+  const v = k === "list" ? t.value.split("\n").map(s => s.trim()).filter(Boolean) : (t.value.trim() || null);
+  setValue(p, k === "list" && !v.length ? null : v);
+  // 原地更新状态徽标，不重绘（保留光标与输入法状态）
+  const bd = f.querySelector(".f-meta .badge");
+  if (bd) { const st = statusOf(p); bd.className = "badge st-" + st; bd.textContent = statusText(p); bd.removeAttribute("title"); }
+  renderGlobal();
+});
+panel.addEventListener("keydown", e => {
+  const t = e.target, f = t.closest && t.closest("[data-path]");
+  if (!f || editing !== f.dataset.path || t.dataset.fk !== "inp") {
+    if (e.key === "Escape" && f && editing === f.dataset.path) { editing = null; render({ path: f.dataset.path, fk: "edit" }); }
+    return;
+  }
+  if (e.key === "Escape") { e.preventDefault(); editing = null; editErr = ""; render({ path: f.dataset.path, fk: "edit" }); }
+  else if (e.key === "Enter" && !e.isComposing && (t.tagName !== "TEXTAREA" || e.ctrlKey || e.metaKey)) { e.preventDefault(); commit(f.dataset.path, f); }
+});
+
+/* 提示跳转 */
+function jumpTo(t) {
+  if (t.t === "src") {
+    lastFocusPath = null;
+    highlight(locate(t.src), `<b>${esc(t.label)}</b>：AI 通读提示所指位置。`);
+    const s = $("#src"); s.classList.remove("flash"); void s.offsetWidth; s.classList.add("flash");
+    setTimeout(() => s.classList.remove("flash"), 1600);
+    if (window.matchMedia("(max-width: 1100px)").matches) s.scrollIntoView({ block: "start" });
+    srcBody.focus({ preventScroll: true });
+    return;
+  }
+  const st = t.t === "field" ? segs(t.path)[0] : t.stage;
+  if (t.t === "field") { const m = t.path.match(/^M\.modules\[(\d+)\]/); if (m) openMods.add(+m[1]); }
+  active = st; editing = null;
+  panel.setAttribute("aria-labelledby", "tab-" + st);
+  render(null);
+  const el = t.t === "field" ? panel.querySelector(`[data-path="${CSS.escape(t.path)}"]`) : $("#" + t.id);
+  if (!el) return;
+  el.scrollIntoView({ block: "center" });
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  lastFocusPath = null;
+  el.focus({ preventScroll: true });
+}
+$("#hint-list").addEventListener("click", e => {
+  const b = e.target.closest('[data-act="jump"]'); if (!b) return;
+  jumpTo(HINTS[+b.dataset.h].targets[+b.dataset.t]);
+});
+$("#hints-toggle").addEventListener("click", e => {
+  const b = e.currentTarget, open = b.getAttribute("aria-expanded") === "true";
+  b.setAttribute("aria-expanded", String(!open)); b.textContent = open ? "展开" : "收起";
+  $("#hints-body").hidden = open; measureTop();
+});
+$("#save-btn").addEventListener("click", () => {
+  saved = true; renderGlobal();
+  const t = $("#toast"); t.textContent = "已保存为设计 v1（演示：仅保存在本页内存中，未写入后端）"; t.hidden = false;
+  clearTimeout(t._h); t._h = setTimeout(() => { t.hidden = true; }, 4000);
+});
+
+function measureTop() { document.documentElement.style.setProperty("--top", $("#top").offsetHeight + "px"); }
+window.addEventListener("resize", measureTop);
+
+/* 启动 */
+setStage("I");
+measureTop();
+// 供讨论/自检用的只读入口
+window.IFMOS = { DATA, ANCHORS, confirmed, edited, get hints() { return HINTS.map(h => ({ lvl: h.lvl, msg: h.msg })); }, get pass() { return PASS.slice(); }, setStage, jumpTo, locate, ctxFor, leaves: ALL_LEAVES, orig: ORIG, getAt };
+})();
+</script>
+</body>
+</html>
